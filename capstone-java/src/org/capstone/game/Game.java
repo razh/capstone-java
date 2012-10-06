@@ -1,5 +1,6 @@
 package org.capstone.game;
 
+import org.capstone.game.terrain.Noise;
 import org.capstone.game.terrain.SimplexNoise;
 
 import com.badlogic.gdx.ApplicationListener;
@@ -19,37 +20,56 @@ public class Game implements ApplicationListener {
 	private SpriteBatch batch;
 	private Texture texture;
 	private Sprite sprite;
-	
+
 	@Override
-	public void create() {		
+	public void create() {
 		float w = Gdx.graphics.getWidth();
 		float h = Gdx.graphics.getHeight();
-		
-		camera = new OrthographicCamera(1, h/w);
+
+		camera = new OrthographicCamera(1, h / w);
 		batch = new SpriteBatch();
-		
+
 		// Allocate terrain data with 4 bytes per pixel (RGB888).
 		byte[] terrainData = new byte[(int) (4 * w * h)];
-		SimplexNoise noise = new SimplexNoise();
-		float[][] terrainNoise = noise.noise2D(512, 512);
+//		float[][] terrainNoise = noise.noise2D(512, 512);
 //		Pixmap terrain = new Pixmap(terrainData, 0, (int) (4 * w * h));
 
-		Pixmap terrain = new Pixmap(512, 512, Pixmap.Format.RGBA8888 );
+		Pixmap terrain = new Pixmap(512, 512, Pixmap.Format.RGBA8888);
 		int width = 512;
 		int height = 512;
-		for (int i = 0; i < height; i++) {
-			for (int j = 0; j < width; j++) {
-				terrain.drawPixel(i, j, Color.rgba8888(terrainNoise[i][j], terrainNoise[i][j], terrainNoise[i][j], 1.0f));
+		float[][] noise = Noise.smoothNoise2D(width, height);
+
+		// float min = Float.MAX_VALUE;
+		// float max = Float.MIN_VALUE;
+//		for (int octaves = 64; octaves > 1; octaves /= 2) {
+//			for (int i = 0; i < height; i++) {
+//				for (int j = 0; j < width; j++ ) {
+//					// Normalize.
+//					noise[i][j] += (float) (SimplexNoise.noise(i / octaves, j / octaves) % 1.0f) / 10.0f;
+//					// if (noise[i][j] < min)
+//					// 	min = noise[i][j];
+//					// if (noise[i][j] > max)
+//					// 	max = noise[i][j];
+//				}
+//			}
+//		}
+
+		for (int i = 0; i < width; i++) {
+			for (int j = 0; j < height; j++) {
+				int c = Color.rgba8888(noise[i][j], noise[i][j], noise[i][j], 1.0f);
+				terrain.drawPixel(i, j, c);
 			}
 		}
+		// System.out.println(min + " " + max);
+		// System.out.println(Integer.toHexString(Color.rgba8888(1.0f, 1.0f, 1.0f, 1.0f)));
 //		terrain.setColor(1.0f);
 //		terrain.fill();
-		
+
 		texture = new Texture(terrain);
 		texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
-		
+
 		TextureRegion region = new TextureRegion(texture, 0, 0, 512, 512);
-		
+
 		sprite = new Sprite(region);
 		sprite.setSize(1.0f, 1.0f * sprite.getHeight() / sprite.getWidth());
 		sprite.setOrigin(sprite.getWidth()/2, sprite.getHeight()/2);
@@ -63,10 +83,10 @@ public class Game implements ApplicationListener {
 	}
 
 	@Override
-	public void render() {		
+	public void render() {
 		Gdx.gl.glClearColor(1, 1, 1, 1);
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
-		
+
 		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
 		sprite.draw(batch);
