@@ -112,7 +112,7 @@ public class Noise {
 				index = 3 * (height * i + j);
 				flatNoise[index + 0] = i / (float) width;
 				flatNoise[index + 1] = j / (float) height;
-				flatNoise[index + 2] = noise[i][j];
+				flatNoise[index + 2] = noise[i][j]-5;
 			}
 		}
 
@@ -125,27 +125,44 @@ public class Noise {
 		float[] noise = Noise.flatSmoothNoise2D(width, height, 8, 0.0f, 0.0f, 0.5f);
 
 		Mesh mesh = new Mesh(Mesh.VertexDataType.VertexBufferObject,
-		                     true, width * height * 3, width * height * 2 * 3,
+		                     true, width * height * 3, width * height * 2 * 6,
 		                     new VertexAttribute(Usage.Position, 2, "a_position"));
 
 		mesh.setVertices(noise);
 
-		short[] indices = new short[width * height * 2 * 3];
+		short[] indices = new short[width * height * 2 * 6];
 		int index;
 		for (int i = 0; i < width; i++) {
 			for (int j = 0; j < height; j++) {
-				index = 3 * (height * i + j);
-				// First triangle.
+				index = 6 * (height * i + j);
+				// // First triangle.
+				// indices[index + 0 + 0] = (short) (i * j + j);
+				// indices[index + 0 + 1] = (short) ((short) i * j + j + 1);
+				// indices[index + 0 + 2] = (short) ((short) (i + 1) * j + j);
+
+				// // Second triangle.
+				// indices[index + 3 + 0] = (short) ((short) i * j * j + 1);
+				// indices[index + 3 + 1] = (short) ((short) (i + 1) * j + j + 1);
+				// indices[index + 3 + 2] = (short) ((short) (i + 1) * j + j);
+
+				// First triangle lines.
 				indices[index + 0 + 0] = (short) (i * j + j);
 				indices[index + 0 + 1] = (short) ((short) i * j + j + 1);
-				indices[index + 0 + 2] = (short) ((short) (i + 1) * j + j);
+				indices[index + 0 + 2] = (short) ((short) i * j + j + 1);
+				indices[index + 0 + 3] = (short) ((short) (i + 1) * j + j);
+				indices[index + 0 + 4] = (short) ((short) (i + 1) * j + j);
+				indices[index + 0 + 5] = (short) (i * j + j);
 
-				// Second triangle.
-				indices[index + 3 + 0] = (short) ((short) i * j * j + 1);
-				indices[index + 3 + 1] = (short) ((short) (i + 1) * j + j + 1);
-				indices[index + 3 + 2] = (short) ((short) (i + 1) * j + j);
+				// Second triangle lines.
+				indices[index + 6 + 0] = (short) ((short) i * j * j + 1);
+				indices[index + 6 + 1] = (short) ((short) (i + 1) * j + j + 1);
+				indices[index + 6 + 2] = (short) ((short) (i + 1) * j + j + 1);
+				indices[index + 6 + 3] = (short) ((short) (i + 1) * j + j);
+				indices[index + 6 + 4] = (short) ((short) (i + 1) * j + j);
+				indices[index + 6 + 5] = (short) ((short) i * j * j + 1);
 			}
 		}
+		mesh.setIndices(indices);
 
 		for (int i = 0; i < 18; i++) {
 		// for (int i = 0; i < width*height*3; i++) {

@@ -5,10 +5,12 @@ import org.capstone.game.terrain.SimplexNoise;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Mesh;
 //import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
@@ -27,7 +29,7 @@ public class Game implements ApplicationListener {
 	private Texture texture;
 	private Sprite sprite;
 
-	private ShaderProgram shader;
+//	private ShaderProgram shader;
 	private Mesh mesh;
 	private Mesh mesh2;
 
@@ -54,10 +56,12 @@ public class Game implements ApplicationListener {
 
 		// camera = new OrthographicCamera(1, h / w);
 		camera = new PerspectiveCamera(90, w, h);
+		camera.position.set(0, 0, 0);
+		camera.update();
 		batch = new SpriteBatch();
 
-		int width = 64;
-		int height = 64;
+		int width = 4;
+		int height = 4;
 		Pixmap terrain = new Pixmap(width, height, Pixmap.Format.RGBA8888);
 		float[][] noise = Noise.smoothNoise2D(width, height, 5, 0.0f, 0.0f, 0.5f);
 
@@ -78,16 +82,21 @@ public class Game implements ApplicationListener {
 		sprite.setOrigin(sprite.getWidth()/2, sprite.getHeight()/2);
 		sprite.setPosition(-sprite.getWidth()/2, -sprite.getHeight()/2);
 
-		shader = new ShaderProgram(vertexShader, fragmentShader);
+//		shader = new ShaderProgram(vertexShader, fragmentShader);
 		mesh = Noise.getMesh(width, height);
+//		mesh.bind(shader);
+		System.out.println("HELLO: " + mesh.getNumIndices());
 
 		mesh2 = new Mesh(true, 3, 3,
 		        new VertexAttribute(Usage.Position, 3, "a_position"));
 
-		mesh2.setVertices(new float[] { -0.5f, -0.5f, 0,
-		                                 0.5f, -0.5f, 0,
-		                                 0.0f,  0.5f, 0 });
+		mesh2.setVertices(new float[] { -0.5f, -0.5f, 5.0f,
+		                                 0.5f, -0.5f, 5.0f,
+		                                 0.0f,  0.5f, 5.0f });
 		mesh2.setIndices(new short[] { 0, 1, 2 });
+
+		camera.near = 0.01f;
+		camera.far = 1000.0f;
 	}
 
 	@Override
@@ -103,8 +112,8 @@ public class Game implements ApplicationListener {
 		if (isTouched) {
 			mouseX += Gdx.input.getDeltaX();
 			mouseY -= Gdx.input.getDeltaY();
-			camera.translate(Gdx.input.getDeltaX() / Gdx.graphics.getWidth(),
-			                 Gdx.input.getDeltaY() / Gdx.graphics.getHeight(), 0.0f);
+			// camera.translate(Gdx.input.getDeltaX() / Gdx.graphics.getWidth(),
+			//                  Gdx.input.getDeltaY() / Gdx.graphics.getHeight(), 0.0f);
 
 			// int width = 512;
 			// int height = 512;
@@ -130,15 +139,32 @@ public class Game implements ApplicationListener {
 			//                    -sprite.getHeight() / 2 + mouseY / Gdx.graphics.getHeight());
 		}
 
+		boolean isWPressed = Gdx.input.isKeyPressed(Keys.W);
+		boolean isSPRessed = Gdx.input.isKeyPressed(Keys.S);
+
+		if (isWPressed) {
+			camera.position.z += 10.0f;
+		}
+		if (isSPRessed) {
+			camera.translate(0.0f, 0.0f, -10.0f);
+		}
+		camera.update();
+
 		Gdx.gl.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
+//		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
+		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 
 		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
-		shader.begin();
-		mesh.render(shader, GL20.GL_TRIANGLES);
-		mesh2.render(shader, GL20.GL_TRIANGLES);
-		shader.end();
+//		shader.begin();
+		// mesh.bind(shader);
+		 mesh.render(GL10.GL_TRIANGLES);
+//		mesh.render(shader, GL20.GL_LINES);
+
+		// mesh.render(shader, GL20.GL_TRIANGLE_STRIP);
+		 mesh2.render(GL10.GL_TRIANGLES);
+//		 mesh2.render(shader, GL20.GL_TRIANGLES);
+//		shader.end();
 		// sprite.draw(batch);
 		batch.end();
 	}
