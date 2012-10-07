@@ -37,7 +37,7 @@ public class Game implements ApplicationListener {
 		Pixmap terrain = new Pixmap(512, 512, Pixmap.Format.RGBA8888);
 		int width = 512;
 		int height = 512;
-		float[][] noise = Noise.smoothNoise2D(width, height);
+		float[][] noise = Noise.smoothNoise2D(width, height, 8, 0.0f);
 
 		// float min = Float.MAX_VALUE;
 		// float max = Float.MIN_VALUE;
