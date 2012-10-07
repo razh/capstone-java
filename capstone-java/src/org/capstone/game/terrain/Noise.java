@@ -30,6 +30,7 @@ public class Noise {
 		return corners + sides + center;
 	}
 
+	// Interpolation does not work as there is no fractional component.
 	private static float interpolatedNoise(float x, float y, int octave) {
 		// Separate integer and fractional parts of x and y.
 		int xint = (int) x;
@@ -50,20 +51,19 @@ public class Noise {
 	}
 
 	public static float[][] smoothNoise2D(int width, int height, int numOctaves,
-	                                      float seed) {
+	                                      float seedX, float seedY,
+	                                      float persistence) {
 		octaves = new float[numOctaves][width][height];
 		m_numOctaves = numOctaves;
 		m_width = width;
 		m_height = height;
 
 		// Populate each octave layer with noise.
-		double persistence = 0.5;
 		double totalAmplitude = 0.0;
 
 		double frequency;
 		double amplitude;
-		float min = Float.MAX_VALUE;
-		float max = Float.MIN_VALUE;
+
 		for (int octave = 0; octave < numOctaves; octave++) {
 			frequency = Math.pow(2, octave);
 			amplitude = Math.pow(persistence, numOctaves - octave - 1);
@@ -71,21 +71,20 @@ public class Noise {
 
 			for (int i = 0; i < width; i++) {
 				for (int j = 0; j < height; j++) {
-					octaves[octave][i][j] = (float) (amplitude * 0.5f *
-					                        (1.0f +
-					                        SimplexNoise.noise(i / frequency + seed,
-					                                           j / frequency + seed)));
+					octaves[octave][i][j] = (float) (amplitude * 0.5f * (1.0f +
+					                        SimplexNoise.noise(i / frequency + seedX,
+					                                           j / frequency + seedY)));
 				}
 			}
 		}
 
-
+		// Sum all layers up.
 		float[][] noise = new float[width][height];
 
 		for (int i = 0; i < width; i++) {
 			for (int j = 0; j < height; j++) {
 				for (int octave = 0; octave < numOctaves; octave++) {
-					noise[i][j] += interpolatedNoise(i, j, octave);
+					noise[i][j] += smoothNoise(i, j, octave);
 				}
 
 				noise[i][j] /= totalAmplitude;
