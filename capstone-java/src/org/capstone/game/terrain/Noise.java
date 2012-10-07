@@ -1,5 +1,9 @@
 package org.capstone.game.terrain;
 
+import com.badlogic.gdx.graphics.Mesh;
+import com.badlogic.gdx.graphics.VertexAttribute;
+import com.badlogic.gdx.graphics.VertexAttributes.Usage;
+
 public class Noise {
 	private static int m_numOctaves;
 	private static int m_width;
@@ -83,6 +87,7 @@ public class Noise {
 
 		for (int i = 0; i < width; i++) {
 			for (int j = 0; j < height; j++) {
+				// Smooth noise is important to the visual style.
 				for (int octave = 0; octave < numOctaves; octave++) {
 					noise[i][j] += smoothNoise(i, j, octave);
 				}
@@ -92,5 +97,63 @@ public class Noise {
 		}
 
 		return noise;
+	}
+
+	public static float[] flatSmoothNoise2D(int width, int height, int numOctaves,
+	                                      float seedX, float seedY,
+	                                      float persistence) {
+		float[][] noise = Noise.smoothNoise2D(width, height, numOctaves,
+		                                      seedX, seedY, persistence);
+		float[] flatNoise = new float[width * height * 3];
+
+		int index;
+		for (int i = 0; i < width; i++) {
+			for (int j = 0; j < height; j++) {
+				index = 3 * (height * i + j);
+				flatNoise[index + 0] = i / (float) width;
+				flatNoise[index + 1] = j / (float) height;
+				flatNoise[index + 2] = noise[i][j];
+			}
+		}
+
+		return flatNoise;
+	}
+
+	// Mesh test. Move this to its own class.
+	// TODO: Imported classes: Mesh, VertexAttribute, Usage.
+	public static Mesh getMesh(int width, int height) {
+		float[] noise = Noise.flatSmoothNoise2D(width, height, 8, 0.0f, 0.0f, 0.5f);
+
+		Mesh mesh = new Mesh(Mesh.VertexDataType.VertexBufferObject,
+		                     true, width * height * 3, width * height * 2 * 3,
+		                     new VertexAttribute(Usage.Position, 2, "a_position"));
+
+		mesh.setVertices(noise);
+
+		short[] indices = new short[width * height * 2 * 3];
+		int index;
+		for (int i = 0; i < width; i++) {
+			for (int j = 0; j < height; j++) {
+				index = 3 * (height * i + j);
+				// First triangle.
+				indices[index + 0 + 0] = (short) (i * j + j);
+				indices[index + 0 + 1] = (short) ((short) i * j + j + 1);
+				indices[index + 0 + 2] = (short) ((short) (i + 1) * j + j);
+
+				// Second triangle.
+				indices[index + 3 + 0] = (short) ((short) i * j * j + 1);
+				indices[index + 3 + 1] = (short) ((short) (i + 1) * j + j + 1);
+				indices[index + 3 + 2] = (short) ((short) (i + 1) * j + j);
+			}
+		}
+
+		for (int i = 0; i < 18; i++) {
+		// for (int i = 0; i < width*height*3; i++) {
+			System.out.print(noise[i] + "\t");
+			if ((i+1)%3 == 0)
+				System.out.print("\n");
+		}
+
+		return mesh;
 	}
 }
