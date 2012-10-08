@@ -84,6 +84,8 @@ public class Game implements ApplicationListener {
 		// sprite.setOrigin(sprite.getWidth()/2, sprite.getHeight()/2);
 		// sprite.setPosition(-sprite.getWidth()/2, -sprite.getHeight()/2);
 
+		System.out.println("GL20: " + Gdx.graphics.isGL20Available());
+		
 		shader = new ShaderProgram(vertexShader, fragmentShader);
 		mesh = Noise.getMesh(width, height);
 //		mesh.bind(shader);
@@ -106,7 +108,7 @@ public class Game implements ApplicationListener {
 		camera.near = 0.01f;
 		camera.far = 1000.0f;
 
-		GL10 gl = Gdx.graphics.getGL10();
+//		GL10 gl = Gdx.graphics.getGL10();
 //		gl.glEnable(GL10.GL_LIGHTING);
 //		// gl.glLightModelfv(gl.GL_LIGHT_MODEL_AMBIENT, new float[]{0.9f, 0.9f, 0.2f, 1.0f}, 0);
 //		gl.glEnable(GL10.GL_LIGHT0);
@@ -134,7 +136,7 @@ public class Game implements ApplicationListener {
 		if (isTouched) {
 			mouseX += Gdx.input.getDeltaX();
 			mouseY -= Gdx.input.getDeltaY();
-			System.out.println(Gdx.input.getDeltaX());
+//			System.out.println(Gdx.input.getDeltaX());
 			 camera.translate(Gdx.input.getDeltaX() / (float) Gdx.graphics.getWidth(),
 			                  Gdx.input.getDeltaY() / (float) Gdx.graphics.getHeight(), 0.0f);
 

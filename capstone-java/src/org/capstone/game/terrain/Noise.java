@@ -102,7 +102,7 @@ public class Noise {
 	}
 
 	private static float[] getNormals(float[][] map, int width, int height) {
-		float[][] normals = new float[width * height * 3];
+		float[] normals = new float[width * height * 3];
 
 		// Indices of each triangle.
 		int index0, index1, index2;
