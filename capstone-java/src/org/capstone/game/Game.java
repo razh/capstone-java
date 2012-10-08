@@ -72,10 +72,10 @@ public class Game implements ApplicationListener {
 		camera.update();
 		batch = new SpriteBatch();
 
-		int width = 4;
-		int height = 4;
+		int width = 64;
+		int height = 64;
 		Pixmap terrain = new Pixmap(width, height, Pixmap.Format.RGBA8888);
-		float[][] noise = Noise.smoothNoise2D(width, height, 5, 0.0f, 0.0f, 0.5f);
+		float[][] noise = Noise.smoothNoise2D(width, height, 7, 0.0f, 0.0f, 0.5f);
 
 		for (int i = 0; i < width; i++) {
 			for (int j = 0; j < height; j++) {
@@ -155,7 +155,7 @@ public class Game implements ApplicationListener {
 //			System.out.println(Gdx.input.getDeltaX());
 			// camera.translate(Gdx.input.getDeltaX() / (float) Gdx.graphics.getWidth(),
 			 camera.translate(Gdx.input.getDeltaX() / (float) Gdx.graphics.getWidth(),
-			                  Gdx.input.getDeltaY() / (float) Gdx.graphics.getHeight(), 0.0f);
+			                  -Gdx.input.getDeltaY() / (float) Gdx.graphics.getHeight(), 0.0f);
 
 			// int width = 512;
 			// int height = 512;
@@ -185,10 +185,10 @@ public class Game implements ApplicationListener {
 		boolean isSPRessed = Gdx.input.isKeyPressed(Keys.S);
 
 		if (isWPressed) {
-			camera.translate(0.0f, 0.0f, -0.1f);
+			camera.translate(0.0f, 0.0f, -0.05f);
 		}
 		if (isSPRessed) {
-			camera.translate(0.0f, 0.0f, 0.1f);
+			camera.translate(0.0f, 0.0f, 0.05f);
 		}
 		camera.update();
 
