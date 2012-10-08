@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Mesh;
 //import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.GL10;
+import com.badlogic.gdx.graphics.GLCommon;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
@@ -23,13 +24,13 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 
 public class Game implements ApplicationListener {
-	// private OrthographicCamera camera;
+//	 private OrthographicCamera camera;
 	private PerspectiveCamera camera;
 	private SpriteBatch batch;
 	private Texture texture;
 	private Sprite sprite;
 
-//	private ShaderProgram shader;
+	private ShaderProgram shader;
 	private Mesh mesh;
 	private Mesh mesh2;
 
@@ -38,9 +39,10 @@ public class Game implements ApplicationListener {
 
 	private String vertexShader =
 		"attribute vec4 a_position;\n" +
+		"uniform mat4 projectionMatrix;\n" +
 		"void main()\n" +
 		"{\n" +
-		"  gl_Position = a_position;\n" +
+		"  gl_Position = a_position * projectionMatrix;\n" +
 		"}";
 
 	private String fragmentShader =
@@ -54,9 +56,9 @@ public class Game implements ApplicationListener {
 		float w = Gdx.graphics.getWidth();
 		float h = Gdx.graphics.getHeight();
 
-		// camera = new OrthographicCamera(1, h / w);
-		camera = new PerspectiveCamera(90, w, h);
-		camera.position.set(0, 0, 0);
+		 //camera = new OrthographicCamera(1, h / w);
+		camera = new PerspectiveCamera(60, w, h);
+		camera.position.set(0, 0, 5);
 		camera.update();
 		batch = new SpriteBatch();
 
@@ -73,30 +75,50 @@ public class Game implements ApplicationListener {
 		}
 
 		texture = new Texture(terrain);
-		texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+		// texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 
-		TextureRegion region = new TextureRegion(texture, 0, 0, width, height);
+		// TextureRegion region = new TextureRegion(texture, 0, 0, width, height);
 
-		sprite = new Sprite(region);
-		sprite.setSize(1.0f, 1.0f * sprite.getHeight() / sprite.getWidth());
-		sprite.setOrigin(sprite.getWidth()/2, sprite.getHeight()/2);
-		sprite.setPosition(-sprite.getWidth()/2, -sprite.getHeight()/2);
+		// sprite = new Sprite(region);
+		// sprite.setSize(1.0f, 1.0f * sprite.getHeight() / sprite.getWidth());
+		// sprite.setOrigin(sprite.getWidth()/2, sprite.getHeight()/2);
+		// sprite.setPosition(-sprite.getWidth()/2, -sprite.getHeight()/2);
 
-//		shader = new ShaderProgram(vertexShader, fragmentShader);
+		shader = new ShaderProgram(vertexShader, fragmentShader);
 		mesh = Noise.getMesh(width, height);
 //		mesh.bind(shader);
 		System.out.println("HELLO: " + mesh.getNumIndices());
 
 		mesh2 = new Mesh(true, 3, 3,
-		        new VertexAttribute(Usage.Position, 3, "a_position"));
+		        new VertexAttribute(Usage.Position, 3,
+		                            ShaderProgram.POSITION_ATTRIBUTE),
+		        new VertexAttribute(Usage.Normal, 3,
+		                            ShaderProgram.NORMAL_ATTRIBUTE),
+		        new VertexAttribute(Usage.ColorPacked, 4,
+		                            ShaderProgram.COLOR_ATTRIBUTE));
 
-		mesh2.setVertices(new float[] { -0.5f, -0.5f, 5.0f,
-		                                 0.5f, -0.5f, 5.0f,
-		                                 0.0f,  0.5f, 5.0f });
+		System.out.println(ShaderProgram.NORMAL_ATTRIBUTE);
+		mesh2.setVertices(new float[] { -0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f, Color.toFloatBits( 1.0f, 0.0f, 0.0f, 1.0f),
+		                                 0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f, Color.toFloatBits( 1.0f, 0.0f, 0.0f, 1.0f),
+		                                 0.0f,  0.5f, 0.0f, 0.0f, 1.0f, 0.0f, Color.toFloatBits( 1.0f, 0.0f, 0.0f, 1.0f)});
 		mesh2.setIndices(new short[] { 0, 1, 2 });
 
 		camera.near = 0.01f;
 		camera.far = 1000.0f;
+
+		GL10 gl = Gdx.graphics.getGL10();
+//		gl.glEnable(GL10.GL_LIGHTING);
+//		// gl.glLightModelfv(gl.GL_LIGHT_MODEL_AMBIENT, new float[]{0.9f, 0.9f, 0.2f, 1.0f}, 0);
+//		gl.glEnable(GL10.GL_LIGHT0);
+//		gl.glLightfv(GL10.GL_LIGHT0, GL10.GL_POSITION, new float[]{0.0f, 0.0f, 2.0f, 1.0f}, 0);
+//		gl.glLightfv(GL10.GL_LIGHT0, GL10.GL_AMBIENT, new float[]{0.9f, 0.9f, 0.9f, 1.0f}, 0);
+//		gl.glLightfv(GL10.GL_LIGHT0, GL10.GL_DIFFUSE, new float[]{0.9f, 0.5f, 0.9f, 1.0f}, 0);
+//		gl.glLightfv(GL10.GL_LIGHT0, GL10.GL_SPECULAR, new float[]{0.9f, 0.9f, 0.9f, 1.0f}, 0);
+
+		// gl.glMaterialfv(GL10.GL_FRONT_AND_BACK, GL10.GL_DIFFUSE, new float[] {1.0f, 1.0f, 0.5f, 1.0f}, 0);
+		// gl.glMaterialfv(GL10.GL_FRONT_AND_BACK, GL10.GL_AMBIENT, new float[] {1.0f, 1.0f, 1.0f, 1.0f}, 0);
+		// gl.glMaterialfv(GL10.GL_FRONT_AND_BACK, GL10.GL_SPECULAR, new float[] {1.0f, 1.0f, 1.0f, 1.0f}, 0);
+		// gl.glMaterialf(GL10.GL_FRONT_AND_BACK, GL10.GL_SHININESS, 30.0f);
 	}
 
 	@Override
@@ -112,8 +134,9 @@ public class Game implements ApplicationListener {
 		if (isTouched) {
 			mouseX += Gdx.input.getDeltaX();
 			mouseY -= Gdx.input.getDeltaY();
-			// camera.translate(Gdx.input.getDeltaX() / Gdx.graphics.getWidth(),
-			//                  Gdx.input.getDeltaY() / Gdx.graphics.getHeight(), 0.0f);
+			System.out.println(Gdx.input.getDeltaX());
+			 camera.translate(Gdx.input.getDeltaX() / (float) Gdx.graphics.getWidth(),
+			                  Gdx.input.getDeltaY() / (float) Gdx.graphics.getHeight(), 0.0f);
 
 			// int width = 512;
 			// int height = 512;
@@ -143,28 +166,30 @@ public class Game implements ApplicationListener {
 		boolean isSPRessed = Gdx.input.isKeyPressed(Keys.S);
 
 		if (isWPressed) {
-			camera.position.z += 10.0f;
+			camera.translate(0.0f, 0.0f, -0.1f);
 		}
 		if (isSPRessed) {
-			camera.translate(0.0f, 0.0f, -10.0f);
+			camera.translate(0.0f, 0.0f, 0.1f);
 		}
 		camera.update();
 
-		Gdx.gl.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-//		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
-		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
+		Gdx.gl.glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
+		//Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 
 		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
-//		shader.begin();
+		
+		shader.begin();
+		shader.setUniformMatrix("projectionMatrix", camera.combined);
 		// mesh.bind(shader);
-		 mesh.render(GL10.GL_TRIANGLES);
+//		 mesh.render(GL10.GL_TRIANGLE_STRIP);
 //		mesh.render(shader, GL20.GL_LINES);
 
-		// mesh.render(shader, GL20.GL_TRIANGLE_STRIP);
-		 mesh2.render(GL10.GL_TRIANGLES);
-//		 mesh2.render(shader, GL20.GL_TRIANGLES);
-//		shader.end();
+		 mesh.render(shader, GL20.GL_TRIANGLE_STRIP);
+//		 mesh2.render(GL10.GL_TRIANGLES);
+		 mesh2.render(shader, GL20.GL_TRIANGLES);
+		shader.end();
 		// sprite.draw(batch);
 		batch.end();
 	}

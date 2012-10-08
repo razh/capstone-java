@@ -1,8 +1,10 @@
 package org.capstone.game.terrain;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Mesh;
 import com.badlogic.gdx.graphics.VertexAttribute;
 import com.badlogic.gdx.graphics.VertexAttributes.Usage;
+import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 
 public class Noise {
 	private static int m_numOctaves;
@@ -99,11 +101,29 @@ public class Noise {
 		return noise;
 	}
 
+	private static float[] getNormals(float[][] map, int width, int height) {
+		float[][] normals = new float[width * height * 3];
+
+		// Indices of each triangle.
+		int index0, index1, index2;
+		for (int i = 0; i < width; i++) {
+			for (int j = 0; j < height; j++) {
+				index0 = height * i + j;
+				index1 = height * i + (j + 1);
+				index2 = height * (i + 1) + j;
+
+				// float[] vertex = {map[index0], map[index0]}
+			}
+		}
+		return normals;
+	}
+
 	public static float[] flatSmoothNoise2D(int width, int height, int numOctaves,
 	                                      float seedX, float seedY,
 	                                      float persistence) {
 		float[][] noise = Noise.smoothNoise2D(width, height, numOctaves,
 		                                      seedX, seedY, persistence);
+
 		float[] flatNoise = new float[width * height * 3];
 
 		int index;
@@ -112,7 +132,7 @@ public class Noise {
 				index = 3 * (height * i + j);
 				flatNoise[index + 0] = i / (float) width;
 				flatNoise[index + 1] = j / (float) height;
-				flatNoise[index + 2] = noise[i][j]-5;
+				flatNoise[index + 2] = noise[i][j] * 2;
 			}
 		}
 
@@ -125,19 +145,26 @@ public class Noise {
 		float[] noise = Noise.flatSmoothNoise2D(width, height, 8, 0.0f, 0.0f, 0.5f);
 
 		Mesh mesh = new Mesh(Mesh.VertexDataType.VertexBufferObject,
-		                     true, width * height * 3, width * height * 2 * 6,
-		                     new VertexAttribute(Usage.Position, 2, "a_position"));
+		                     true, width * height * 4, width * height * 2 * 3,
+		                     new VertexAttribute(Usage.Position, 3,
+		                                         ShaderProgram.POSITION_ATTRIBUTE),
+		                     new VertexAttribute(Usage.Normal, 3,
+		                                         ShaderProgram.NORMAL_ATTRIBUTE),
+		                     new VertexAttribute(Usage.ColorPacked, 4,
+		                                         ShaderProgram.COLOR_ATTRIBUTE));
 
 		mesh.setVertices(noise);
 
-		short[] indices = new short[width * height * 2 * 6];
+		short[] indices = new short[width * height * 2 * 3];
 		int index;
 		for (int i = 0; i < width; i++) {
 			for (int j = 0; j < height; j++) {
-				index = 6 * (height * i + j);
-				// // First triangle.
-				// indices[index + 0 + 0] = (short) (i * j + j);
-				// indices[index + 0 + 1] = (short) ((short) i * j + j + 1);
+				index = 3 * (height * i + j);
+				// First triangle.
+				indices[index + 0] = (short) (height * i + j);
+				indices[index + 1] = (short) ((short) height * (i + 1) + j);
+
+				// indices[index + 1] = (short) ((short) i * j + j + 1);
 				// indices[index + 0 + 2] = (short) ((short) (i + 1) * j + j);
 
 				// // Second triangle.
@@ -145,21 +172,21 @@ public class Noise {
 				// indices[index + 3 + 1] = (short) ((short) (i + 1) * j + j + 1);
 				// indices[index + 3 + 2] = (short) ((short) (i + 1) * j + j);
 
-				// First triangle lines.
-				indices[index + 0 + 0] = (short) (i * j + j);
-				indices[index + 0 + 1] = (short) ((short) i * j + j + 1);
-				indices[index + 0 + 2] = (short) ((short) i * j + j + 1);
-				indices[index + 0 + 3] = (short) ((short) (i + 1) * j + j);
-				indices[index + 0 + 4] = (short) ((short) (i + 1) * j + j);
-				indices[index + 0 + 5] = (short) (i * j + j);
+				// // First triangle lines.
+				// indices[index + 0 + 0] = (short) (i * j + j);
+				// indices[index + 0 + 1] = (short) ((short) i * j + j + 1);
+				// indices[index + 0 + 2] = (short) ((short) i * j + j + 1);
+				// indices[index + 0 + 3] = (short) ((short) (i + 1) * j + j);
+				// indices[index + 0 + 4] = (short) ((short) (i + 1) * j + j);
+				// indices[index + 0 + 5] = (short) (i * j + j);
 
-				// Second triangle lines.
-				indices[index + 6 + 0] = (short) ((short) i * j * j + 1);
-				indices[index + 6 + 1] = (short) ((short) (i + 1) * j + j + 1);
-				indices[index + 6 + 2] = (short) ((short) (i + 1) * j + j + 1);
-				indices[index + 6 + 3] = (short) ((short) (i + 1) * j + j);
-				indices[index + 6 + 4] = (short) ((short) (i + 1) * j + j);
-				indices[index + 6 + 5] = (short) ((short) i * j * j + 1);
+				// // Second triangle lines.
+				// indices[index + 6 + 0] = (short) ((short) i * j * j + 1);
+				// indices[index + 6 + 1] = (short) ((short) (i + 1) * j + j + 1);
+				// indices[index + 6 + 2] = (short) ((short) (i + 1) * j + j + 1);
+				// indices[index + 6 + 3] = (short) ((short) (i + 1) * j + j);
+				// indices[index + 6 + 4] = (short) ((short) (i + 1) * j + j);
+				// indices[index + 6 + 5] = (short) ((short) i * j * j + 1);
 			}
 		}
 		mesh.setIndices(indices);
