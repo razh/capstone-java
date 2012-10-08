@@ -1,5 +1,7 @@
 package org.capstone.game.terrain;
 
+import java.util.Random;
+
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Mesh;
 import com.badlogic.gdx.graphics.VertexAttribute;
@@ -124,15 +126,23 @@ public class Noise {
 		float[][] noise = Noise.smoothNoise2D(width, height, numOctaves,
 		                                      seedX, seedY, persistence);
 
-		float[] flatNoise = new float[width * height * 3];
+		float[] flatNoise = new float[width * height * 6];
 
+		Random random = new Random();
 		int index;
 		for (int i = 0; i < width; i++) {
 			for (int j = 0; j < height; j++) {
-				index = 3 * (height * i + j);
+				index = 6 * (height * i + j);
+
+				// Vertices.
 				flatNoise[index + 0] = i / (float) width;
 				flatNoise[index + 1] = j / (float) height;
 				flatNoise[index + 2] = noise[i][j] * 2;
+
+				// Normals.
+				flatNoise[index + 3] = random.nextFloat();
+				flatNoise[index + 4] = random.nextFloat();
+				flatNoise[index + 5] = random.nextFloat();
 			}
 		}
 
@@ -145,21 +155,19 @@ public class Noise {
 		float[] noise = Noise.flatSmoothNoise2D(width, height, 8, 0.0f, 0.0f, 0.5f);
 
 		Mesh mesh = new Mesh(Mesh.VertexDataType.VertexBufferObject,
-		                     true, width * height * 4, width * height * 2 * 3,
+		                     true, width * height * 4, width * height * 2 + ,
 		                     new VertexAttribute(Usage.Position, 3,
 		                                         ShaderProgram.POSITION_ATTRIBUTE),
 		                     new VertexAttribute(Usage.Normal, 3,
-		                                         ShaderProgram.NORMAL_ATTRIBUTE),
-		                     new VertexAttribute(Usage.ColorPacked, 4,
-		                                         ShaderProgram.COLOR_ATTRIBUTE));
+		                                         ShaderProgram.NORMAL_ATTRIBUTE));
 
 		mesh.setVertices(noise);
 
-		short[] indices = new short[width * height * 2 * 3];
+		short[] indices = new short[width * height * 2 + (height - 1)];
 		int index;
 		for (int i = 0; i < width; i++) {
 			for (int j = 0; j < height; j++) {
-				index = 3 * (height * i + j);
+				index = 2 * (height * i + j);
 				// First triangle.
 				indices[index + 0] = (short) (height * i + j);
 				indices[index + 1] = (short) ((short) height * (i + 1) + j);

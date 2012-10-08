@@ -38,17 +38,27 @@ public class Game implements ApplicationListener {
 	private static float mouseY;
 
 	private String vertexShader =
+		"uniform mat4 projection;\n" +
 		"attribute vec4 a_position;\n" +
-		"uniform mat4 projectionMatrix;\n" +
+		"attribute vec4 a_normal;\n" +
+		"varying float lightIntensity;\n" +
+		// "uniform vec3 lightDirection = vec3(1.0, 0.0, 0.0);\n" +
+
 		"void main()\n" +
 		"{\n" +
-		"  gl_Position = a_position * projectionMatrix;\n" +
+		"  vec4 newNormal = projection * a_normal;\n" +
+		"  gl_Position = projection * a_position;\n" +
+		"  lightIntensity = max(0.0, dot(newNormal.xyz, vec3(0.0,0.0,1.0)));\n" +
 		"}";
 
 	private String fragmentShader =
+	  "varying float lightIntensity;\n" +
 		"void main()\n" +
 		"{\n" +
-		"  gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);\n" +
+		// "  lowp vec4 yellow = vec4(1.0, 1.0, 0.0, 1.0;\n;" +
+		// "  gl_FragColor = vec4(yellow * lightIntensity * 0.2).rgb, 1.0;\n" +
+		"  float depth = gl_FragCoord.z / gl_FragCoord.w / 10.0;\n" +
+		"  gl_FragColor = vec4(lightIntensity, depth, depth, 1.0);\n" +
 		"}";
 
 	@Override
@@ -85,11 +95,17 @@ public class Game implements ApplicationListener {
 		// sprite.setPosition(-sprite.getWidth()/2, -sprite.getHeight()/2);
 
 		System.out.println("GL20: " + Gdx.graphics.isGL20Available());
-		
+		System.out.println(vertexShader);
+		System.out.println(fragmentShader);
+
 		shader = new ShaderProgram(vertexShader, fragmentShader);
 		mesh = Noise.getMesh(width, height);
 //		mesh.bind(shader);
-		System.out.println("HELLO: " + mesh.getNumIndices());
+		System.out.println("Indices: " + mesh.getNumIndices());
+		String[] uniforms = shader.getUniforms();
+		for (int i = 0; i < uniforms.length; i++) {
+			System.out.println( i + ": " + uniforms[i] );
+		}
 
 		mesh2 = new Mesh(true, 3, 3,
 		        new VertexAttribute(Usage.Position, 3,
@@ -105,7 +121,7 @@ public class Game implements ApplicationListener {
 		                                 0.0f,  0.5f, 0.0f, 0.0f, 1.0f, 0.0f, Color.toFloatBits( 1.0f, 0.0f, 0.0f, 1.0f)});
 		mesh2.setIndices(new short[] { 0, 1, 2 });
 
-		camera.near = 0.01f;
+		camera.near = 0.1f;
 		camera.far = 1000.0f;
 
 //		GL10 gl = Gdx.graphics.getGL10();
@@ -134,9 +150,10 @@ public class Game implements ApplicationListener {
 		boolean isTouched = Gdx.input.isTouched();
 
 		if (isTouched) {
-			mouseX += Gdx.input.getDeltaX();
-			mouseY -= Gdx.input.getDeltaY();
+			// mouseX += Gdx.input.getDeltaX();
+			// mouseY -= Gdx.input.getDeltaY();
 //			System.out.println(Gdx.input.getDeltaX());
+			// camera.translate(Gdx.input.getDeltaX() / (float) Gdx.graphics.getWidth(),
 			 camera.translate(Gdx.input.getDeltaX() / (float) Gdx.graphics.getWidth(),
 			                  Gdx.input.getDeltaY() / (float) Gdx.graphics.getHeight(), 0.0f);
 
@@ -175,22 +192,27 @@ public class Game implements ApplicationListener {
 		}
 		camera.update();
 
+		Gdx.gl.glEnable(GL20.GL_DEPTH_TEST);
 		Gdx.gl.glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 		//Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 
 		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
-		
+
 		shader.begin();
-		shader.setUniformMatrix("projectionMatrix", camera.combined);
+//		shader.setUniform3fv("lightDirection", new float[] {0.0f, 0.0f, 1.0f}, 0, 3);
+		shader.setUniformMatrix("projection", camera.combined);
+
 		// mesh.bind(shader);
 //		 mesh.render(GL10.GL_TRIANGLE_STRIP);
 //		mesh.render(shader, GL20.GL_LINES);
 
 		 mesh.render(shader, GL20.GL_TRIANGLE_STRIP);
+		 		 // mesh.render(shader, GL20.GL_LINES);
+
 //		 mesh2.render(GL10.GL_TRIANGLES);
-		 mesh2.render(shader, GL20.GL_TRIANGLES);
+//		 mesh2.render(shader, GL20.GL_TRIANGLES);
 		shader.end();
 		// sprite.draw(batch);
 		batch.end();
