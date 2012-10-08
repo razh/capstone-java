@@ -20,7 +20,7 @@ local.properties
 # Eclipse .gitignore
 *.pydevproject
 # .project
-# .metadata
+.metadata
 bin/**
 tmp/**
 tmp/**/*
