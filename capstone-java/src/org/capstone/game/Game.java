@@ -48,7 +48,7 @@ public class Game implements ApplicationListener {
 		"{\n" +
 		"  vec4 newNormal = projection * a_normal;\n" +
 		"  gl_Position = projection * a_position;\n" +
-		"  lightIntensity = max(0.0, dot(newNormal.xyz, vec3(0.0,0.0,1.0)));\n" +
+		"  lightIntensity = max(0.0, dot(newNormal.xyz, vec3(0.0,2.0,3.0)));\n" +
 		"}";
 
 	private String fragmentShader =
@@ -67,13 +67,13 @@ public class Game implements ApplicationListener {
 		float h = Gdx.graphics.getHeight();
 
 		 //camera = new OrthographicCamera(1, h / w);
-		camera = new PerspectiveCamera(60, w, h);
-		camera.position.set(0, 0, 5);
+		camera = new PerspectiveCamera(90, w, h);
+		camera.position.set(0, 0, 3);
 		camera.update();
 		batch = new SpriteBatch();
 
-		int width = 64;
-		int height = 64;
+		int width = 128;
+		int height = 128;
 		Pixmap terrain = new Pixmap(width, height, Pixmap.Format.RGBA8888);
 		float[][] noise = Noise.smoothNoise2D(width, height, 7, 0.0f, 0.0f, 0.5f);
 
@@ -197,8 +197,8 @@ public class Game implements ApplicationListener {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 		//Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 
-		batch.setProjectionMatrix(camera.combined);
-		batch.begin();
+//		batch.setProjectionMatrix(camera.combined);
+//		batch.begin();
 
 		shader.begin();
 //		shader.setUniform3fv("lightDirection", new float[] {0.0f, 0.0f, 1.0f}, 0, 3);
@@ -208,14 +208,14 @@ public class Game implements ApplicationListener {
 //		 mesh.render(GL10.GL_TRIANGLE_STRIP);
 //		mesh.render(shader, GL20.GL_LINES);
 
-		 mesh.render(shader, GL20.GL_TRIANGLE_STRIP);
-		 		 // mesh.render(shader, GL20.GL_LINES);
+//		  mesh.render(shader, GL20.GL_TRIANGLE_STRIP);
+		 		 mesh.render(shader, GL20.GL_LINE_STRIP);
 
 //		 mesh2.render(GL10.GL_TRIANGLES);
 //		 mesh2.render(shader, GL20.GL_TRIANGLES);
 		shader.end();
-		// sprite.draw(batch);
-		batch.end();
+//		sprite.draw(batch);
+//		batch.end();
 	}
 
 	@Override
