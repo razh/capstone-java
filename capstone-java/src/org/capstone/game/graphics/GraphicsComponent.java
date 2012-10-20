@@ -3,15 +3,19 @@ package org.capstone.game.graphics;
 import org.capstone.game.Entity;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Mesh;
 
 public abstract class GraphicsComponent extends Entity {
 	private Color color;
+	protected Mesh mesh;
 
 	public GraphicsComponent(float x, float y, Color color) {
 		super(x, y);
 
 		this.setColor(color);
 	}
+
+	public abstract void init();
 
 	public abstract void render();
 

@@ -29,7 +29,12 @@ public class RectGraphicsComponent extends GraphicsComponent {
 	public void setHeight(float height) {
 		this.height = height;
 	}
-	
+
+	@Override
+	public void init() {
+
+	}
+
 	@Override
 	public void render() {
 
