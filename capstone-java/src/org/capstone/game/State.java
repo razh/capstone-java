@@ -15,8 +15,8 @@ public class State {
 		this.prevTime = System.nanoTime();
 		this.currTime = prevTime;
 		
-		this.width  = width;
-		this.height = height;
+		State.width  = width;
+		State.height = height;
 	}
 
 	private ArrayList<Character> characters = new ArrayList<Character>();
