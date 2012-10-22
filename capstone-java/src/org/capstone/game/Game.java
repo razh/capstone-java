@@ -33,7 +33,7 @@ public class Game implements ApplicationListener {
 
 	private String fragmentShader =
 		"#ifdef GL_ES\n" +
-		"precision medp float;\n" +
+		"precision mediump float;\n" +
 		"#endif\n" +
 		"uniform vec4 v_color;\n" +
 		"\n" +
@@ -55,13 +55,14 @@ public class Game implements ApplicationListener {
 
 		System.out.println( camera.combined.toString() );
 
+		System.out.println("GL20: " + Gdx.graphics.isGL20Available());
 		System.out.println(vertexShader);
 		System.out.println(fragmentShader);
 		shaderProgram = new ShaderProgram(vertexShader, fragmentShader);
-		System.out.println(shaderProgram.isCompiled());
+		System.out.println("Compiled: " + shaderProgram.isCompiled() + "--------------------------");
 
 		state = new State(this.width, this.height);
-		state.addCharacter(new Character(100.0f, 0.0f, new Color(1.0f, 0.0f, 0.0f, 1.0f), 10.0f));
+		state.addCharacter(new Character(100.0f, 0.0f, new Color(1.0f, 0.0f, 0.0f, 1.0f), 50.0f));
 		state.getCharacters().get(0).physics.setVelocity(0.25f / 1E6f, 0.25f / 1E6f);
 	}
 
