@@ -80,8 +80,7 @@ public class CircleGraphicsComponent extends GraphicsComponent {
 
 	@Override
 	public void render(ShaderProgram shaderProgram) {
-		shaderProgram.setUniformf("x_scale", this.getRadius());
-		shaderProgram.setUniformf("y_scale", this.getRadius());
+		shaderProgram.setUniformf("scale", this.getRadius(), this.getRadius());
 		shaderProgram.setUniformf("v_color", this.color);
 		this.mesh.render(shaderProgram, GL20.GL_TRIANGLE_FAN);
 	}

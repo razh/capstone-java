@@ -102,8 +102,7 @@ public class RectGraphicsComponent extends GraphicsComponent {
 
 	@Override
 	public void render(ShaderProgram shaderProgram) {
-		shaderProgram.setUniformf("x_scale", this.getWidth());
-		shaderProgram.setUniformf("y_scale", this.getHeight());
+		shaderProgram.setUniformf("scale", this.getWidth(), this.getHeight());
 		shaderProgram.setUniformf("v_color", this.color);
 		this.mesh.render(shaderProgram, GL20.GL_TRIANGLE_STRIP);
 	}

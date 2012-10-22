@@ -32,19 +32,20 @@ public class Game implements ApplicationListener {
 
 	private String vertexShader =
 		"uniform mat4 projection;\n" +
-		// "uniform float x_position;\n" +
-		// "uniform float y_position;\n" +
-		"uniform float x_scale;\n" +
-		"uniform float y_scale;\n" +
+		"uniform vec2 translate;\n" +
+		"uniform vec2 scale;\n" +
 		"attribute vec2 a_position;\n" +
 		"\n" +
 		"void main()\n" +
 		"{\n" +
-		// "  vec4 position = vec4(a_position.xy, 0.0f, 1.0f);\n" +
-		// "  vec4 position = projection * vec4(a_position.xy, 0.0, 1.0);\n" +
 		// "  gl_Position = projection * vec4(a_position.xy, 0.0, 1.0);\n" +
-		"  gl_Position = projection * vec4(a_position.x * x_scale, a_position.y * y_scale, 0.0, 1.0);\n" +
-		// "  gl_Position = projection * vec4(a_position.x * x_scale + x_position, a_position.y * y_scale + y_position, 0.0, 1.0);\n" +
+		// "  vec2 position = vec2(a_position.x, a_position.y);\n" +
+		// "  vec2 position = vec2(a_position.x, a_position.y);\n" +
+		"  vec2 position = a_position;\n" +
+		"  position.x = position.x * scale.x + translate.x;\n" +
+		"  position.y = position.y * scale.y + translate.y;\n" +
+		"  gl_Position = projection * vec4(position.xy, 0.0, 1.0);\n" +
+		// "  gl_Position = projection * vec4(a_position.x * scale.x + translate.x, a_position.y * scale.y + translate.y, 0.0, 1.0);\n" +
 		// "  gl_Position = position;\n" +
 		// "  gl_Position = vec4(position.xy, 0.0, position.w);" +
 		"}";
@@ -95,7 +96,7 @@ public class Game implements ApplicationListener {
 		// rect = new RectGraphicsComponent(0, 0, new Color(1.0f, 0.0f, 0.0f, 1.0f), 10, 30);
 		// rect.init(2,4);
 		circle = new CircleGraphicsComponent(0, 0, new Color(1.0f, 0.0f, 0.0f, 1.0f), 10);
-		// circle.init();
+		circle.init();
 	}
 
 	@Override
