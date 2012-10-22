@@ -4,27 +4,28 @@ import org.capstone.game.Entity;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Mesh;
+import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 
 public abstract class GraphicsComponent extends Entity {
-	private Color color;
-	protected Mesh mesh;
+	protected Color color;
 
 	public GraphicsComponent(float x, float y, Color color) {
 		super(x, y);
 
+		this.color = new Color();
 		this.setColor(color);
 	}
 
 	public abstract void init();
 
-	public abstract void render();
+	public abstract void render(ShaderProgram shaderProgram);
 
 	public Color getColor() {
 		return this.color;
 	}
 
 	public void setColor(Color color) {
-		this.color = color;
+		this.color.set(color);
 	}
 
 	public float getRed() {
