@@ -18,6 +18,9 @@ public class RectGraphicsComponent extends GraphicsComponent {
 
 		this.setWidth(width);
 		this.setHeight(height);
+
+		if (this.mesh == null)
+			this.init();
 	}
 
 	public float getWidth() {

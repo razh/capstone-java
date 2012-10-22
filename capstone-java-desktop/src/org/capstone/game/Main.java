@@ -10,6 +10,7 @@ public class Main {
 		cfg.useGL20 = true;
 		cfg.width = 640;
 		cfg.height = 480;
+		cfg.samples = 4;
 		
 		new LwjglApplication(new Game(), cfg);
 	}

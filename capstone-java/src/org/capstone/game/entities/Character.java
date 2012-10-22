@@ -1,8 +1,11 @@
 package org.capstone.game.entities;
 
+import org.capstone.game.graphics.CircleGraphicsComponent;
 import org.capstone.game.graphics.GraphicsComponent;
+import org.capstone.game.physics.CirclePhysicsComponent;
 import org.capstone.game.physics.PhysicsComponent;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 
 public class Character {
@@ -11,8 +14,9 @@ public class Character {
 	
 	private int team = 0;
 	
-	public Character() {
-		
+	public Character(float x, float y, Color color, float radius) {
+		this.graphics = new CircleGraphicsComponent(0, 0, color, radius);
+		this.physics  = new CirclePhysicsComponent(x, y, radius);
 	}
 	
 	public void update(double elapsedTime) {

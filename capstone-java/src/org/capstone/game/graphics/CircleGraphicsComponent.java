@@ -15,6 +15,9 @@ public class CircleGraphicsComponent extends GraphicsComponent {
 		super(x, y, color);
 
 		this.setRadius(radius);
+		
+		if (this.mesh == null)
+			this.init();
 	}
 
 	public float getRadius() {
@@ -75,7 +78,7 @@ public class CircleGraphicsComponent extends GraphicsComponent {
 
 	@Override
 	public void init() {
-		this.init(16);
+		this.init(32);
 	}
 
 	@Override

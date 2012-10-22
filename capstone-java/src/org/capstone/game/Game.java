@@ -2,6 +2,7 @@ package org.capstone.game;
 
 import org.capstone.game.graphics.CircleGraphicsComponent;
 import org.capstone.game.graphics.RectGraphicsComponent;
+import org.capstone.game.entities.Character;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
@@ -27,6 +28,7 @@ public class Game implements ApplicationListener {
 	// private Sprite sprite;
 	private float width;
 	private float height;
+	private State state;
 	private RectGraphicsComponent rect;
 	private CircleGraphicsComponent circle;
 
@@ -38,16 +40,10 @@ public class Game implements ApplicationListener {
 		"\n" +
 		"void main()\n" +
 		"{\n" +
-		// "  gl_Position = projection * vec4(a_position.xy, 0.0, 1.0);\n" +
-		// "  vec2 position = vec2(a_position.x, a_position.y);\n" +
-		// "  vec2 position = vec2(a_position.x, a_position.y);\n" +
 		"  vec2 position = a_position;\n" +
 		"  position.x = position.x * scale.x + translate.x;\n" +
 		"  position.y = position.y * scale.y + translate.y;\n" +
 		"  gl_Position = projection * vec4(position.xy, 0.0, 1.0);\n" +
-		// "  gl_Position = projection * vec4(a_position.x * scale.x + translate.x, a_position.y * scale.y + translate.y, 0.0, 1.0);\n" +
-		// "  gl_Position = position;\n" +
-		// "  gl_Position = vec4(position.xy, 0.0, position.w);" +
 		"}";
 
 	private String fragmentShader =
@@ -73,7 +69,7 @@ public class Game implements ApplicationListener {
 
 		camera = new OrthographicCamera(1.0f, this.height / this.width);
 		// camera.setToOrtho(false);
-		camera.zoom = -this.width;
+		camera.zoom = this.width;
 		camera.update();
 		// camera = new OrthographicCamera(this.width, this.height);
 
@@ -95,8 +91,9 @@ public class Game implements ApplicationListener {
 		System.out.println(shaderProgram.isCompiled());
 		// rect = new RectGraphicsComponent(0, 0, new Color(1.0f, 0.0f, 0.0f, 1.0f), 10, 30);
 		// rect.init(2,4);
-		circle = new CircleGraphicsComponent(0, 0, new Color(1.0f, 0.0f, 0.0f, 1.0f), 10);
-		circle.init();
+		// circle = new CircleGraphicsComponent(0, 0, new Color(1.0f, 0.0f, 0.0f, 1.0f), 10);
+		state = new State();
+		state.addCharacter(new Character(100.0f, 0.0f, new Color(1.0f, 0.0f, 0.0f, 1.0f), 10.0f));
 	}
 
 	@Override
@@ -116,7 +113,8 @@ public class Game implements ApplicationListener {
 		shaderProgram.begin();
 		shaderProgram.setUniformMatrix("projection", camera.combined);
 		// rect.render(shaderProgram);
-		circle.render(shaderProgram);
+		state.getCharacters().get(0).render(shaderProgram);
+		// circle.render(shaderProgram);
 		shaderProgram.end();
 
 		// batch.setProjectionMatrix(camera.combined);
@@ -127,30 +125,30 @@ public class Game implements ApplicationListener {
 
 	private void handleInput() {
 		if (Gdx.input.isKeyPressed(Input.Keys.W)) {
-			camera.translate(0.0f, 0.01f);
+			camera.translate(0.0f, 0.1f);
 			camera.update();
 		}
 		if (Gdx.input.isKeyPressed(Input.Keys.A)) {
-			camera.translate(-0.01f, 0.0f);
+			camera.translate(-0.1f, 0.0f);
 			camera.update();
 		}
 		if (Gdx.input.isKeyPressed(Input.Keys.D)) {
-			camera.translate(0.01f, 0.0f);
+			camera.translate(0.1f, 0.0f);
 			camera.update();
 		}
 		if (Gdx.input.isKeyPressed(Input.Keys.S)) {
-			camera.translate(0.0f, -0.01f);
+			camera.translate(0.0f, -0.1f);
 			camera.update();
 		}
 		if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
 			System.out.println( camera.combined.toString() );
 		}
 		if (Gdx.input.isKeyPressed(Input.Keys.M)) {
-			camera.zoom += 0.01;
+			camera.zoom += 1.0f;
 			camera.update();
 		}
 		if (Gdx.input.isKeyPressed(Input.Keys.N)) {
-			camera.zoom -= 0.01;
+			camera.zoom -= 1.0f;
 			camera.update();
 		}
 	}
