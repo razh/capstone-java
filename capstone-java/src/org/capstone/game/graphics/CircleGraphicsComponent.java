@@ -15,7 +15,7 @@ public class CircleGraphicsComponent extends GraphicsComponent {
 		super(x, y, color);
 
 		this.setRadius(radius);
-		
+
 		if (this.mesh == null)
 			this.init();
 	}
@@ -59,18 +59,6 @@ public class CircleGraphicsComponent extends GraphicsComponent {
 
 		// Close triangle fan.
 		indices[idxIndex++] = 1;
-
-		// int i = 0;
-		// int vcount = 0;
-		// while (i < numVertices) {
-		// 	System.out.println( vcount++ + ": (" + vertices[i++] + ", " + vertices[i++] + ")" );
-		// }
-		// i = 0;
-		// while (i < numIndices) {
-		// 	System.out.print( indices[i++] + ", " );
-		// }
-		// System.out.println();
-		// System.out.println("nv:" + numVertices);
 
 		mesh.setVertices(vertices);
 		mesh.setIndices(indices);

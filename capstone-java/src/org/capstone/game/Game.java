@@ -22,15 +22,10 @@ import com.badlogic.gdx.math.Vector3;
 
 public class Game implements ApplicationListener {
 	private OrthographicCamera camera;
-	// private PerspectiveCamera camera;
-	// private SpriteBatch batch;
-	// private Texture texture;
-	// private Sprite sprite;
+
 	private float width;
 	private float height;
 	private State state;
-	private RectGraphicsComponent rect;
-	private CircleGraphicsComponent circle;
 
 	private String vertexShader =
 		"uniform mat4 projection;\n" +
@@ -61,37 +56,20 @@ public class Game implements ApplicationListener {
 
 	@Override
 	public void create() {
-		// float w = Gdx.graphics.getWidth();
-		// float h = Gdx.graphics.getHeight();
-
 		this.width  = Gdx.graphics.getWidth();
 		this.height = Gdx.graphics.getHeight();
 
 		camera = new OrthographicCamera(1.0f, this.height / this.width);
-		// camera.setToOrtho(false);
 		camera.zoom = this.width;
 		camera.update();
-		// camera = new OrthographicCamera(this.width, this.height);
 
 		System.out.println( camera.combined.toString() );
-		// batch = new SpriteBatch();
 
-		// texture = new Texture(Gdx.files.internal("data/libgdx.png"));
-		// texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
-
-		// TextureRegion region = new TextureRegion(texture, 0, 0, 512, 275);
-
-		// sprite = new Sprite(region);
-		// sprite.setSize(0.9f, 0.9f * sprite.getHeight() / sprite.getWidth());
-		// sprite.setOrigin(sprite.getWidth()/2, sprite.getHeight()/2);
-		// sprite.setPosition(-sprite.getWidth()/2, -sprite.getHeight()/2);
 		System.out.println(vertexShader);
 		System.out.println(fragmentShader);
 		shaderProgram = new ShaderProgram(vertexShader, fragmentShader);
 		System.out.println(shaderProgram.isCompiled());
-		// rect = new RectGraphicsComponent(0, 0, new Color(1.0f, 0.0f, 0.0f, 1.0f), 10, 30);
-		// rect.init(2,4);
-		// circle = new CircleGraphicsComponent(0, 0, new Color(1.0f, 0.0f, 0.0f, 1.0f), 10);
+
 		state = new State();
 		state.addCharacter(new Character(100.0f, 0.0f, new Color(1.0f, 0.0f, 0.0f, 1.0f), 10.0f));
 	}
@@ -99,8 +77,6 @@ public class Game implements ApplicationListener {
 	@Override
 	public void dispose() {
 		shaderProgram.dispose();
-		// batch.dispose();
-		// texture.dispose();
 	}
 
 	@Override
@@ -112,15 +88,8 @@ public class Game implements ApplicationListener {
 
 		shaderProgram.begin();
 		shaderProgram.setUniformMatrix("projection", camera.combined);
-		// rect.render(shaderProgram);
 		state.getCharacters().get(0).render(shaderProgram);
-		// circle.render(shaderProgram);
 		shaderProgram.end();
-
-		// batch.setProjectionMatrix(camera.combined);
-		// batch.begin();
-		// sprite.draw(batch);
-		// batch.end();
 	}
 
 	private void handleInput() {
