@@ -12,7 +12,7 @@ public class RectPhysicsComponent extends PhysicsComponent {
 	}
 
 	@Override
-	public void update(double elapsedTime) {
+	public void update(long elapsedTime) {
 		super.update(elapsedTime);
 	}
 }

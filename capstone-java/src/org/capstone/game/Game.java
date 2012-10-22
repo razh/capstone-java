@@ -70,8 +70,9 @@ public class Game implements ApplicationListener {
 		shaderProgram = new ShaderProgram(vertexShader, fragmentShader);
 		System.out.println(shaderProgram.isCompiled());
 
-		state = new State();
+		state = new State(this.width, this.height);
 		state.addCharacter(new Character(100.0f, 0.0f, new Color(1.0f, 0.0f, 0.0f, 1.0f), 10.0f));
+		state.getCharacters().get(0).physics.setVelocity(0.25f / 1E6f, 0.25f / 1E6f);
 	}
 
 	@Override
@@ -82,6 +83,7 @@ public class Game implements ApplicationListener {
 	@Override
 	public void render() {
 		handleInput();
+		state.update();
 		Gdx.gl.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
@@ -110,7 +112,8 @@ public class Game implements ApplicationListener {
 			camera.update();
 		}
 		if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
-			System.out.println( camera.combined.toString() );
+			// System.out.println( camera.combined.toString() );
+			System.out.println( state.getCharacters().get(0).physics.getPosition().toString());
 		}
 		if (Gdx.input.isKeyPressed(Input.Keys.M)) {
 			camera.zoom += 1.0f;

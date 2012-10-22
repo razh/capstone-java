@@ -3,7 +3,7 @@ package org.capstone.game;
 import com.badlogic.gdx.math.Vector2;
 
 public class Entity {
-	private Vector2 position = new Vector2();
+	protected Vector2 position = new Vector2();
 
 	public Entity(float x, float y) {
 		this.setX(x);
