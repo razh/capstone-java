@@ -2,6 +2,8 @@ package org.capstone.game;
 
 import org.capstone.game.entities.Character;
 
+import com.badlogic.gdx.utils.TimeUtils;
+
 import java.util.ArrayList;
 
 public class State {
@@ -34,7 +36,7 @@ public class State {
 	}
 
 	public void update() {
-		this.currTime = System.nanoTime();
+		this.currTime = TimeUtils.millis();
 		long elapsedTime = this.currTime - this.prevTime;
 		this.prevTime = this.currTime;
 

@@ -48,6 +48,7 @@ public class Game implements ApplicationListener {
 	public void create() {
 		this.width  = Gdx.graphics.getWidth();
 		this.height = Gdx.graphics.getHeight();
+		Gdx.graphics.setVSync(true);
 
 		camera = new OrthographicCamera(1.0f, this.height / this.width);
 		camera.zoom = this.width;
@@ -59,11 +60,11 @@ public class Game implements ApplicationListener {
 		System.out.println(vertexShader);
 		System.out.println(fragmentShader);
 		shaderProgram = new ShaderProgram(vertexShader, fragmentShader);
-		System.out.println("Compiled: " + shaderProgram.isCompiled() + "--------------------------");
+		System.out.println("Compiled: " + shaderProgram.isCompiled() + "---------");
 
 		state = new State(this.width, this.height);
-		state.addCharacter(new Character(100.0f, 0.0f, new Color(1.0f, 0.0f, 0.0f, 1.0f), 50.0f));
-		state.getCharacters().get(0).physics.setVelocity(0.25f / 1E6f, 0.25f / 1E6f);
+		state.addCharacter(new Character(100.0f, 0.0f, new Color(0.173f, 0.204f, 0.220f, 1.0f), 50.0f));
+		state.getCharacters().get(0).physics.setVelocity(0.25f, 0.25f);
 	}
 
 	@Override
@@ -75,9 +76,9 @@ public class Game implements ApplicationListener {
 	public void render() {
 		handleInput();
 		state.update();
-		Gdx.gl.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+		state.getCharacters().get(0).physics.setPosition(state.getCharacters().get(0).physics.getPosition().add(Gdx.input.getDeltaX(), -Gdx.input.getDeltaY()));
+		Gdx.gl.glClearColor(0.5723f, 0.686f, 0.624f, 1.0f);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
 
 		shaderProgram.begin();
 		shaderProgram.setUniformMatrix("projection", camera.combined);
