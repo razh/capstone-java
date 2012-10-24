@@ -14,14 +14,14 @@ public class CircleGraphicsComponent extends GraphicsComponent {
 	public CircleGraphicsComponent(float x, float y, Color color, float radius) {
 		super(x, y, color);
 
-		this.setRadius(radius);
+		setRadius(radius);
 
-		if (this.mesh == null)
-			this.init();
+		if (mesh == null)
+			init();
 	}
 
 	public float getRadius() {
-		return this.radius;
+		return radius;
 	}
 
 	public void setRadius(float radius) {
@@ -31,10 +31,10 @@ public class CircleGraphicsComponent extends GraphicsComponent {
 	public void init(int subdivisions) {
 		int numVertices = (subdivisions + 1) * 2;
 		int numIndices  = subdivisions + 2; // Include center and one rotation.
-		this.mesh = new Mesh(Mesh.VertexDataType.VertexBufferObject,
-		                     true, numVertices, numIndices,
-		                     new VertexAttribute(Usage.Position, 2,
-		                                         ShaderProgram.POSITION_ATTRIBUTE));
+		mesh = new Mesh(Mesh.VertexDataType.VertexBufferObject,
+		                true, numVertices, numIndices,
+		                new VertexAttribute(Usage.Position, 2,
+		                                    ShaderProgram.POSITION_ATTRIBUTE));
 
 		float subdivAngle = (float) (Math.PI * 2 / subdivisions);
 
@@ -66,13 +66,13 @@ public class CircleGraphicsComponent extends GraphicsComponent {
 
 	@Override
 	public void init() {
-		this.init(32);
+		init(32);
 	}
 
 	@Override
 	public void render(ShaderProgram shaderProgram) {
-		shaderProgram.setUniformf("scale", this.getRadius(), this.getRadius());
-		shaderProgram.setUniformf("v_color", this.color);
-		this.mesh.render(shaderProgram, GL20.GL_TRIANGLE_FAN);
+		shaderProgram.setUniformf("scale", getRadius(), getRadius());
+		shaderProgram.setUniformf("v_color", getColor());
+		mesh.render(shaderProgram, GL20.GL_TRIANGLE_FAN);
 	}
 }

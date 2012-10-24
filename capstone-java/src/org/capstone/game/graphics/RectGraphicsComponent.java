@@ -16,15 +16,15 @@ public class RectGraphicsComponent extends GraphicsComponent {
 	                             float width, float height) {
 		super(x, y, color);
 
-		this.setWidth(width);
-		this.setHeight(height);
+		setWidth(width);
+		setHeight(height);
 
-		if (this.mesh == null)
-			this.init();
+		if (mesh == null)
+			init();
 	}
 
 	public float getWidth() {
-		return this.width;
+		return width;
 	}
 
 	public void setWidth(float width) {
@@ -32,7 +32,7 @@ public class RectGraphicsComponent extends GraphicsComponent {
 	}
 
 	public float getHeight() {
-		return this.height;
+		return height;
 	}
 
 	public void setHeight(float height) {
@@ -44,10 +44,10 @@ public class RectGraphicsComponent extends GraphicsComponent {
 		int numVertices = (subdivsX + 1) * (subdivsY + 1) * 2;
 		int numIndices  = (subdivsX + 1) * (subdivsY + 1) * 2;
 		// System.out.println("numIdx:" + numIndices);
-		this.mesh = new Mesh(Mesh.VertexDataType.VertexBufferObject,
-		                     true, numVertices, numIndices,
-		                     new VertexAttribute(Usage.Position, 2,
-		                                         ShaderProgram.POSITION_ATTRIBUTE));
+		mesh = new Mesh(Mesh.VertexDataType.VertexBufferObject,
+		                true, numVertices, numIndices,
+		                new VertexAttribute(Usage.Position, 2,
+		                                    ShaderProgram.POSITION_ATTRIBUTE));
 
 		// Range of -1.0f to 1.0f.
 		float subdivWidth  = 2.0f / subdivsX;
@@ -83,13 +83,13 @@ public class RectGraphicsComponent extends GraphicsComponent {
 
 	@Override
 	public void init() {
-		this.init(1, 1);
+		init(1, 1);
 	}
 
 	@Override
 	public void render(ShaderProgram shaderProgram) {
-		shaderProgram.setUniformf("scale", this.getWidth(), this.getHeight());
-		shaderProgram.setUniformf("v_color", this.color);
-		this.mesh.render(shaderProgram, GL20.GL_TRIANGLE_STRIP);
+		shaderProgram.setUniformf("scale", getWidth(), getHeight());
+		shaderProgram.setUniformf("v_color", color);
+		mesh.render(shaderProgram, GL20.GL_TRIANGLE_STRIP);
 	}
 }

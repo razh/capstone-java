@@ -15,21 +15,21 @@ public class Character {
 	private int team = 0;
 
 	public Character(float x, float y, Color color, float radius) {
-		this.graphics = new CircleGraphicsComponent(0, 0, color, radius);
-		this.physics  = new CirclePhysicsComponent(x, y, radius);
+		graphics = new CircleGraphicsComponent(0, 0, color, radius);
+		physics  = new CirclePhysicsComponent(x, y, radius);
 	}
 
 	public void update(long elapsedTime) {
-		this.physics.update(elapsedTime);
+		physics.update(elapsedTime);
 	}
 
 	public void render(ShaderProgram shaderProgram) {
-		shaderProgram.setUniformf("translate", this.physics.getPosition());
-		this.graphics.render(shaderProgram);
+		shaderProgram.setUniformf("translate", physics.getPosition());
+		graphics.render(shaderProgram);
 	}
 
 	public int getTeam() {
-		return this.team;
+		return team;
 	}
 
 	public void setTeam(int team) {

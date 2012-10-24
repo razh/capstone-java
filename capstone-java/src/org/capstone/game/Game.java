@@ -46,12 +46,12 @@ public class Game implements ApplicationListener {
 
 	@Override
 	public void create() {
-		this.width  = Gdx.graphics.getWidth();
-		this.height = Gdx.graphics.getHeight();
+		width  = Gdx.graphics.getWidth();
+		height = Gdx.graphics.getHeight();
 		Gdx.graphics.setVSync(true);
 
-		camera = new OrthographicCamera(1.0f, this.height / this.width);
-		camera.zoom = this.width;
+		camera = new OrthographicCamera(1.0f, height / width);
+		camera.zoom = width;
 		camera.update();
 
 		System.out.println( camera.combined.toString() );
@@ -62,7 +62,7 @@ public class Game implements ApplicationListener {
 		shaderProgram = new ShaderProgram(vertexShader, fragmentShader);
 		System.out.println("Compiled: " + shaderProgram.isCompiled() + "---------");
 
-		state = new State(this.width, this.height);
+		state = new State(width, height);
 		state.addCharacter(new Character(100.0f, 0.0f, new Color(0.173f, 0.204f, 0.220f, 1.0f), 50.0f));
 		state.getCharacters().get(0).physics.setVelocity(0.25f, 0.25f);
 	}

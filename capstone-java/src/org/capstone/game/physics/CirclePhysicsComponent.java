@@ -8,33 +8,33 @@ public class CirclePhysicsComponent extends PhysicsComponent {
 	public CirclePhysicsComponent(float x, float y, float radius) {
 		super(x, y);
 
-		this.setRadius(radius);
+		setRadius(radius);
 	}
 
 	@Override
 	public void update(long elapsedTime) {
 		super.update(elapsedTime);
-		
-		if (-State.getWidth() / 2 > this.getX() - this.getRadius()) {
-			this.setX(this.getRadius() - State.getWidth() / 2);
-			this.velocity.x = -this.velocity.x;
+
+		if (-State.getWidth() / 2 > getX() - getRadius()) {
+			setX(getRadius() - State.getWidth() / 2);
+			velocity.x = -velocity.x;
 		}
-		if (this.getX() + this.getRadius() > State.getWidth() / 2) {
-			this.setX(State.getWidth() / 2 - this.getRadius());
-			this.velocity.x = -this.velocity.x;
+		if (getX() + getRadius() > State.getWidth() / 2) {
+			setX(State.getWidth() / 2 - getRadius());
+			velocity.x = -velocity.x;
 		}
-		if (-State.getHeight() / 2 > this.getY() - this.getRadius()) {
-			this.setY(this.getRadius() - State.getHeight() / 2);
-			this.velocity.y = -this.velocity.y;
+		if (-State.getHeight() / 2 > getY() - getRadius()) {
+			setY(getRadius() - State.getHeight() / 2);
+			velocity.y = -velocity.y;
 		}
-		if (this.getY() + this.getRadius() > State.getHeight() / 2) {
-			this.setY(State.getHeight() / 2 - this.getRadius());
-			this.velocity.y = -this.velocity.y;
+		if (getY() + getRadius() > State.getHeight() / 2) {
+			setY(State.getHeight() / 2 - getRadius());
+			velocity.y = -velocity.y;
 		}
 	}
 
 	public float getRadius() {
-		return this.radius;
+		return radius;
 	}
 
 	public void setRadius(float radius) {

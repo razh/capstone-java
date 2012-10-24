@@ -9,14 +9,14 @@ import java.util.ArrayList;
 public class State {
 	private long prevTime;
 	private long currTime;
-	
+
 	private static float width;
 	private static float height;
 
 	public State(float width, float height) {
-		this.prevTime = System.nanoTime();
-		this.currTime = prevTime;
-		
+		prevTime = System.nanoTime();
+		currTime = prevTime;
+
 		State.width  = width;
 		State.height = height;
 	}
@@ -24,11 +24,11 @@ public class State {
 	private ArrayList<Character> characters = new ArrayList<Character>();
 
 	public void addCharacter(Character character) {
-		this.characters.add(character);
+		characters.add(character);
 	}
 
 	public void removeCharacter(Character character) {
-		this.characters.remove(character);
+		characters.remove(character);
 	}
 
 	public ArrayList<Character> getCharacters() {
@@ -36,12 +36,12 @@ public class State {
 	}
 
 	public void update() {
-		this.currTime = TimeUtils.millis();
-		long elapsedTime = this.currTime - this.prevTime;
-		this.prevTime = this.currTime;
+		currTime = TimeUtils.millis();
+		long elapsedTime = currTime - prevTime;
+		prevTime = currTime;
 
-		for (int i = 0; i < this.characters.size(); i++) {
-			this.characters.get(i).update(elapsedTime);
+		for (int i = 0; i < characters.size(); i++) {
+			characters.get(i).update(elapsedTime);
 		}
 	}
 

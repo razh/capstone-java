@@ -12,8 +12,7 @@ public abstract class GraphicsComponent extends Entity {
 	public GraphicsComponent(float x, float y, Color color) {
 		super(x, y);
 
-		this.color = new Color();
-		this.setColor(color);
+		setColor(color);
 	}
 
 	public abstract void init();
@@ -21,42 +20,42 @@ public abstract class GraphicsComponent extends Entity {
 	public abstract void render(ShaderProgram shaderProgram);
 
 	public Color getColor() {
-		return this.color;
+		return color;
 	}
 
 	public void setColor(Color color) {
-		this.color.set(color);
+		this.color = color;
 	}
 
 	public float getRed() {
-		return this.color.r;
+		return color.r;
 	}
 
 	public void setRed(float r) {
-		this.color.r = r;
+		color.r = r;
 	}
 
 	public float getGreen() {
-		return this.color.g;
+		return color.g;
 	}
 
 	public void setGreen(float g) {
-		this.color.g = g;
+		color.g = g;
 	}
 
 	public float getBlue() {
-		return this.color.b;
+		return color.b;
 	}
 
 	public void setBlue(float b) {
-		this.color.b = b;
+		color.b = b;
 	}
 
 	public float getAlpha() {
-		return this.color.a;
+		return color.a;
 	}
 
 	public void setAlpha(float a) {
-		this.color.a = a;
+		color.a = a;
 	}
 }
