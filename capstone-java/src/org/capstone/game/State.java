@@ -12,13 +12,15 @@ public class State {
 
 	private static float width;
 	private static float height;
+	
+	private MeshStage stage;
 
 	public State(float width, float height) {
 		prevTime = System.nanoTime();
 		currTime = prevTime;
 
-		State.width  = width;
-		State.height = height;
+		setWidth(width);
+		setHeight(height);
 	}
 
 	private ArrayList<Character> characters = new ArrayList<Character>();

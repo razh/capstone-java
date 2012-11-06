@@ -1,5 +1,6 @@
 package org.capstone.game;
 
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Mesh;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
@@ -10,13 +11,12 @@ public class MeshActor extends Actor {
 	protected ShaderProgram shaderProgram;
 
 	public MeshActor() {
-		
 	}
 	
 	@Override
 	public void draw(SpriteBatch batch, float parentAlpha) {
 		if (shaderProgram != null) {
-			
+			draw(parentAlpha);
 		}
 	}
 	
@@ -27,12 +27,14 @@ public class MeshActor extends Actor {
 	}
 	
 	public void draw(float parentAlpha) {
-		
+		shaderProgram.setUniformf("scale", this.width, this.height);
+		shaderProgram.setUniformf("v_color", this.color);
+		mesh.render(shaderProgram, GL20.GL_TRIANGLE_FAN);
 	}
 
 	@Override
 	public Actor hit(float x, float y) {
-		return this;
+		return null;
 	}
 
 }
