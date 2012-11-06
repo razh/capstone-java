@@ -4,8 +4,8 @@ import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
 public class MeshStage extends Stage {
-	private MeshGroup root;
-	private ShaderProgram shaderProgram;
+	protected MeshGroup root;
+	protected ShaderProgram shaderProgram;
 
 	public MeshStage(float width, float height, boolean stretch) {
 		super(width, height, stretch);
