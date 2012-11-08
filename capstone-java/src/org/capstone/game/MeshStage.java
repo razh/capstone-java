@@ -17,6 +17,7 @@ public class MeshStage extends Stage {
 
 		shaderProgram.begin();
 		shaderProgram.setUniformMatrix("projection", camera.combined);
+		root.draw(shaderProgram, 1.0f);
 		shaderProgram.end();
 	}
 }

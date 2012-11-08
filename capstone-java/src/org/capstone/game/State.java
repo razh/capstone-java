@@ -12,10 +12,12 @@ public class State {
 
 	private static float width;
 	private static float height;
-	
+
 	private MeshStage stage;
 
 	public State(float width, float height) {
+		stage = new MeshStage(width, height, true);
+		
 		prevTime = System.nanoTime();
 		currTime = prevTime;
 
@@ -42,9 +44,7 @@ public class State {
 		long elapsedTime = currTime - prevTime;
 		prevTime = currTime;
 
-		for (int i = 0; i < characters.size(); i++) {
-			characters.get(i).update(elapsedTime);
-		}
+		stage.act(elapsedTime);
 	}
 
 	public static float getWidth() {
@@ -61,5 +61,9 @@ public class State {
 
 	public static void setHeight(float h) {
 		height = h;
+	}
+
+	public MeshStage getStage() {
+		return stage;
 	}
 }

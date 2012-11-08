@@ -63,8 +63,8 @@ public class Game implements ApplicationListener {
 		System.out.println("Compiled: " + shaderProgram.isCompiled() + "---------");
 
 		state = new State(width, height);
-		state.addCharacter(new Character(100.0f, 0.0f, new Color(0.173f, 0.204f, 0.220f, 1.0f), 50.0f));
-		state.getCharacters().get(0).physics.setVelocity(0.25f, 0.25f);
+		// state.getStage().addActor(new Character(100.0f, 0.0f, new Color(0.173f, 0.204f, 0.220f, 1.0f), 50.0f));
+		// state.getStage().getActor(0).setVelocity(0.25f, 0.25f);
 	}
 
 	@Override
@@ -76,13 +76,14 @@ public class Game implements ApplicationListener {
 	public void render() {
 		handleInput();
 		state.update();
-		state.getCharacters().get(0).physics.setPosition(state.getCharacters().get(0).physics.getPosition().add(Gdx.input.getDeltaX(), -Gdx.input.getDeltaY()));
+		// state.getCharacters().get(0).physics.setPosition(state.getCharacters().get(0).physics.getPosition().add(Gdx.input.getDeltaX(), -Gdx.input.getDeltaY()));
 		Gdx.gl.glClearColor(0.5723f, 0.686f, 0.624f, 1.0f);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 		shaderProgram.begin();
 		shaderProgram.setUniformMatrix("projection", camera.combined);
-		state.getCharacters().get(0).render(shaderProgram);
+		state.getStage().draw();
+		// state.getCharacters().get(0).render(shaderProgram);
 		shaderProgram.end();
 	}
 

@@ -1,46 +1,25 @@
-package org.capstone.game.graphics;
+package org.capstone.game;
 
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Mesh;
 import com.badlogic.gdx.graphics.VertexAttribute;
 import com.badlogic.gdx.graphics.VertexAttributes.Usage;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 
-public class RectGraphicsComponent extends GraphicsComponent {
-	private static Mesh mesh;
-	private float width;
-	private float height;
+public class RectMeshActor extends MeshActor {
+	protected static Mesh mesh;
 
-	public RectGraphicsComponent(float x, float y, Color color,
-	                             float width, float height) {
-		super(x, y, color);
-
-		setWidth(width);
-		setHeight(height);
-
-		if (mesh == null)
-			init();
+	public RectMeshActor() {
+		if (mesh != null) {
+			initMesh();
+		}
 	}
 
-	public float getWidth() {
-		return width;
+	private void initMesh() {
+		initMesh(1, 1);
 	}
 
-	public void setWidth(float width) {
-		this.width = width;
-	}
-
-	public float getHeight() {
-		return height;
-	}
-
-	public void setHeight(float height) {
-		this.height = height;
-	}
-
-
-	public void init(int subdivsX, int subdivsY) {
+	private void initMesh(int subdivsX, int subdivsY) {
 		int numVertices = (subdivsX + 1) * (subdivsY + 1) * 2;
 		int numIndices  = (subdivsX + 1) * (subdivsY + 1) * 2;
 		// System.out.println("numIdx:" + numIndices);
@@ -82,14 +61,12 @@ public class RectGraphicsComponent extends GraphicsComponent {
 	}
 
 	@Override
-	public void init() {
-		init(1, 1);
-	}
+	public Actor hit(float x, float y) {
+		if (this.x - width  / 2 < x && x < this.x + width  / 2 &&
+		    this.y - height / 2 < y && y < this.y + height / 2) {
+			return this;
+		}
 
-	@Override
-	public void render(ShaderProgram shaderProgram) {
-		shaderProgram.setUniformf("scale", getWidth(), getHeight());
-		shaderProgram.setUniformf("v_color", color);
-		mesh.render(shaderProgram, GL20.GL_TRIANGLE_FAN);
+		return null;
 	}
 }
