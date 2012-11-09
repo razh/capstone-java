@@ -41,7 +41,6 @@ public class MeshGroup extends Group {
 	}
 
 	protected void resetTransform() {
-
 	}
 
 	protected void drawChildren(float parentAlpha) {
@@ -66,5 +65,10 @@ public class MeshGroup extends Group {
 				// No transform for this group, offset children.
 			}
 		}
+	}
+	
+	
+	public void setStage(MeshStage stage) {
+		this.stage = stage;
 	}
 }

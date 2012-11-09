@@ -12,9 +12,6 @@ import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 
 public class Game implements ApplicationListener {
 	private OrthographicCamera camera;
-
-	private float width;
-	private float height;
 	private State state;
 
 	private String vertexShader =
@@ -46,15 +43,9 @@ public class Game implements ApplicationListener {
 
 	@Override
 	public void create() {
-		width  = Gdx.graphics.getWidth();
-		height = Gdx.graphics.getHeight();
+		float width  = Gdx.graphics.getWidth();
+		float height = Gdx.graphics.getHeight();
 		Gdx.graphics.setVSync(true);
-
-		camera = new OrthographicCamera(1.0f, height / width);
-		camera.zoom = width;
-		camera.update();
-
-		System.out.println( camera.combined.toString() );
 
 		System.out.println("GL20: " + Gdx.graphics.isGL20Available());
 		System.out.println(vertexShader);
@@ -63,6 +54,7 @@ public class Game implements ApplicationListener {
 		System.out.println("Compiled: " + shaderProgram.isCompiled() + "---------");
 
 		state = new State(width, height);
+		state.getStage().setShaderProgram(shaderProgram);
 		// state.getStage().addActor(new Character(100.0f, 0.0f, new Color(0.173f, 0.204f, 0.220f, 1.0f), 50.0f));
 		// state.getStage().getActor(0).setVelocity(0.25f, 0.25f);
 	}
@@ -80,48 +72,27 @@ public class Game implements ApplicationListener {
 		Gdx.gl.glClearColor(0.5723f, 0.686f, 0.624f, 1.0f);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-		shaderProgram.begin();
-		shaderProgram.setUniformMatrix("projection", camera.combined);
 		state.getStage().draw();
 		// state.getCharacters().get(0).render(shaderProgram);
-		shaderProgram.end();
 	}
 
 	private void handleInput() {
-		if (Gdx.input.isKeyPressed(Input.Keys.W)) {
-			camera.translate(0.0f, 0.1f);
-			camera.update();
-		}
-		if (Gdx.input.isKeyPressed(Input.Keys.A)) {
-			camera.translate(-0.1f, 0.0f);
-			camera.update();
-		}
-		if (Gdx.input.isKeyPressed(Input.Keys.D)) {
-			camera.translate(0.1f, 0.0f);
-			camera.update();
-		}
-		if (Gdx.input.isKeyPressed(Input.Keys.S)) {
-			camera.translate(0.0f, -0.1f);
-			camera.update();
-		}
+		if (Gdx.input.isKeyPressed(Input.Keys.W)) {}
+		if (Gdx.input.isKeyPressed(Input.Keys.A)) {}
+		if (Gdx.input.isKeyPressed(Input.Keys.D)) {}
+		if (Gdx.input.isKeyPressed(Input.Keys.S)) {}
 		if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
 			// System.out.println( camera.combined.toString() );
-			System.out.println( state.getCharacters().get(0).physics.getPosition().toString());
+//			System.out.println( state.getCharacters().get(0).physics.getPosition().toString());
 		}
-		if (Gdx.input.isKeyPressed(Input.Keys.M)) {
-			camera.zoom += 1.0f;
-			camera.update();
-		}
-		if (Gdx.input.isKeyPressed(Input.Keys.N)) {
-			camera.zoom -= 1.0f;
-			camera.update();
-		}
+		if (Gdx.input.isKeyPressed(Input.Keys.M)) {}
+		if (Gdx.input.isKeyPressed(Input.Keys.N)) {}
 	}
 
 	@Override
 	public void resize(int width, int height) {
-		this.width  = (float) width;
-		this.height = (float) height;
+		State.setWidth(width);
+		State.setHeight(height);
 	}
 
 	@Override

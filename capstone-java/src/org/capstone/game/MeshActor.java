@@ -22,7 +22,7 @@ public class MeshActor extends Actor {
 	
 	public void draw(ShaderProgram shaderProgram, float parentAlpha) {
 		this.shaderProgram = shaderProgram;
-		
+
 		draw(parentAlpha);
 	}
 	
