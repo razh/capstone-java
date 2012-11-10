@@ -1,12 +1,17 @@
 package org.capstone.game;
 
+import java.awt.event.InputEvent;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.Pool;
 
 public class MeshStage extends Stage {
 	protected MeshGroup root;
 	protected ShaderProgram shaderProgram;
+	protected MeshActor[] pointerOverActors = new MeshActor[20];
 	
 	public MeshStage() {
 		this(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
@@ -41,5 +46,14 @@ public class MeshStage extends Stage {
 		shaderProgram.setUniformMatrix("projection", camera.combined);
 		root.draw(shaderProgram, 1.0f);
 		shaderProgram.end();
+	}
+	
+	@Override
+	public void addActor(Actor actor) {
+		root.addActor(actor);
+	}
+	
+	public void act(float delta) {
+		root.act(delta);
 	}
 }

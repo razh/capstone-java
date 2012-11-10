@@ -10,6 +10,8 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 
+import com.badlogic.gdx.scenes.scene2d.actions.*;
+
 public class Game implements ApplicationListener {
 	private OrthographicCamera camera;
 	private State state;
@@ -53,8 +55,17 @@ public class Game implements ApplicationListener {
 		shaderProgram = new ShaderProgram(vertexShader, fragmentShader);
 		System.out.println("Compiled: " + shaderProgram.isCompiled() + "---------");
 
+		CircleMeshActor circle = new CircleMeshActor();
+		circle.width = 100;
+		circle.height = 100;
+		circle.x = 100;
+		circle.y = 20;
+		circle.setColor(new Color(0.173f, 0.204f, 0.220f, 1.0f));
+		// circle.action(MoveTo.$(100, -200, 2000));
+		
 		state = new State(width, height);
 		state.getStage().setShaderProgram(shaderProgram);
+		state.getStage().addActor(circle);
 		// state.getStage().addActor(new Character(100.0f, 0.0f, new Color(0.173f, 0.204f, 0.220f, 1.0f), 50.0f));
 		// state.getStage().getActor(0).setVelocity(0.25f, 0.25f);
 	}
@@ -77,6 +88,9 @@ public class Game implements ApplicationListener {
 	}
 
 	private void handleInput() {
+		state.getStage().root.getActors().get(0).x = Gdx.input.getX();
+		state.getStage().root.getActors().get(0).y = -Gdx.input.getY() + state.getHeight();
+		
 		if (Gdx.input.isKeyPressed(Input.Keys.W)) {}
 		if (Gdx.input.isKeyPressed(Input.Keys.A)) {}
 		if (Gdx.input.isKeyPressed(Input.Keys.D)) {}

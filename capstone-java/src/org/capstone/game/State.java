@@ -2,6 +2,7 @@ package org.capstone.game;
 
 import org.capstone.game.entities.Character;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.TimeUtils;
 
 import java.util.ArrayList;
@@ -25,26 +26,12 @@ public class State {
 		setHeight(height);
 	}
 
-	private ArrayList<Character> characters = new ArrayList<Character>();
-
-	public void addCharacter(Character character) {
-		characters.add(character);
-	}
-
-	public void removeCharacter(Character character) {
-		characters.remove(character);
-	}
-
-	public ArrayList<Character> getCharacters() {
-		return characters;
-	}
-
 	public void update() {
-		currTime = TimeUtils.millis();
-		long elapsedTime = currTime - prevTime;
-		prevTime = currTime;
+//		currTime = TimeUtils.millis();
+//		long elapsedTime = currTime - prevTime;
+//		prevTime = currTime;
 
-		stage.act(elapsedTime);
+		stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30.0f));
 	}
 
 	public static float getWidth() {

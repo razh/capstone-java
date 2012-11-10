@@ -1,5 +1,6 @@
 package org.capstone.game;
 
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Mesh;
 import com.badlogic.gdx.graphics.VertexAttribute;
 import com.badlogic.gdx.graphics.VertexAttributes.Usage;
@@ -10,7 +11,7 @@ public class CircleMeshActor extends MeshActor {
 	protected static Mesh mesh;
 
 	public CircleMeshActor() {
-		if (mesh != null) {
+		if (mesh == null) {
 			initMesh();
 		}
 	}
@@ -65,5 +66,25 @@ public class CircleMeshActor extends MeshActor {
 		}
 
 		return null;
+	}
+
+	protected Mesh getMesh() {
+		return mesh;
+	}
+
+	protected boolean hasMesh() {
+		return mesh != null;
+	}
+
+	@Override
+	public void draw(ShaderProgram shaderProgram, float parentAlpha) {
+		super.draw(shaderProgram, parentAlpha);
+		if (hasMesh())
+			getMesh().render(shaderProgram, GL20.GL_TRIANGLE_FAN);
+	}
+	
+	public void act(float delta) {
+		super.act(delta);
+		// System.out.println("I should be doing stuff");
 	}
 }

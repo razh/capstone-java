@@ -25,6 +25,8 @@ public class MeshGroup extends Group {
 
 	public void draw(ShaderProgram shaderProgram, float parentAlpha) {
 		this.shaderProgram = shaderProgram;
+		
+		draw(parentAlpha);
 	}
 
 	public void draw(float parentAlpha) {
@@ -32,7 +34,15 @@ public class MeshGroup extends Group {
 			return;
 		}
 
+		// Apply transform.
 		if (transform) {
+		}
+		
+		drawChildren(parentAlpha);
+		
+		// Reset transform.
+		if (transform) {
+			
 		}
 	}
 
@@ -45,30 +55,44 @@ public class MeshGroup extends Group {
 
 	protected void drawChildren(float parentAlpha) {
 		parentAlpha *= this.color.a;
-		List<Actor> children = this.children;
+//		MeshActor[] actors = (MeshActor[]) children.toArray();
 		Rectangle cullingArea = this.cullingArea;
-
-		if (cullingArea != null) {
-			// Draw only children inside culling area.
-			if (transform) {
-//				for (int i = 0;)
-
-			} else {
-				// No transform for this group, offset children.
-
-			}
-		} else {
-			// No culling, draw all children.
-			if (transform) {
-
-			} else {
-				// No transform for this group, offset children.
-			}
+		
+		for (int i = 0, n = children.size(); i < n; i++) {
+			MeshActor child = (MeshActor) children.get(i);
+		
+			if (!child.visible)
+				continue;
+			
+			child.draw(shaderProgram, parentAlpha);
 		}
+		
+//		if (cullingArea != null) {
+//			// Draw only children inside culling area.
+//			if (transform) {
+////				for (int i = 0;)
+//
+//			} else {
+//				// No transform for this group, offset children.
+//
+//			}
+//		} else {
+//			// No culling, draw all children.
+//			if (transform) {
+//
+//			} else {
+//				// No transform for this group, offset children.
+//			}
+//		}
 	}
 	
 	
 	public void setStage(MeshStage stage) {
 		this.stage = stage;
+	}
+	
+	public void addActor(Actor actor) {
+		super.addActor(actor);
+		System.out.println(children.size());
 	}
 }
