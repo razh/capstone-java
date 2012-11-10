@@ -9,7 +9,6 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 
 public class MeshActor extends Actor {
 	protected ShaderProgram shaderProgram;
-	protected Color color;
 
 	public MeshActor() {
 	}
@@ -28,21 +27,12 @@ public class MeshActor extends Actor {
 	}
 
 	public void draw(float parentAlpha) {
-		shaderProgram.setUniformf("translate", this.x, this.y);
-		shaderProgram.setUniformf("scale", this.width, this.height);
-		shaderProgram.setUniformf("v_color", this.color);
+		shaderProgram.setUniformf("translate", getX(), getY());
+		shaderProgram.setUniformf("scale", getWidth(), getHeight());
+		shaderProgram.setUniformf("v_color", getColor());
 	}
 
-	@Override
 	public Actor hit(float x, float y) {
 		return null;
-	}
-	
-	public void act(float delta) {
-		super.act(delta);
-	}
-
-	public void setColor(Color color) {
-		this.color = color;
 	}
 }

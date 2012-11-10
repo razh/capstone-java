@@ -8,6 +8,7 @@ import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.utils.SnapshotArray;
 
 public class MeshGroup extends Group {
 	protected final Matrix4 currTransform = new Matrix4();
@@ -15,6 +16,7 @@ public class MeshGroup extends Group {
 	protected boolean transform = true;
 	protected Rectangle cullingArea;
 	protected ShaderProgram shaderProgram;
+	private MeshStage stage;
 
 	@Override
 	public void draw(SpriteBatch batch, float parentAlpha) {
@@ -54,18 +56,20 @@ public class MeshGroup extends Group {
 	}
 
 	protected void drawChildren(float parentAlpha) {
-		parentAlpha *= this.color.a;
-//		MeshActor[] actors = (MeshActor[]) children.toArray();
+		parentAlpha *= getColor().a;
+		SnapshotArray<Actor> children = getChildren();
+		Actor[] actors = children.begin();
 		Rectangle cullingArea = this.cullingArea;
 		
-		for (int i = 0, n = children.size(); i < n; i++) {
-			MeshActor child = (MeshActor) children.get(i);
+		for (int i = 0, n = children.size; i < n; i++) {
+			MeshActor child = (MeshActor) actors[i];
 		
-			if (!child.visible)
+			if (!child.isVisible())
 				continue;
 			
 			child.draw(shaderProgram, parentAlpha);
 		}
+		children.end();
 		
 //		if (cullingArea != null) {
 //			// Draw only children inside culling area.
@@ -93,6 +97,6 @@ public class MeshGroup extends Group {
 	
 	public void addActor(Actor actor) {
 		super.addActor(actor);
-		System.out.println(children.size());
+		System.out.println(getChildren().size);
 	}
 }

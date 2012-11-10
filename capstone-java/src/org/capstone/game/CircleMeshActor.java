@@ -58,10 +58,10 @@ public class CircleMeshActor extends MeshActor {
 
 	@Override
 	public Actor hit(float x, float y) {
-		float dx = x - this.x;
-		float dy = y - this.y;
+		float dx = x - getX();
+		float dy = y - getY();
 
-		if (Math.sqrt(dx * dx + dy * dy) < width) {
+		if (Math.sqrt(dx * dx + dy * dy) < getWidth()) {
 			return this;
 		}
 

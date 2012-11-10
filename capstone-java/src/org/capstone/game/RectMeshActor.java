@@ -63,8 +63,8 @@ public class RectMeshActor extends MeshActor {
 
 	@Override
 	public Actor hit(float x, float y) {
-		if (this.x - width  / 2 < x && x < this.x + width  / 2 &&
-		    this.y - height / 2 < y && y < this.y + height / 2) {
+		if (getX() - getWidth()  / 2 < x && x < getX() + getWidth()  / 2 &&
+		    getY() - getHeight() / 2 < y && y < getY() + getHeight() / 2) {
 			return this;
 		}
 
