@@ -66,7 +66,7 @@ public class Game implements ApplicationListener {
 		  forever(
 		    sequence(
 		      parallel(
-		        color(new Color(0.8f, 0.204f, 0.220f, 1.0f), 0.05f, Interpolation.pow3),
+		        color(new Color(0.96f, 0.204f, 0.220f, 1.0f), 0.05f, Interpolation.pow3),
 		        sizeBy(15, 15, 0.05f, Interpolation.pow3)
 		      ),
 		      parallel(
