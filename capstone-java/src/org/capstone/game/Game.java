@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
+import com.badlogic.gdx.math.Interpolation;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 
@@ -55,19 +56,35 @@ public class Game implements ApplicationListener {
 		shaderProgram = new ShaderProgram(vertexShader, fragmentShader);
 		System.out.println("Compiled: " + shaderProgram.isCompiled() + "---------");
 
-		CircleMeshActor circle = new CircleMeshActor();
-		circle.setWidth(100);
-		circle.setHeight(100);
-		circle.setPosition(100, 20);
-		circle.setColor(new Color(0.173f, 0.204f, 0.220f, 1.0f));
-		circle.addAction(moveBy(100, 400, 3));
-		// circle.action(MoveTo.$(100, -200, 2000));
-		
+//		CircleMeshActor circle = new CircleMeshActor();
+//		circle.setWidth(20);
+//		circle.setHeight(20);
+//		circle.setPosition(100, 200);
+//		circle.setColor(new Color(0.173f, 0.204f, 0.220f, 1.0f));
+		Character circle = new Character(100, 200, new Color(0.173f, 0.204f, 0.220f, 1.0f), 20);
+		circle.addAction(
+		  forever(
+		    sequence(
+		      parallel(
+		        color(new Color(0.8f, 0.204f, 0.220f, 1.0f), 0.05f, Interpolation.pow3),
+		        sizeBy(15, 15, 0.05f, Interpolation.pow3)
+		      ),
+		      parallel(
+		        color(new Color(0.173f, 0.204f, 0.220f, 1.0f), 0.15f, Interpolation.linear),
+		        sizeBy(-15, -15, 0.15f, Interpolation.linear)
+		      )
+		    )
+		  )
+		);
+
 		state = new State(width, height);
 		state.getStage().setShaderProgram(shaderProgram);
 		state.getStage().addActor(circle);
 		// state.getStage().addActor(new Character(100.0f, 0.0f, new Color(0.173f, 0.204f, 0.220f, 1.0f), 50.0f));
 		// state.getStage().getActor(0).setVelocity(0.25f, 0.25f);
+		
+		// Invisible cursor.
+		Gdx.input.setCursorCatched(true);
 	}
 
 	@Override
@@ -79,7 +96,7 @@ public class Game implements ApplicationListener {
 	public void render() {
 		handleInput();
 		state.update();
-		
+
 		Gdx.gl.glClearColor(0.5723f, 0.686f, 0.624f, 1.0f);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
@@ -88,9 +105,9 @@ public class Game implements ApplicationListener {
 
 	private void handleInput() {
 		if (state.getStage().getRoot()!= null) {
-//			state.getStage().getRoot().getChildren().get(0).setPosition(Gdx.input.getX(), -Gdx.input.getY() + State.getHeight());
+			state.getStage().getRoot().getChildren().get(0).setPosition(Gdx.input.getX(), -Gdx.input.getY() + State.getHeight());
 		}
-		
+
 		if (Gdx.input.isKeyPressed(Input.Keys.W)) {}
 		if (Gdx.input.isKeyPressed(Input.Keys.A)) {}
 		if (Gdx.input.isKeyPressed(Input.Keys.D)) {}
