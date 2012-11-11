@@ -61,7 +61,7 @@ public class Game implements ApplicationListener {
 //		circle.setHeight(20);
 //		circle.setPosition(100, 200);
 //		circle.setColor(new Color(0.173f, 0.204f, 0.220f, 1.0f));
-		Character circle = new Character(100, 200, new Color(0.173f, 0.204f, 0.220f, 1.0f), 20);
+		Character circle = new Character(100, 200, new Color(0.173f, 0.204f, 0.220f, 1.0f), 30);
 		circle.addAction(
 		  forever(
 		    sequence(
@@ -84,7 +84,7 @@ public class Game implements ApplicationListener {
 		// state.getStage().getActor(0).setVelocity(0.25f, 0.25f);
 		
 		// Invisible cursor.
-		Gdx.input.setCursorCatched(true);
+		// Gdx.input.setCursorCatched(true);
 	}
 
 	@Override
