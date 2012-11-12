@@ -7,6 +7,10 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Pixmap.Format;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.Interpolation;
 
@@ -14,6 +18,9 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 
 public class Game implements ApplicationListener {
 	private State state;
+	private FrameBuffer frameBuffer;
+//	private SpriteBatch spriteBatch;
+	private TextureRegion fboRegion;
 
 	private String vertexShader =
 		"uniform mat4 projection;\n" +
@@ -41,6 +48,8 @@ public class Game implements ApplicationListener {
 		"}";
 
 	private ShaderProgram shaderProgram;
+	
+	private ShaderProgram fboShaderProgram;
 
 	@Override
 	public void create() {
@@ -52,6 +61,11 @@ public class Game implements ApplicationListener {
 		System.out.println(vertexShader);
 		System.out.println(fragmentShader);
 		shaderProgram = new ShaderProgram(vertexShader, fragmentShader);
+		frameBuffer = new FrameBuffer(Format.RGB565, 512, 512, true);
+//		spriteBatch = new SpriteBatch();
+		fboRegion = new TextureRegion(frameBuffer.getColorBufferTexture());
+		fboRegion.flip(false, true);
+		
 		System.out.println("Compiled: " + shaderProgram.isCompiled() + "---------");
 
 //		CircleMeshActor circle = new CircleMeshActor();
@@ -91,17 +105,29 @@ public class Game implements ApplicationListener {
 	@Override
 	public void dispose() {
 		shaderProgram.dispose();
+		frameBuffer.dispose();
 	}
 
 	@Override
 	public void render() {
 		handleInput();
 		state.update();
+		
+		frameBuffer.begin();
 
 		Gdx.gl.glClearColor(0.5723f, 0.686f, 0.624f, 1.0f);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 		state.getStage().draw();
+		
+		frameBuffer.end();
+		
+		fboRegion.getTexture().bind();
+		
+		
+//		spriteBatch.begin();
+//		spriteBatch.draw(fboRegion, 0, 0, State.getWidth(), State.getHeight());
+//		spriteBatch.end();
 	}
 
 	private void handleInput() {
