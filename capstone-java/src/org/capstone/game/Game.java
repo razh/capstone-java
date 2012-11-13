@@ -128,31 +128,75 @@ public class Game implements ApplicationListener {
 		"}\n";
 
 	private String batchFragmentShader =
-		"#ifdef GL_ES\n" +
-		"#define LOWP lowp\n" +
-		"precision mediump float;\n" +
-		"#else\n" +
-		"#define LOWP \n" +
-		"#endif\n" +
-		"varying LOWP vec4 v_color;\n" +
-		"varying vec2 v_texCoords;\n" +
-		"uniform float v;\n" +
+		// "#ifdef GL_ES\n" +
+		// "#define LOWP lowp\n" +
+		// "precision mediump float;\n" +
+		// "#else\n" +
+		// "#define LOWP \n" +
+		// "#endif\n" +
+		// "varying LOWP vec4 v_color;\n" +
+		// "varying vec2 v_texCoords;\n" +
+		// "uniform float v;\n" +
+		// "uniform sampler2D u_texture;\n" +
+		// // "uniform sampler2D u_texture2;\n" +
+		// "void main()\n" +
+		// "{\n" +
+		// "  vec4 sum = vec4(0.0);\n" +
+		// "  sum += texture2D(u_texture, vec2(v_texCoords.x, v_texCoords.y - 4.0 * v)) * 0.051;\n" +
+		// "  sum += texture2D(u_texture, vec2(v_texCoords.x, v_texCoords.y - 3.0 * v)) * 0.0918;\n" +
+		// "  sum += texture2D(u_texture, vec2(v_texCoords.x, v_texCoords.y - 2.0 * v)) * 0.12245;\n" +
+		// "  sum += texture2D(u_texture, vec2(v_texCoords.x, v_texCoords.y - 1.0 * v)) * 0.1531;\n" +
+		// "  sum += texture2D(u_texture, vec2(v_texCoords.x, v_texCoords.y)) * 0.1633;\n" +
+		// "  sum += texture2D(u_texture, vec2(v_texCoords.x, v_texCoords.y + 1.0 * v)) * 0.1531;\n" +
+		// "  sum += texture2D(u_texture, vec2(v_texCoords.x, v_texCoords.y + 2.0 * v)) * 0.12245;\n" +
+		// "  sum += texture2D(u_texture, vec2(v_texCoords.x, v_texCoords.y + 3.0 * v)) * 0.0918;\n" +
+		// "  sum += texture2D(u_texture, vec2(v_texCoords.x, v_texCoords.y + 4.0 * v)) * 0.051;\n" +
+		// // "  gl_FragColor = v_color * mix(sum, texture2D(u_texture2, v_texCoords), 0.2);\n" +
+		// // "  gl_FragColor = texture2D(u_texture, vec2(v_texCoords.x, v_texCoords.y));\n" +
+		// "  gl_FragColor = sum;\n" +
+		// "}";
 		"uniform sampler2D u_texture;\n" +
-		"uniform sampler2D u_texture2;\n" +
+		"uniform vec2 sampleOffset;\n" +
+		"varying vec2 v_texCoords;\n" +
+		"\n" +
+		"float weights[21];\n" +
+		"\n" +
 		"void main()\n" +
 		"{\n" +
-		"  vec4 sum = vec4(0.0);\n" +
-		"  sum += texture2D(u_texture, vec2(v_texCoords.x, v_texCoords.y - 4.0 * v)) * 0.051;\n" +
-		"  sum += texture2D(u_texture, vec2(v_texCoords.x, v_texCoords.y - 3.0 * v)) * 0.0918;\n" +
-		"  sum += texture2D(u_texture, vec2(v_texCoords.x, v_texCoords.y - 2.0 * v)) * 0.12245;\n" +
-		"  sum += texture2D(u_texture, vec2(v_texCoords.x, v_texCoords.y - 1.0 * v)) * 0.1531;\n" +
-		"  sum += texture2D(u_texture, vec2(v_texCoords.x, v_texCoords.y)) * 0.1633;\n" +
-		"  sum += texture2D(u_texture, vec2(v_texCoords.x, v_texCoords.y + 1.0 * v)) * 0.1531;\n" +
-		"  sum += texture2D(u_texture, vec2(v_texCoords.x, v_texCoords.y + 2.0 * v)) * 0.12245;\n" +
-		"  sum += texture2D(u_texture, vec2(v_texCoords.x, v_texCoords.y + 3.0 * v)) * 0.0918;\n" +
-		"  sum += texture2D(u_texture, vec2(v_texCoords.x, v_texCoords.y + 4.0 * v)) * 0.051;\n" +
-		"  gl_FragColor = v_color * mix(sum, texture2D(u_texture2, v_texCoords), 0.2);\n" +
-		"}";
+		"	weights[0] = 0.009167927656011385;\n" +
+		"	weights[1] = 0.014053461291849008;\n" +
+		"	weights[2] = 0.020595286319257878;\n" +
+		"	weights[3] = 0.028855245532226279;\n" +
+		"	weights[4] = 0.038650411513543079;\n" +
+		"	weights[5] = 0.049494378859311142;\n" +
+		"	weights[6] = 0.060594058578763078;\n" +
+		"	weights[7] = 0.070921288047096992;\n" +
+		"	weights[8] = 0.079358891804948081;\n" +
+		"	weights[9] = 0.084895951965930902;\n" +
+		"	weights[10] = 0.086826196862124602;\n" +
+		"	weights[11] = 0.084895951965930902;\n" +
+		"	weights[12] = 0.079358891804948081;\n" +
+		"	weights[13] = 0.070921288047096992;\n" +
+		"	weights[14] = 0.060594058578763092;\n" +
+		"	weights[15] = 0.049494378859311121;\n" +
+		"	weights[16] = 0.038650411513543079;\n" +
+		"	weights[17] = 0.028855245532226279;\n" +
+		"	weights[18] = 0.020595286319257885;\n" +
+		"	weights[19] = 0.014053461291849008;\n" +
+		"	weights[20] = 0.009167927656011385;\n" +
+		"\n" +
+		"\n" +
+		"	vec4 sum = vec4(0.0);\n" +
+		"	vec2 offset = vec2(0.0);\n" +
+		"	vec2 baseOffset = -10.0 * sampleOffset;\n" +
+		"\n" +
+		"	for( int s = 0; s < 21; ++s ) {\n" +
+		"		sum += texture2D(u_texture, v_texCoords.st + baseOffset + offset).rgba * weights[s];\n" +
+		"		offset += sampleOffset;\n" +
+		"	}\n" +
+		"\n" +
+		"	gl_FragColor = sum;\n" +
+		"}\n";
 
 	private ShaderProgram batchShader;
 
@@ -168,6 +212,9 @@ public class Game implements ApplicationListener {
 		System.out.println("---------");
 		System.out.println(vertBlurVertexShader);
 		System.out.println(vertBlurFragmentShader);
+		System.out.println("---------");
+		System.out.println(batchVertexShader);
+		System.out.println(batchFragmentShader);
 		shaderProgram = new ShaderProgram(vertexShader, fragmentShader);
 		verticalBlurShader = new ShaderProgram(vertBlurVertexShader, vertBlurFragmentShader);
 		batchShader = new ShaderProgram(batchVertexShader, batchFragmentShader);
@@ -175,7 +222,8 @@ public class Game implements ApplicationListener {
 
 		frameBuffer = new FrameBuffer(Format.RGBA4444, frameBufferSize, frameBufferSize, true);
 		fboRegion = new TextureRegion(frameBuffer.getColorBufferTexture());
-		fboRegion.getTexture().setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
+		// fboRegion.getTexture().setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
+		fboRegion.getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		fboRegion.flip(false, true);
 
 		frameBuffer2 = new FrameBuffer(Format.RGBA4444, frameBuffer2Size, frameBuffer2Size, true);
@@ -197,6 +245,7 @@ public class Game implements ApplicationListener {
 		// Invisible cursor.
 		// Gdx.input.setCursorCatched(true);
 
+		Gdx.gl.glEnable(GL20.GL_TEXTURE_2D);
 		Gdx.gl.glEnable(GL20.GL_BLEND);
 		Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 	}
@@ -214,16 +263,16 @@ public class Game implements ApplicationListener {
 
 		// FrameBuffer1
 //		Gdx.gl.glClearColor(0.5723f, 0.686f, 0.624f, 1.0f);
-		// frameBuffer.begin();
+		frameBuffer.begin();
 
-		Gdx.gl.glClearColor(0.5723f, 0.686f, 0.624f, 1.0f);
-		// Gdx.gl.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+//		Gdx.gl.glClearColor(0.5723f, 0.686f, 0.624f, 1.0f);
+		Gdx.gl.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-		// state.getStage().setShaderProgram(shaderProgram);
+		state.getStage().setShaderProgram(shaderProgram);
 		state.getStage().draw();
 
-		// frameBuffer.end();
+		frameBuffer.end();
 
 		// FrameBuffer2
 		// frameBuffer2.begin();
@@ -236,11 +285,11 @@ public class Game implements ApplicationListener {
 		// frameBuffer2.end();
 
 		//------ DON'T KNOW ABOUT THIS
-		// Gdx.gl.glEnable(GL20.GL_TEXTURE_2D);
+		// state.getStage().setShaderProgram(verticalBlurShader);
 		// fboRegion.getTexture().bind(0); // Binds it to texture 0.
 		// Gdx.gl.glClearColor(0.5723f, 0.686f, 0.624f, 1.0f);
 		// Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		// state.getStage().setShaderProgram(verticalBlurShader);
+
 		// verticalBlurShader.setUniformf("v", 1.0f / 512.0f);
 		// verticalBlurShader.setUniformi("fboTexture", 0);
 		// // Gdx.gl.glClearColor(0.5723f, 0.686f, 0.624f, 1.0f);
@@ -249,14 +298,25 @@ public class Game implements ApplicationListener {
 		//------ THIS WORKS
 		// fboRegion2.getTexture().bind(1);
 
-		// spriteBatch.begin();
+		frameBuffer2.begin();
+		spriteBatch.begin();
+		spriteBatch.setShader(batchShader);
+		// batchShader.setUniformi("u_texture2", 1);
+		batchShader.setUniformf("sampleOffset", 1 / frameBufferSize, 0.0f);
+		Gdx.gl.glClearColor(0.5723f, 0.686f, 0.624f, 1.0f);
+		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		spriteBatch.draw(fboRegion, 0, 0, State.getWidth(), State.getHeight());
+		spriteBatch.end();
+		frameBuffer2.end();
+
+		spriteBatch.begin();
 		// spriteBatch.setShader(batchShader);
 		// batchShader.setUniformi("u_texture2", 1);
-		// batchShader.setUniformf("v", 1 / frameBufferSize);
-		// Gdx.gl.glClearColor(0.5723f, 0.686f, 0.624f, 1.0f);
-		// Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		// spriteBatch.draw(fboRegion, 0, 0, State.getWidth(), State.getHeight());
-		// spriteBatch.end();
+		batchShader.setUniformf("sampleOffset", 0.0f, 1 / frameBuffer2Size);
+//		Gdx.gl.glClearColor(0.5723f, 0.686f, 0.624f, 1.0f);
+//		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		spriteBatch.draw(fboRegion2, 0, 0, State.getWidth(), State.getHeight());
+		spriteBatch.end();
 		fpsLogger.log();
 	}
 
