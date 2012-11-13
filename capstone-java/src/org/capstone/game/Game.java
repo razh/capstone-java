@@ -26,7 +26,6 @@ public class Game implements ApplicationListener {
 	private TextureRegion fboRegion;
 	private TextureRegion fboRegion2;
 	private int frameBufferSize = 512;
-	private int frameBuffer2Size = 512;
 	private FPSLogger fpsLogger = new FPSLogger();
 
 	private String vertexShader =
@@ -128,12 +127,12 @@ public class Game implements ApplicationListener {
 		"}\n";
 
 	private String batchFragmentShader =
-		// "#ifdef GL_ES\n" +
+		"#ifdef GL_ES\n" +
 		// "#define LOWP lowp\n" +
-		// "precision mediump float;\n" +
+		"precision mediump float;\n" +
 		// "#else\n" +
 		// "#define LOWP \n" +
-		// "#endif\n" +
+		"#endif\n" +
 		// "varying LOWP vec4 v_color;\n" +
 		// "varying vec2 v_texCoords;\n" +
 		// "uniform float v;\n" +
@@ -190,7 +189,7 @@ public class Game implements ApplicationListener {
 		"	vec2 offset = vec2(0.0);\n" +
 		"	vec2 baseOffset = -10.0 * sampleOffset;\n" +
 		"\n" +
-		"	for( int s = 0; s < 21; ++s ) {\n" +
+		"	for (int s = 0; s < 21; ++s) {\n" +
 		"		sum += texture2D(u_texture, v_texCoords.st + baseOffset + offset).rgba * weights[s];\n" +
 		"		offset += sampleOffset;\n" +
 		"	}\n" +
@@ -226,9 +225,9 @@ public class Game implements ApplicationListener {
 		fboRegion.getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		fboRegion.flip(false, true);
 
-		frameBuffer2 = new FrameBuffer(Format.RGBA4444, frameBuffer2Size, frameBuffer2Size, true);
+		frameBuffer2 = new FrameBuffer(Format.RGBA4444, frameBufferSize, frameBufferSize, true);
 		fboRegion2 = new TextureRegion(frameBuffer2.getColorBufferTexture());
-		fboRegion2.getTexture().setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
+		fboRegion2.getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		fboRegion2.flip(false, true);
 
 		System.out.println("Compiled: " + shaderProgram.isCompiled() + "---------");
@@ -280,17 +279,6 @@ public class Game implements ApplicationListener {
 
 			frameBuffer.end();
 
-			// FrameBuffer2
-			// frameBuffer2.begin();
-
-			// Gdx.gl.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-			// Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-			// state.getStage().draw();
-
-			// frameBuffer2.end();
-
-
 			//------ DON'T KNOW ABOUT THIS
 			// state.getStage().setShaderProgram(verticalBlurShader);
 			// fboRegion.getTexture().bind(0); // Binds it to texture 0.
@@ -303,20 +291,17 @@ public class Game implements ApplicationListener {
 			// state.getStage().draw();
 
 			//------ THIS WORKS
-			// fboRegion2.getTexture().bind(1);
-
 			frameBuffer2.begin();
 			spriteBatch.begin();
 			spriteBatch.setShader(batchShader);
-			// batchShader.setUniformi("u_texture2", 1);
 			batchShader.setUniformf("sampleOffset", 1.0f / frameBufferSize, 0.0f);
-			// Gdx.gl.glClearColor(0.5723f, 0.686f, 0.624f, 1.0f);
+
 			Gdx.gl.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 			Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 			spriteBatch.draw(fboRegion, 0, 0, State.getWidth(), State.getHeight());
+
 			spriteBatch.end();
 			frameBuffer2.end();
-
 
 			// Draw scene again.
 			Gdx.gl.glClearColor(0.5723f, 0.686f, 0.624f, 1.0f);
@@ -328,10 +313,8 @@ public class Game implements ApplicationListener {
 			// Overlay blur.
 			Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE);
 			spriteBatch.begin();
-			// spriteBatch.setShader(batchShader);
-			// batchShader.setUniformi("u_texture2", 1);
 			batchShader.setUniformf("sampleOffset", 0.0f, 1.0f / frameBufferSize);
-			spriteBatch.draw(fboRegion2, 0, 0, State.getWidth(), State.getHeight());
+			spriteBatch.draw(fboRegion, 0, 0, State.getWidth(), State.getHeight());
 			spriteBatch.end();
 		}
 
@@ -341,6 +324,10 @@ public class Game implements ApplicationListener {
 	private void handleInput() {
 		if (state.getStage().getRoot()!= null) {
 //			state.getStage().getRoot().getChildren().get(0).setPosition(Gdx.input.getX(), -Gdx.input.getY() + State.getHeight());
+		}
+
+		if (Gdx.input.isTouched()) {
+			((Character) state.getStage().getRoot().getChildren().get(0)).takeFire();
 		}
 
 		if (Gdx.input.isKeyPressed(Input.Keys.W)) {}

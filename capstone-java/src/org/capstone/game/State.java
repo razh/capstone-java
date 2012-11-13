@@ -7,7 +7,7 @@ public class State {
 	private static float height;
 
 	private MeshStage stage;
-	
+
 	public static boolean debugRendering = false;
 
 	public State(float width, float height) {
