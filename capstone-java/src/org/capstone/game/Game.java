@@ -142,15 +142,15 @@ public class Game implements ApplicationListener {
 		// "void main()\n" +
 		// "{\n" +
 		// "  vec4 sum = vec4(0.0);\n" +
-		// "  sum += texture2D(u_texture, vec2(v_texCoords.x, v_texCoords.y - 4.0 * v)) * 0.051;\n" +
-		// "  sum += texture2D(u_texture, vec2(v_texCoords.x, v_texCoords.y - 3.0 * v)) * 0.0918;\n" +
-		// "  sum += texture2D(u_texture, vec2(v_texCoords.x, v_texCoords.y - 2.0 * v)) * 0.12245;\n" +
-		// "  sum += texture2D(u_texture, vec2(v_texCoords.x, v_texCoords.y - 1.0 * v)) * 0.1531;\n" +
-		// "  sum += texture2D(u_texture, vec2(v_texCoords.x, v_texCoords.y)) * 0.1633;\n" +
-		// "  sum += texture2D(u_texture, vec2(v_texCoords.x, v_texCoords.y + 1.0 * v)) * 0.1531;\n" +
-		// "  sum += texture2D(u_texture, vec2(v_texCoords.x, v_texCoords.y + 2.0 * v)) * 0.12245;\n" +
-		// "  sum += texture2D(u_texture, vec2(v_texCoords.x, v_texCoords.y + 3.0 * v)) * 0.0918;\n" +
-		// "  sum += texture2D(u_texture, vec2(v_texCoords.x, v_texCoords.y + 4.0 * v)) * 0.051;\n" +
+		// // "  sum += texture2D(u_texture, vec2(v_texCoords.x, v_texCoords.y - 4.0 * v)) * 0.051;\n" +
+		// // "  sum += texture2D(u_texture, vec2(v_texCoords.x, v_texCoords.y - 3.0 * v)) * 0.0918;\n" +
+		// // "  sum += texture2D(u_texture, vec2(v_texCoords.x, v_texCoords.y - 2.0 * v)) * 0.12245;\n" +
+		// // "  sum += texture2D(u_texture, vec2(v_texCoords.x, v_texCoords.y - 1.0 * v)) * 0.1531;\n" +
+		// // "  sum += texture2D(u_texture, vec2(v_texCoords.x, v_texCoords.y)) * 0.1633;\n" +
+		// // "  sum += texture2D(u_texture, vec2(v_texCoords.x, v_texCoords.y + 1.0 * v)) * 0.1531;\n" +
+		// // "  sum += texture2D(u_texture, vec2(v_texCoords.x, v_texCoords.y + 2.0 * v)) * 0.12245;\n" +
+		// // "  sum += texture2D(u_texture, vec2(v_texCoords.x, v_texCoords.y + 3.0 * v)) * 0.0918;\n" +
+		// // "  sum += texture2D(u_texture, vec2(v_texCoords.x, v_texCoords.y + 4.0 * v)) * 0.051;\n" +
 		// // "  gl_FragColor = v_color * mix(sum, texture2D(u_texture2, v_texCoords), 0.2);\n" +
 		// // "  gl_FragColor = texture2D(u_texture, vec2(v_texCoords.x, v_texCoords.y));\n" +
 		// "  gl_FragColor = sum;\n" +
@@ -261,62 +261,80 @@ public class Game implements ApplicationListener {
 		handleInput();
 		state.update();
 
-		// FrameBuffer1
-//		Gdx.gl.glClearColor(0.5723f, 0.686f, 0.624f, 1.0f);
-		frameBuffer.begin();
+		Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+		if (!State.debugRendering) {
+			Gdx.gl.glClearColor(0.5723f, 0.686f, 0.624f, 1.0f);
+			Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-//		Gdx.gl.glClearColor(0.5723f, 0.686f, 0.624f, 1.0f);
-		Gdx.gl.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+			state.getStage().setShaderProgram(shaderProgram);
+			state.getStage().draw();
+		} else {
+			// FrameBuffer1
+			frameBuffer.begin();
 
-		state.getStage().setShaderProgram(shaderProgram);
-		state.getStage().draw();
+			Gdx.gl.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+			Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-		frameBuffer.end();
+			state.getStage().setShaderProgram(shaderProgram);
+			state.getStage().draw();
 
-		// FrameBuffer2
-		// frameBuffer2.begin();
+			frameBuffer.end();
 
-		// Gdx.gl.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-		// Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+			// FrameBuffer2
+			// frameBuffer2.begin();
 
-		// state.getStage().draw();
+			// Gdx.gl.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+			// Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-		// frameBuffer2.end();
+			// state.getStage().draw();
 
-		//------ DON'T KNOW ABOUT THIS
-		// state.getStage().setShaderProgram(verticalBlurShader);
-		// fboRegion.getTexture().bind(0); // Binds it to texture 0.
-		// Gdx.gl.glClearColor(0.5723f, 0.686f, 0.624f, 1.0f);
-		// Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+			// frameBuffer2.end();
 
-		// verticalBlurShader.setUniformf("v", 1.0f / 512.0f);
-		// verticalBlurShader.setUniformi("fboTexture", 0);
-		// // Gdx.gl.glClearColor(0.5723f, 0.686f, 0.624f, 1.0f);
-		// state.getStage().draw();
 
-		//------ THIS WORKS
-		// fboRegion2.getTexture().bind(1);
+			//------ DON'T KNOW ABOUT THIS
+			// state.getStage().setShaderProgram(verticalBlurShader);
+			// fboRegion.getTexture().bind(0); // Binds it to texture 0.
+			// Gdx.gl.glClearColor(0.5723f, 0.686f, 0.624f, 1.0f);
+			// Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-		frameBuffer2.begin();
-		spriteBatch.begin();
-		spriteBatch.setShader(batchShader);
-		// batchShader.setUniformi("u_texture2", 1);
-		batchShader.setUniformf("sampleOffset", 1 / frameBufferSize, 0.0f);
-		Gdx.gl.glClearColor(0.5723f, 0.686f, 0.624f, 1.0f);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		spriteBatch.draw(fboRegion, 0, 0, State.getWidth(), State.getHeight());
-		spriteBatch.end();
-		frameBuffer2.end();
+			// verticalBlurShader.setUniformf("v", 1.0f / 512.0f);
+			// verticalBlurShader.setUniformi("fboTexture", 0);
+			// // Gdx.gl.glClearColor(0.5723f, 0.686f, 0.624f, 1.0f);
+			// state.getStage().draw();
 
-		spriteBatch.begin();
-		// spriteBatch.setShader(batchShader);
-		// batchShader.setUniformi("u_texture2", 1);
-		batchShader.setUniformf("sampleOffset", 0.0f, 1 / frameBuffer2Size);
-//		Gdx.gl.glClearColor(0.5723f, 0.686f, 0.624f, 1.0f);
-//		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		spriteBatch.draw(fboRegion2, 0, 0, State.getWidth(), State.getHeight());
-		spriteBatch.end();
+			//------ THIS WORKS
+			// fboRegion2.getTexture().bind(1);
+
+			frameBuffer2.begin();
+			spriteBatch.begin();
+			spriteBatch.setShader(batchShader);
+			// batchShader.setUniformi("u_texture2", 1);
+			batchShader.setUniformf("sampleOffset", 1.0f / frameBufferSize, 0.0f);
+			// Gdx.gl.glClearColor(0.5723f, 0.686f, 0.624f, 1.0f);
+			Gdx.gl.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+			Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+			spriteBatch.draw(fboRegion, 0, 0, State.getWidth(), State.getHeight());
+			spriteBatch.end();
+			frameBuffer2.end();
+
+
+			// Draw scene again.
+			Gdx.gl.glClearColor(0.5723f, 0.686f, 0.624f, 1.0f);
+			Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+			state.getStage().setShaderProgram(shaderProgram);
+			state.getStage().draw();
+
+			// Overlay blur.
+			Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE);
+			spriteBatch.begin();
+			// spriteBatch.setShader(batchShader);
+			// batchShader.setUniformi("u_texture2", 1);
+			batchShader.setUniformf("sampleOffset", 0.0f, 1.0f / frameBufferSize);
+			spriteBatch.draw(fboRegion2, 0, 0, State.getWidth(), State.getHeight());
+			spriteBatch.end();
+		}
+
 		fpsLogger.log();
 	}
 
@@ -327,8 +345,18 @@ public class Game implements ApplicationListener {
 
 		if (Gdx.input.isKeyPressed(Input.Keys.W)) {}
 		if (Gdx.input.isKeyPressed(Input.Keys.A)) {}
-		if (Gdx.input.isKeyPressed(Input.Keys.D)) {}
-		if (Gdx.input.isKeyPressed(Input.Keys.S)) {}
+		if (Gdx.input.isKeyPressed(Input.Keys.D)) {
+			if (!State.debugRendering) {
+				State.debugRendering = true;
+				System.out.println("Debug rendering on.");
+			}
+		}
+		if (Gdx.input.isKeyPressed(Input.Keys.S)) {
+			if (State.debugRendering) {
+				State.debugRendering = false;
+				System.out.println("Debug rendering off.");
+			}
+		}
 		if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
 			((Character) state.getStage().getRoot().getChildren().get(0)).takeFire();
 			// System.out.println( camera.combined.toString() );
