@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.VertexAttributes.Usage;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
-public class RectMeshActor extends MeshActor {
+public class RectMeshActor extends PhysicsActor {
 	protected static Mesh mesh;
 
 	public RectMeshActor() {

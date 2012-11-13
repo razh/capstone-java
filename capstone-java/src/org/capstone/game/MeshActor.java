@@ -8,6 +8,7 @@ public class MeshActor extends Actor {
 	protected ShaderProgram shaderProgram;
 
 	public MeshActor() {
+		super();
 	}
 
 	@Override

@@ -1,5 +1,6 @@
 package org.capstone.game;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Mesh;
 import com.badlogic.gdx.graphics.VertexAttribute;
@@ -7,7 +8,7 @@ import com.badlogic.gdx.graphics.VertexAttributes.Usage;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
-public class CircleMeshActor extends MeshActor {
+public class CircleMeshActor extends PhysicsActor {
 	protected static Mesh mesh;
 
 	public CircleMeshActor() {
@@ -82,9 +83,28 @@ public class CircleMeshActor extends MeshActor {
 		if (hasMesh())
 			getMesh().render(shaderProgram, GL20.GL_TRIANGLE_FAN);
 	}
-	
+
 	public void act(float delta) {
 		super.act(delta);
-		// System.out.println("I should be doing stuff");
+
+		float width = Gdx.graphics.getWidth();
+		float height = Gdx.graphics.getHeight();
+
+		if (getWidth() > getX()) {
+			setX(getWidth());
+			setVelocityX(-getVelocityX());
+		}
+		if (getX() + getWidth() > width) {
+			setX(width - getWidth());
+			setVelocityX(-getVelocityX());
+		}
+		if (getHeight() > getY()) {
+			setY(getHeight());
+			setVelocityY(-getVelocityY());
+		}
+		if (getY() + getHeight() > height) {
+			setY(height - getHeight());
+			setVelocityY(-getVelocityY());
+		}
 	}
 }

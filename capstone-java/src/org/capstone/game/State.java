@@ -19,6 +19,7 @@ public class State {
 		stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30.0f));
 	}
 
+	// Do not use these. Use Gdx.graphics.getWidth() and Gdx.graphics.getHeight() instead!
 	public static float getWidth() {
 		return width;
 	}
