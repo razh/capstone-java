@@ -26,6 +26,7 @@ public class Game implements ApplicationListener {
 	private TextureRegion fboRegion2;
 	private int frameBufferSize = 512;
 	private FPSLogger fpsLogger = new FPSLogger();
+	private boolean running = true;
 
 	private String vertexShader =
 		"uniform mat4 projection;\n" +
@@ -256,6 +257,9 @@ public class Game implements ApplicationListener {
 
 	@Override
 	public void render() {
+		if (!running)
+			return;
+
 		handleInput();
 		State.update();
 
@@ -352,6 +356,9 @@ public class Game implements ApplicationListener {
 		}
 		if (Gdx.input.isKeyPressed(Input.Keys.M)) {}
 		if (Gdx.input.isKeyPressed(Input.Keys.N)) {}
+		if (Gdx.input.isKeyPressed(Input.Keys.Q)) {
+			running = false;
+		}
 	}
 
 	@Override
