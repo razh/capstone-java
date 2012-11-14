@@ -259,7 +259,9 @@ public class Game implements ApplicationListener {
 		handleInput();
 		State.update();
 
-		Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+		if (State.debugRendering)
+			Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+
 		if (!State.debugRendering) {
 			Gdx.gl.glClearColor(0.5723f, 0.686f, 0.624f, 1.0f);
 			Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -322,7 +324,7 @@ public class Game implements ApplicationListener {
 
 	private void handleInput() {
 		if (State.getStage().getRoot()!= null) {
-//			state.getStage().getRoot().getChildren().get(0).setPosition(Gdx.input.getX(), -Gdx.input.getY() + State.getHeight());
+			// State.getStage().getRoot().getChildren().get(0).setPosition(Gdx.input.getX(), -Gdx.input.getY() + State.getHeight());
 		}
 
 		if (Gdx.input.isTouched()) {
