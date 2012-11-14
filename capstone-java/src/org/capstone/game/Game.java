@@ -19,7 +19,6 @@ import com.badlogic.gdx.math.Interpolation;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 
 public class Game implements ApplicationListener {
-	private State state;
 	private FrameBuffer frameBuffer;
 	private FrameBuffer frameBuffer2;
 	private SpriteBatch spriteBatch;
@@ -237,9 +236,9 @@ public class Game implements ApplicationListener {
 		Character circle = new Character(100, 200, new Color(0.173f, 0.204f, 0.220f, 1.0f), 30);
 		circle.setVelocity(200.0f, 100.0f);
 
-		state = new State(width, height);
-		state.getStage().setShaderProgram(shaderProgram);
-		state.getStage().addActor(circle);
+		new State(width, height);
+		State.getStage().setShaderProgram(shaderProgram);
+		State.getStage().addActor(circle);
 
 		// Invisible cursor.
 		// Gdx.input.setCursorCatched(true);
@@ -258,15 +257,15 @@ public class Game implements ApplicationListener {
 	@Override
 	public void render() {
 		handleInput();
-		state.update();
+		State.update();
 
 		Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 		if (!State.debugRendering) {
 			Gdx.gl.glClearColor(0.5723f, 0.686f, 0.624f, 1.0f);
 			Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-			state.getStage().setShaderProgram(shaderProgram);
-			state.getStage().draw();
+			State.getStage().setShaderProgram(shaderProgram);
+			State.getStage().draw();
 		} else {
 			// FrameBuffer1
 			frameBuffer.begin();
@@ -274,8 +273,8 @@ public class Game implements ApplicationListener {
 			Gdx.gl.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 			Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-			state.getStage().setShaderProgram(shaderProgram);
-			state.getStage().draw();
+			State.getStage().setShaderProgram(shaderProgram);
+			State.getStage().draw();
 
 			frameBuffer.end();
 
@@ -307,8 +306,8 @@ public class Game implements ApplicationListener {
 			Gdx.gl.glClearColor(0.5723f, 0.686f, 0.624f, 1.0f);
 			Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-			state.getStage().setShaderProgram(shaderProgram);
-			state.getStage().draw();
+			State.getStage().setShaderProgram(shaderProgram);
+			State.getStage().draw();
 
 			// Overlay blur.
 			Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE);
@@ -322,12 +321,12 @@ public class Game implements ApplicationListener {
 	}
 
 	private void handleInput() {
-		if (state.getStage().getRoot()!= null) {
+		if (State.getStage().getRoot()!= null) {
 //			state.getStage().getRoot().getChildren().get(0).setPosition(Gdx.input.getX(), -Gdx.input.getY() + State.getHeight());
 		}
 
 		if (Gdx.input.isTouched()) {
-			((Character) state.getStage().getRoot().getChildren().get(0)).takeFire();
+			((Character) State.getStage().getRoot().getChildren().get(0)).takeFire();
 		}
 
 		if (Gdx.input.isKeyPressed(Input.Keys.W)) {}
@@ -345,7 +344,7 @@ public class Game implements ApplicationListener {
 			}
 		}
 		if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
-			((Character) state.getStage().getRoot().getChildren().get(0)).takeFire();
+			((Character) State.getStage().getRoot().getChildren().get(0)).takeFire();
 			// System.out.println( camera.combined.toString() );
 //			System.out.println( state.getCharacters().get(0).physics.getPosition().toString());
 		}

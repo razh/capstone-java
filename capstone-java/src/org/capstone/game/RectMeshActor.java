@@ -1,5 +1,6 @@
 package org.capstone.game;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Mesh;
 import com.badlogic.gdx.graphics.VertexAttribute;
@@ -84,5 +85,29 @@ public class RectMeshActor extends PhysicsActor {
 		super.draw(shaderProgram, parentAlpha);
 		if (hasMesh())
 			getMesh().render(shaderProgram, GL20.GL_TRIANGLE_STRIP);
+	}
+	
+	public void act(float delta) {
+		super.act(delta);
+
+		float width = Gdx.graphics.getWidth();
+		float height = Gdx.graphics.getHeight();
+
+		if (getWidth() > getX()) {
+			setX(getWidth());
+			setVelocityX(-getVelocityX());
+		}
+		if (getX() + getWidth() > width) {
+			setX(width - getWidth());
+			setVelocityX(-getVelocityX());
+		}
+		if (getHeight() > getY()) {
+			setY(getHeight());
+			setVelocityY(-getVelocityY());
+		}
+		if (getY() + getHeight() > height) {
+			setY(height - getHeight());
+			setVelocityY(-getVelocityY());
+		}
 	}
 }

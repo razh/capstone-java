@@ -6,8 +6,9 @@ public class State {
 	private static float width;
 	private static float height;
 
-	private MeshStage stage;
+	private static MeshStage stage;
 
+	public static boolean debug = true;
 	public static boolean debugRendering = false;
 
 	public State(float width, float height) {
@@ -17,7 +18,7 @@ public class State {
 		setHeight(height);
 	}
 
-	public void update() {
+	public static void update() {
 		stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30.0f));
 	}
 
@@ -38,7 +39,7 @@ public class State {
 		height = h;
 	}
 
-	public MeshStage getStage() {
+	public static MeshStage getStage() {
 		return stage;
 	}
 }

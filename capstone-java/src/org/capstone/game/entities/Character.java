@@ -1,6 +1,7 @@
 package org.capstone.game.entities;
 
 import org.capstone.game.CircleMeshActor;
+import org.capstone.game.RectMeshActor;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Interpolation;
