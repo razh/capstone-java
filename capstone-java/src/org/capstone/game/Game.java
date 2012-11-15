@@ -36,10 +36,8 @@ public class Game implements ApplicationListener {
 		"\n" +
 		"void main()\n" +
 		"{\n" +
-		"  vec2 position = a_position;\n" +
-		"  position.x = position.x * scale.x + translate.x;\n" +
-		"  position.y = position.y * scale.y + translate.y;\n" +
-		"  gl_Position = projection * vec4(position.xy, 0.0, 1.0);\n" +
+		"  vec2 position = a_position * scale + translate;\n" +
+		"  gl_Position = projection * vec4(position, 0.0, 1.0);\n" +
 		"}";
 
 	private String fragmentShader =
@@ -242,8 +240,15 @@ public class Game implements ApplicationListener {
 
 		new State(width, height);
 		State.getStage().setShaderProgram(shaderProgram);
+
 		State.getStage().addActor(circle);
 		State.getStage().addActor(circle2);
+		
+		for (int i = 0; i < 500; i++) {
+			Character ctest = new Character(i, i, new Color(i / 500.0f, i / 10000.0f, 0.24f, 1.0f), 10);
+			ctest.setVelocity((float) Math.random() * 200.0f, (float) Math.random() * 200.0f);
+			State.getStage().addActor(ctest);
+		}
 		
 
 		// Invisible cursor.

@@ -61,7 +61,7 @@ public class MeshGroup extends Group {
 		parentAlpha *= getColor().a;
 		SnapshotArray<Actor> children = getChildren();
 		Actor[] actors = children.begin();
-		Rectangle cullingArea = this.cullingArea;
+		// Rectangle cullingArea = this.cullingArea;
 		
 		for (int i = 0, n = children.size; i < n; i++) {
 			MeshActor child = (MeshActor) actors[i];
