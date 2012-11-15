@@ -58,7 +58,7 @@ public class CircleMeshActor extends PhysicsActor {
 	}
 
 	@Override
-	public Actor hit(float x, float y) {
+	public Actor hit(float x, float y, boolean touchable) {
 		float dx = x - getX();
 		float dy = y - getY();
 

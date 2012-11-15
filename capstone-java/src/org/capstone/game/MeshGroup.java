@@ -4,8 +4,11 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.SnapshotArray;
 
 public class MeshGroup extends Group {
@@ -15,6 +18,7 @@ public class MeshGroup extends Group {
 	protected Rectangle cullingArea;
 	protected ShaderProgram shaderProgram;
 	private MeshStage stage;
+	private final Vector2 point = new Vector2();
 
 	@Override
 	public void draw(SpriteBatch batch, float parentAlpha) {
@@ -95,6 +99,10 @@ public class MeshGroup extends Group {
 	
 	public void addActor(Actor actor) {
 		super.addActor(actor);
-		System.out.println(getChildren().size);
+	}
+	
+	@Override
+	public Actor hit(float x, float y, boolean touchable) {
+		return super.hit(x, y, touchable);
 	}
 }

@@ -2,6 +2,7 @@ package org.capstone.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
@@ -55,5 +56,12 @@ public class MeshStage extends Stage {
 	
 	public MeshGroup getRoot() {
 		return root;
+	}
+	
+	@Override
+	public Actor hit(float stageX, float stageY, boolean touchable) {
+		Vector2 actorCoords = Vector2.tmp;
+		getRoot().parentToLocalCoordinates(actorCoords.set(stageX, stageY));
+		return getRoot().hit(actorCoords.x, actorCoords.y, touchable);
 	}
 }

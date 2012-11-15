@@ -2,6 +2,7 @@ package org.capstone.game;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
 public class MeshActor extends Actor {
@@ -32,5 +33,10 @@ public class MeshActor extends Actor {
 
 	public Actor hit(float x, float y) {
 		return null;
+	}
+	
+	@Override
+	public Vector2 parentToLocalCoordinates(Vector2 parentCoords) {
+		return parentCoords;		
 	}
 }

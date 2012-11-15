@@ -237,9 +237,14 @@ public class Game implements ApplicationListener {
 		Character circle = new Character(100, 200, new Color(0.173f, 0.204f, 0.220f, 1.0f), 30);
 		circle.setVelocity(200.0f, 100.0f);
 
+		Character circle2 = new Character(200, 200, new Color(0.173f, 0.204f, 0.220f, 1.0f), 30);
+		circle2.setVelocity(100.0f, 100.0f);
+
 		new State(width, height);
 		State.getStage().setShaderProgram(shaderProgram);
 		State.getStage().addActor(circle);
+		State.getStage().addActor(circle2);
+		
 
 		// Invisible cursor.
 		// Gdx.input.setCursorCatched(true);
@@ -319,7 +324,7 @@ public class Game implements ApplicationListener {
 			Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE);
 			spriteBatch.begin();
 			batchShader.setUniformf("sampleOffset", 0.0f, 1.0f / frameBufferSize);
-			spriteBatch.draw(fboRegion, 0, 0, State.getWidth(), State.getHeight());
+			spriteBatch.draw(fboRegion2, 0, 0, State.getWidth(), State.getHeight());
 			spriteBatch.end();
 		}
 
@@ -332,6 +337,9 @@ public class Game implements ApplicationListener {
 		}
 
 		if (Gdx.input.isTouched()) {
+			MeshActor hit = (MeshActor) State.getStage().hit(Gdx.input.getX(), Gdx.input.getY(), true);
+			if (hit != null)
+				hit.setPosition(Gdx.input.getX(), Gdx.input.getY());
 			((Character) State.getStage().getRoot().getChildren().get(0)).takeFire();
 		}
 

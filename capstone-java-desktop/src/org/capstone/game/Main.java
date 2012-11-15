@@ -11,6 +11,7 @@ public class Main {
 		cfg.width = 640;
 		cfg.height = 480;
 		cfg.samples = 4;
+		cfg.useCPUSynch = false;
 		
 		new LwjglApplication(new Game(), cfg);
 	}
