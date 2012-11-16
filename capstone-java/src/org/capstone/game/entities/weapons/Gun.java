@@ -14,7 +14,7 @@ public abstract class Gun extends Weapon {
 		if (isFiring() && hasTarget() && targetInRange()) {
 			fire();
 		} else {
-			firing = false;
+			setFiring(false);
 		}
 	}
 	

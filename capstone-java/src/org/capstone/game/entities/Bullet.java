@@ -38,11 +38,7 @@ public class Bullet extends Character {
 
 				if (child instanceof Character) {
 					if (((Character) child).getTeam() != getTeam()) {
-						distance = (float) Math.sqrt((getX() - child.getX()) *
-						                             (getX() - child.getX()) +
-						                             (getY() - child.getY()) *
-						                             (getY() - child.getY()));
-
+						distance = distanceToActor(child);
 						if (distance < getWidth() + child.getWidth()) {
 							((Character) child).takeFire();
 							removeBullet = true;

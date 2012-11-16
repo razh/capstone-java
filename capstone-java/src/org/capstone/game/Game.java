@@ -1,6 +1,8 @@
 package org.capstone.game;
 
+import org.capstone.game.entities.Bullet;
 import org.capstone.game.entities.Character;
+import org.capstone.game.entities.weapons.BulletGun;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
@@ -231,7 +233,9 @@ public class Game implements ApplicationListener {
 		System.out.println("Compiled (b): " + batchShader.isCompiled() + "---------");
 
 		Character circle = new Character(100, 200, new Color(0.173f, 0.204f, 0.220f, 1.0f), 30);
+		circle.addWeapon(new BulletGun(circle, 1.0f, 0.2f, -1.0f, 600.0f, new Color(0.106f, 0.126f, 0.146f, 1.0f), 4.0f));
 		circle.setVelocity(200.0f, 100.0f);
+		circle.setTeam(1);
 
 		Character circle2 = new Character(200, 200, new Color(0.173f, 0.204f, 0.220f, 1.0f), 30);
 		circle2.setVelocity(100.0f, 100.0f);
@@ -242,11 +246,11 @@ public class Game implements ApplicationListener {
 		State.getStage().addCharacter(circle);
 		State.getStage().addCharacter(circle2);
 		
-		for (int i = 0; i < 500; i++) {
-			Character ctest = new Character(i, i, new Color(i / 500.0f, i / 10000.0f, 0.24f, 1.0f), 10);
-			ctest.setVelocity((float) Math.random() * 200.0f, (float) Math.random() * 200.0f);
-			State.getStage().addCharacter(ctest);
-		}
+//		for (int i = 0; i < 500; i++) {
+//			Character ctest = new Character(i, i, new Color(i / 500.0f, i / 10000.0f, 0.24f, 1.0f), 10);
+//			ctest.setVelocity((float) Math.random() * 200.0f, (float) Math.random() * 200.0f);
+//			State.getStage().addCharacter(ctest);
+//		}
 		
 
 		// Invisible cursor.
@@ -335,6 +339,10 @@ public class Game implements ApplicationListener {
 	}
 
 	private void handleInput() {
+//		MeshGroup test = State.getStage().getProjectiles();
+//		if (test != null)
+//			System.out.println("size" + test.getChildren().size);
+//			
 		if (State.getStage().getRoot()!= null) {
 			// State.getStage().getRoot().getChildren().get(0).setPosition(Gdx.input.getX(), -Gdx.input.getY() + State.getHeight());
 		}
@@ -346,7 +354,9 @@ public class Game implements ApplicationListener {
 			((Character) State.getStage().getCharacters().getChildren().get(0)).takeFire();
 		}
 
-		if (Gdx.input.isKeyPressed(Input.Keys.W)) {}
+		if (Gdx.input.isKeyPressed(Input.Keys.W)) {
+//			System.out.println("vel" + ((Bullet) State.getStage().getProjectiles().getChildren().get(0)).getVelocityX() + ", " + ((Bullet) State.getStage().getProjectiles().getChildren().get(0)).getVelocityY());
+		}
 		if (Gdx.input.isKeyPressed(Input.Keys.A)) {}
 		if (Gdx.input.isKeyPressed(Input.Keys.D)) {
 			if (!State.debugRendering) {
@@ -358,6 +368,7 @@ public class Game implements ApplicationListener {
 			if (State.debugRendering) {
 				State.debugRendering = false;
 				System.out.println("Debug rendering off.");
+				Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 			}
 		}
 		if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {

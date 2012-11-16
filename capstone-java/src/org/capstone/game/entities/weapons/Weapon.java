@@ -11,17 +11,20 @@ public abstract class Weapon {
 	protected boolean firing = true;
 	protected float time = 0;
 	
-	protected float targetX;
-	protected float targetY;
+	protected float targetX = Float.NaN;
+	protected float targetY = Float.NaN;
 	
 	public Weapon(Actor actor, float damage, float rate, float range) {
-		
+		setActor(actor);
+		setDamage(damage);
+		setRate(rate);
+		setRange(range);		
 	}
 	
 	public void act(float delta) {
 		time += delta;
 		if (time > rate) {
-			firing = true;
+			setFiring(true);
 			time = 0;
 		}
 	}

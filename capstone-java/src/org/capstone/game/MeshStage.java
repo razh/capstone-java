@@ -69,6 +69,7 @@ public class MeshStage extends Stage {
 	public void addProjectile(Actor actor) {
 		if (projectiles == null) {
 			projectiles = new MeshGroup();
+			root.addActor(projectiles);
 		}
 		
 		projectiles.addActor(actor);
