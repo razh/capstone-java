@@ -7,8 +7,6 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
-import com.badlogic.gdx.scenes.scene2d.Touchable;
-import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.SnapshotArray;
 
 public class MeshGroup extends Group {
@@ -61,16 +59,21 @@ public class MeshGroup extends Group {
 		parentAlpha *= getColor().a;
 		SnapshotArray<Actor> children = getChildren();
 		Actor[] actors = children.begin();
-		// Rectangle cullingArea = this.cullingArea;
+		//Rectangle cullingArea = this.cullingArea;
 		
 		for (int i = 0, n = children.size; i < n; i++) {
-			MeshActor child = (MeshActor) actors[i];
+			Actor child = actors[i];
 		
 			if (!child.isVisible())
 				continue;
 			
-			child.draw(shaderProgram, parentAlpha);
+			// Because MeshGroup does not inherit from MeshActor.
+			if (child instanceof MeshActor)			
+				((MeshActor) child).draw(shaderProgram, parentAlpha);
+			if (child instanceof MeshGroup)
+				((MeshGroup) child).draw(shaderProgram, parentAlpha);
 		}
+
 		children.end();
 		
 //		if (cullingArea != null) {

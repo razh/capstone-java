@@ -14,9 +14,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
-import com.badlogic.gdx.math.Interpolation;
 
-import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 
 public class Game implements ApplicationListener {
 	private FrameBuffer frameBuffer;
@@ -241,13 +239,13 @@ public class Game implements ApplicationListener {
 		new State(width, height);
 		State.getStage().setShaderProgram(shaderProgram);
 
-		State.getStage().addActor(circle);
-		State.getStage().addActor(circle2);
+		State.getStage().addCharacter(circle);
+		State.getStage().addCharacter(circle2);
 		
 		for (int i = 0; i < 500; i++) {
 			Character ctest = new Character(i, i, new Color(i / 500.0f, i / 10000.0f, 0.24f, 1.0f), 10);
 			ctest.setVelocity((float) Math.random() * 200.0f, (float) Math.random() * 200.0f);
-			State.getStage().addActor(ctest);
+			State.getStage().addCharacter(ctest);
 		}
 		
 
@@ -345,7 +343,7 @@ public class Game implements ApplicationListener {
 			MeshActor hit = (MeshActor) State.getStage().hit(Gdx.input.getX(), Gdx.input.getY(), true);
 			if (hit != null)
 				hit.setPosition(Gdx.input.getX(), Gdx.input.getY());
-			((Character) State.getStage().getRoot().getChildren().get(0)).takeFire();
+			((Character) State.getStage().getCharacters().getChildren().get(0)).takeFire();
 		}
 
 		if (Gdx.input.isKeyPressed(Input.Keys.W)) {}
@@ -363,7 +361,7 @@ public class Game implements ApplicationListener {
 			}
 		}
 		if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
-			((Character) State.getStage().getRoot().getChildren().get(0)).takeFire();
+			((Character) State.getStage().getCharacters().getChildren().get(0)).takeFire();
 			// System.out.println( camera.combined.toString() );
 //			System.out.println( state.getCharacters().get(0).physics.getPosition().toString());
 		}

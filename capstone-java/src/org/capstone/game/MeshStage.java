@@ -10,6 +10,9 @@ public class MeshStage extends Stage {
 	private MeshGroup root;
 	private ShaderProgram shaderProgram;
 	
+	private MeshGroup characters;
+	private MeshGroup projectiles;
+	
 	public MeshStage() {
 		this(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
 	}
@@ -48,6 +51,31 @@ public class MeshStage extends Stage {
 	@Override
 	public void addActor(Actor actor) {
 		root.addActor(actor);
+	}
+	
+	public void addCharacter(Actor actor) {
+		if (characters == null) {
+			characters = new MeshGroup();
+			root.addActor(characters);
+		}
+		
+		characters.addActor(actor);
+	}
+	
+	public MeshGroup getCharacters() {
+		return characters;
+	}
+
+	public void addProjectile(Actor actor) {
+		if (projectiles == null) {
+			projectiles = new MeshGroup();
+		}
+		
+		projectiles.addActor(actor);
+	}
+	
+	public MeshGroup getProjectiles() {
+		return projectiles;
 	}
 	
 	public void act(float delta) {
