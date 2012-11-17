@@ -23,6 +23,11 @@ public class BulletGun extends Gun {
 		setColor(color);
 		setRadius(radius);
 	}
+	
+	public BulletGun(Entity entity, float damage, float rate, float range, float speed,
+                     Color color, float radius) {
+		this(entity.getMeshActor(), damage, rate, range, speed, color, radius);
+	}
 
 	public void fire() {
 		Vector2 point = ((MeshActor) actor).getIntersection(getTargetX(), getTargetY()); 
@@ -30,8 +35,8 @@ public class BulletGun extends Gun {
 			return;
 		
 		Bullet bullet = new Bullet(point.x, point.y, color, radius);
-		if (actor instanceof Entity)
-			bullet.setTeam(((Entity) actor).getTeam());
+		if (actor instanceof MeshActor)
+			bullet.setTeam(((MeshActor) actor).getEntity().getTeam());
 
 		bullet.setVelocityX(getTargetX() - actor.getX());
 		bullet.setVelocityY(getTargetY() - actor.getY());

@@ -11,33 +11,40 @@ import org.capstone.game.entities.weapons.Weapon;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Interpolation;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.SnapshotArray;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 
-public class Entity extends CircleMeshActor implements Teamable, Weaponable {
+public class Entity implements Teamable, Weaponable {
 	protected MeshActor meshActor;
 	protected MeshType meshType; 
 	protected int team = 0;
 	protected boolean takingFire = false;
 	protected ArrayList<Weapon> weapons;
 
-	public Entity(float x, float y, Color color, float radius) {
-		super();
+	public Entity(MeshType type, float x, float y, Color color, float width, float height) {
+		setMeshType(type);
+		if (type == MeshType.CircleMeshActor)
+			meshActor = new CircleMeshActor();
+		else if (type == MeshType.RectMeshActor)
+			meshActor = new RectMeshActor();
+		else
+			return;
+		
+		meshActor.setEntity(this);
 		
 		setPosition(x, y);
 		setColor(color);
-		setWidth(radius);
-		setHeight(radius);
+		setWidth(width);
+		setHeight(height);
 
 		weapons = new ArrayList<Weapon>();
 	}
 
 	public void act(float delta) {
-		super.act(delta);
-		
 		Actor enemy = this.getNearestActor(State.getStage().getEntities().getChildren());
 		if (enemy == null)
 			return;
@@ -54,7 +61,7 @@ public class Entity extends CircleMeshActor implements Teamable, Weaponable {
 		float min = Float.POSITIVE_INFINITY;
 
 		for (int i = 0; i < actors.length; i++) {
-			if (actors[i] instanceof Entity && ((Entity) actors[i]).getTeam() != getTeam()) {
+			if (actors[i] instanceof MeshActor && ((MeshActor) actors[i]).getEntity().getTeam() != getTeam()) {
 				distance = distanceToActor(actors[i]);
 				if (distance < min) {
 					min = distance;
@@ -85,7 +92,7 @@ public class Entity extends CircleMeshActor implements Teamable, Weaponable {
 		if (!takingFire) {
 			takingFire = true;
 
-			addAction(
+			meshActor.addAction(
 				sequence(
 					parallel(
 						color(new Color(getColor().r + 0.784f, getColor().g, getColor().b, 1.0f), 0.05f, Interpolation.pow3),
@@ -97,13 +104,101 @@ public class Entity extends CircleMeshActor implements Teamable, Weaponable {
 					),
 					new Action() {
 						public boolean act(float delta) {
-							((Entity) actor).takingFire = false;
+							(((MeshActor) actor).getEntity()).takingFire = false;
 							return true;
 						}
 					}
 				)
 			);
 		}
+	}
+	
+	public float getX() {
+		return meshActor.getX();
+	}
+	
+	public void setX(float x) {
+		meshActor.setX(x);
+	}
+	
+	public float getY() {
+		return meshActor.getY();
+	}
+	
+	public void setY(float y) {
+		meshActor.setY(y);
+	}
+	
+	public void setPosition(float x, float y) {
+		meshActor.setPosition(x, y);
+	}
+	
+	public float getWidth() {
+		return meshActor.getWidth();
+	}
+	
+	public void setWidth(float width) {
+		meshActor.setWidth(width);
+	}
+	
+	public float getHeight() {
+		return meshActor.getHeight();
+	}
+	
+	public void setHeight(float height) {
+		meshActor.setHeight(height);
+	}
+	
+	public Color getColor() {
+		return meshActor.getColor();
+	}	
+	
+	public void setColor(Color color) {
+		meshActor.setColor(color);
+	}
+	
+	public float getVelocityX() {
+		return meshActor.getVelocityX();
+	}
+	
+	public void setVelocityX(float velocityX) {
+		meshActor.setVelocityX(velocityX);
+	}
+	
+	public float getVelocityY() {
+		return meshActor.getVelocityY();
+	}
+	
+	public void setVelocityY(float velocityY) {
+		meshActor.setVelocityY(velocityY);
+	}
+	
+	public Vector2 getVelocity() {
+		return meshActor.getVelocity();
+	}
+	
+	public void setVelocity(float velocityX, float velocityY) {
+		meshActor.setVelocity(velocityX, velocityY);
+	}
+	
+	public void addAction(Action action) {
+		meshActor.addAction(action);
+	}
+
+	public MeshType getMeshType() {
+		return meshType;
+	}
+
+	public void setMeshType(MeshType meshType) {
+		this.meshType = meshType;
+	}
+
+	public MeshActor getMeshActor() {
+		return meshActor;
+	}
+
+	public void setMeshActor(MeshActor meshActor) {
+		this.meshActor = meshActor;
 	}
 
 	@Override

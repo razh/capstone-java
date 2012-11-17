@@ -9,7 +9,7 @@ import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
-public class CircleMeshActor extends PhysicsActor {
+public class CircleMeshActor extends MeshActor {
 	protected static Mesh mesh;
 
 	public CircleMeshActor() {

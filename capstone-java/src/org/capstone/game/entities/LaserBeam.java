@@ -13,6 +13,7 @@ public class LaserBeam extends RectMeshActor {
 	protected MeshActor actor;
 
 	public LaserBeam(Actor actor, float x, float y, Color color, float width) {
+		super();
 		setActor((MeshActor) actor);
 		
 		// x, y is the intersection point on the target actor.

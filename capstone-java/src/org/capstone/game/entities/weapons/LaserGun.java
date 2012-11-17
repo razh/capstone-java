@@ -24,6 +24,11 @@ public class LaserGun extends Gun {
 		setColor(color);
 		laserBeam = new LaserBeam(actor, getTargetX(), getTargetY(), getColor(), width);
 	}
+	
+	public LaserGun(Entity entity, float damage, float rate, float range,
+	                Color color, float width) {
+		this(entity.getMeshActor(), damage, rate, range, color, width);
+	}
 
 	public Color getColor() {
 		return color;
@@ -70,7 +75,7 @@ public class LaserGun extends Gun {
 
 		laserBeam.setPosition(point.x, point.y);
 
-		((Entity) targetActor).takeFire();
+		((MeshActor) targetActor).getEntity().takeFire();
 
 		if (!isDrawingBeam()) {
 			State.getStage().getProjectiles().addActor(laserBeam);

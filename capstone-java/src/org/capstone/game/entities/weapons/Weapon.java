@@ -1,5 +1,7 @@
 package org.capstone.game.entities.weapons;
 
+import org.capstone.game.entities.Entity;
+
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
 public abstract class Weapon {
@@ -16,6 +18,13 @@ public abstract class Weapon {
 	
 	public Weapon(Actor actor, float damage, float rate, float range) {
 		setActor(actor);
+		setDamage(damage);
+		setRate(rate);
+		setRange(range);		
+	}
+	
+	public Weapon(Entity entity, float damage, float rate, float range) {
+		setActor(entity.getMeshActor());
 		setDamage(damage);
 		setRate(rate);
 		setRange(range);		

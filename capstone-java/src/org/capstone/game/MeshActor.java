@@ -1,15 +1,24 @@
 package org.capstone.game;
 
+import org.capstone.game.entities.Entity;
+
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
-public class MeshActor extends Actor {
+public class MeshActor extends PhysicsActor {
 	protected ShaderProgram shaderProgram;
+	protected Entity entity;
 
 	public MeshActor() {
 		super();
+	}
+	
+	public void act(float delta) {
+		super.act(delta);
+		if (entity != null)
+			entity.act(delta);
 	}
 
 	@Override
@@ -32,7 +41,11 @@ public class MeshActor extends Actor {
 		shaderProgram.setUniformf("v_color", getColor());
 	}
 
-	public Actor hit(float x, float y) {
+	@Override
+	public Actor hit(float x, float y, boolean touchable) {
+		if (x == getX() && y == getY())
+			return this;
+		
 		return null;
 	}
 
@@ -43,5 +56,13 @@ public class MeshActor extends Actor {
 
 	public Vector2 getIntersection(float x, float y) {
 		return new Vector2(getX(), getY());
+	}
+
+	public Entity getEntity() {
+		return entity;
+	}
+
+	public void setEntity(Entity entity) {
+		this.entity = entity;
 	}
 }

@@ -1,5 +1,6 @@
 package org.capstone.game.entities;
 
+import org.capstone.game.MeshActor;
 import org.capstone.game.State;
 
 import com.badlogic.gdx.graphics.Color;
@@ -9,7 +10,7 @@ import com.badlogic.gdx.utils.SnapshotArray;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 
-public class Bullet extends Entity {
+public class Bullet extends CircleEntity {
 	protected boolean collides = true;
 
 	public Bullet(float x, float y, Color color, float radius) {
@@ -36,12 +37,12 @@ public class Bullet extends Entity {
 			for (int i = 0; i < characters.size; i++) {
 				Actor child = actors[i];
 
-				if (child instanceof Entity) {
-					if (((Entity) child).getTeam() != getTeam()) {
+				if (child instanceof MeshActor) {
+					if (((MeshActor) child).getEntity().getTeam() != getTeam()) {
 						distance = distanceToActor(child);
 						if (distance < getWidth() + child.getWidth()) {
-							((Entity) child).takeFire();
-							removeBullet = true;
+							((MeshActor) child).getEntity().takeFire();
+//							removeBullet = true;
 						}
 					}
 				}

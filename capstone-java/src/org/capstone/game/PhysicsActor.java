@@ -1,6 +1,9 @@
 package org.capstone.game;
 
-public class PhysicsActor extends MeshActor {
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+
+public class PhysicsActor extends Actor {
 	private float velocityX;
 	private float velocityY;
 	
@@ -29,6 +32,10 @@ public class PhysicsActor extends MeshActor {
 
 	public void setVelocityY(float velocityY) {
 		this.velocityY = velocityY;
+	}
+	
+	public Vector2 getVelocity() {
+		return new Vector2(velocityX, velocityY);
 	}
 	
 	public void setVelocity(float velocityX, float velocityY) {

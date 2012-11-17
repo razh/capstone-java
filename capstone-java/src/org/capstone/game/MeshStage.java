@@ -1,5 +1,7 @@
 package org.capstone.game;
 
+import org.capstone.game.entities.Entity;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.Vector2;
@@ -62,6 +64,10 @@ public class MeshStage extends Stage {
 		entities.addActor(actor);
 	}
 	
+	public void addEntity(Entity entity) {
+		addEntity(entity.getMeshActor());
+	}
+	
 	public MeshGroup getEntities() {
 		return entities;
 	}
@@ -73,6 +79,10 @@ public class MeshStage extends Stage {
 		}
 		
 		projectiles.addActor(actor);
+	}
+	
+	public void addProjectile(Entity projectile) {
+		addProjectile(projectile.getMeshActor());
 	}
 	
 	public MeshGroup getProjectiles() {
