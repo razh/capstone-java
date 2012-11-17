@@ -10,6 +10,7 @@ public class State {
 
 	private static MeshStage stage;
 
+	public static float EPSILON = 1E-10f;
 	public static boolean debug = true;
 	public static boolean debugRendering = false;
 

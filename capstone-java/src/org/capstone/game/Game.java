@@ -247,7 +247,7 @@ public class Game implements ApplicationListener {
 		redCircle.addWeapon(new LaserGun(redCircle, 1.0f, 0.2f, 200.0f, new Color(0.941f, 0.404f, 0.365f, 0.75f), 1.5f));
 		redCircle.setVelocity(200.0f, 100.0f);
 		redCircle.setTeam(1);
-		redCircle.setRotation(25);
+//		redCircle.setRotation(25);
 
 		Character blueCircle = new Character(200, 200, new Color(0.173f, 0.204f, 0.220f, 1.0f), 30);
 		blueCircle.setVelocity(100.0f, 100.0f);
@@ -356,7 +356,7 @@ public class Game implements ApplicationListener {
 	}
 
 	private void handleInput() {
-		State.getStage().getCharacters().getChildren().get(0).rotate(1.0f);
+//		State.getStage().getCharacters().getChildren().get(0).rotate(1.0f);
 //		MeshGroup test = State.getStage().getProjectiles();
 //		if (test != null)
 //			System.out.println("size" + test.getChildren().size);

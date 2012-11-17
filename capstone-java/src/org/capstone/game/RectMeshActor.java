@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Mesh;
 import com.badlogic.gdx.graphics.VertexAttribute;
 import com.badlogic.gdx.graphics.VertexAttributes.Usage;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
 public class RectMeshActor extends PhysicsActor {
@@ -63,9 +64,11 @@ public class RectMeshActor extends PhysicsActor {
 	}
 
 	@Override
-	public Actor hit(float x, float y) {
-		if (getX() - getWidth()  / 2 < x && x < getX() + getWidth()  / 2 &&
-		    getY() - getHeight() / 2 < y && y < getY() + getHeight() / 2) {
+	public Actor hit(float x, float y, boolean touchable) {
+		float halfWidth  = getWidth()  / 2;
+		float halfHeight = getHeight() / 2;
+		if (getX() - halfWidth  <= x && x <= getX() + halfWidth &&
+		    getY() - halfHeight <= y && y <= getY() + halfHeight) {
 			return this;
 		}
 
@@ -86,7 +89,7 @@ public class RectMeshActor extends PhysicsActor {
 		if (hasMesh())
 			getMesh().render(shaderProgram, GL20.GL_TRIANGLE_STRIP);
 	}
-	
+
 	public void act(float delta) {
 		super.act(delta);
 
@@ -108,6 +111,74 @@ public class RectMeshActor extends PhysicsActor {
 		if (getY() + getHeight() > height) {
 			setY(height - getHeight());
 			setVelocityY(-getVelocityY());
+		}
+	}
+
+	@Override
+	public Vector2 getIntersection(float x, float y) {
+		float x0 = getX() - 0.5f * getWidth();
+		float y0 = getY() - 0.5f * getHeight();
+		float x1 = getX() + 0.5f * getWidth();
+		float y1 = getY() + 0.5f * getHeight();
+
+		Vector2 point = new Vector2(getX(), getY());
+
+		// Divide the areas into a 3 by 3 grid for a total of 9 areas (1 center).
+		if (x0 <= x && x <= x1) {
+			if (y <= y0) {
+				point = intersectionOfTwoLines(getX(), getY(), x, y, x0, y0, x1, y0);
+			} else if (y1 <= y) {
+				point = intersectionOfTwoLines(getX(), getY(), x, y, x0, y1, x1, y1);
+			}
+		} else if (y0 <= y && y <= y1) {
+			if (x <= x0) {
+				point = intersectionOfTwoLines(getX(), getY(), x, y, x0, y0, x0, y1);
+			} else if (x1 <= x) {
+				point = intersectionOfTwoLines(getX(), getY(), x, y, x1, y0, x1, y1);
+			}
+		} else {
+			float dx = x - getX();
+			float dy = y - getY();
+
+			float m = -dy / dx;
+			if (Math.abs(m) > getHeight() / getWidth()) {
+				if (y <= y0) {
+					point = intersectionOfTwoLines(getX(), getY(), x, y, x0, y0, x1, y0);
+				} else if (y1 <= y) {
+					point = intersectionOfTwoLines(getX(), getY(), x, y, x0, y1, x1, y1);
+				}
+			} else {
+				if (x <= x0) {
+					point = intersectionOfTwoLines(getX(), getY(), x, y, x0, y0, x0, y1);
+				} else if (x1 <= x) {
+					point = intersectionOfTwoLines(getX(), getY(), x, y, x1, y0, x1, y1);
+				}
+			}
+		}
+
+		return point;
+	}
+
+	private Vector2 intersectionOfTwoLines(float x0, float y0,
+	                                       float x1, float y1,
+	                                       float x2, float y2,
+	                                       float x3, float y3) {
+		float x01 = x0 - x1;
+		float x23 = x2 - x3;
+		float y01 = y0 - y1;
+		float y23 = y2 - y3;
+
+		float c = x01 * y23 - y01 * x23;
+		if (Math.abs(c) < State.EPSILON) {
+			return null;
+		} else {
+			float a = x0 * y1 - y0 * x1;
+			float b = x2 * y3 - y2 * x3;
+
+			float px = (a * x23 - b * x01) / c;
+			float py = (a * y23 - b * y01) / c;
+
+			return new Vector2(px, py);
 		}
 	}
 }

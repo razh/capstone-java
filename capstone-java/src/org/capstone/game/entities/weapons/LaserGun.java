@@ -65,6 +65,8 @@ public class LaserGun extends Gun {
 		super.fire();
 		
 		Vector2 point = ((MeshActor) targetActor).getIntersection(actor.getX(), actor.getY());
+		if (point == null)
+			return;
 
 		laserBeam.setPosition(point.x, point.y);
 

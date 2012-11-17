@@ -26,7 +26,9 @@ public class BulletGun extends Gun {
 
 	public void fire() {
 		Vector2 point = ((MeshActor) actor).getIntersection(getTargetX(), getTargetY()); 
-				
+		if (point == null)
+			return;
+		
 		Bullet bullet = new Bullet(point.x, point.y, color, radius);
 		if (actor instanceof Character)
 			bullet.setTeam(((Character) actor).getTeam());
