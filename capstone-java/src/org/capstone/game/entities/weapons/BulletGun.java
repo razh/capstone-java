@@ -70,5 +70,4 @@ public class BulletGun extends Gun {
 	public void setRadius(float radius) {
 		this.radius = radius;
 	}
-
 }

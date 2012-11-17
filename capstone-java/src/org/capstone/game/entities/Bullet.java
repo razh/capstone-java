@@ -46,6 +46,8 @@ public class Bullet extends Character {
 					}
 				}
 			}
+
+			characters.end();
 		}
 
 		if (removeBullet) {
