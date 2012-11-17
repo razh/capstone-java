@@ -254,7 +254,7 @@ public class Game implements ApplicationListener {
 		
 		Character whiteCircle = new Character(300, 400, new Color(0.941f, 0.941f, 0.827f, 1.0f), 30);		
 
-		new State(width, height);
+		new State(width, height, new Color(0.572f, 0.686f, 0.624f, 1.0f));
 		State.getStage().setShaderProgram(shaderProgram);
 
 		State.getStage().addCharacter(redCircle);
@@ -289,12 +289,14 @@ public class Game implements ApplicationListener {
 
 		handleInput();
 		State.update();
+		
+		Color backgroundColor = State.getColor();
 
 		if (State.debugRendering)
 			Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 
 		if (!State.debugRendering) {
-			Gdx.gl.glClearColor(0.5723f, 0.686f, 0.624f, 1.0f);
+			Gdx.gl.glClearColor(backgroundColor.r, backgroundColor.g, backgroundColor.b, backgroundColor.a);
 			Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 			State.getStage().setShaderProgram(shaderProgram);
@@ -336,7 +338,7 @@ public class Game implements ApplicationListener {
 			frameBuffer2.end();
 
 			// Draw scene again.
-			Gdx.gl.glClearColor(0.5723f, 0.686f, 0.624f, 1.0f);
+			Gdx.gl.glClearColor(0.572f, 0.686f, 0.624f, 1.0f);
 			Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 			State.getStage().setShaderProgram(shaderProgram);

@@ -1,21 +1,24 @@
 package org.capstone.game;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 
 public class State {
 	private static float width;
 	private static float height;
+	private static Color color;
 
 	private static MeshStage stage;
 
 	public static boolean debug = true;
 	public static boolean debugRendering = false;
 
-	public State(float width, float height) {
+	public State(float width, float height, Color color) {
 		stage = new MeshStage(width, height, true);
 
 		setWidth(width);
 		setHeight(height);
+		setColor(color);
 	}
 
 	public static void update() {
@@ -37,6 +40,14 @@ public class State {
 
 	public static void setHeight(float h) {
 		height = h;
+	}
+
+	public static Color getColor() {
+		return color;
+	}
+
+	public static void setColor(Color color) {
+		State.color = color;
 	}
 
 	public static MeshStage getStage() {
