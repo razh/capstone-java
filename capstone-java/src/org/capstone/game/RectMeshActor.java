@@ -65,10 +65,8 @@ public class RectMeshActor extends MeshActor {
 
 	@Override
 	public Actor hit(float x, float y, boolean touchable) {
-		float halfWidth  = getWidth()  / 2;
-		float halfHeight = getHeight() / 2;
-		if (getX() - halfWidth  <= x && x <= getX() + halfWidth &&
-		    getY() - halfHeight <= y && y <= getY() + halfHeight) {
+		if (getX() - getWidth()  <= x && x <= getX() + getWidth() &&
+		    getY() - getHeight() <= y && y <= getY() + getHeight()) {
 			return this;
 		}
 

@@ -42,7 +42,7 @@ public class Bullet extends CircleEntity {
 						distance = distanceToActor(child);
 						if (distance < getWidth() + child.getWidth()) {
 							((MeshActor) child).getEntity().takeFire();
-//							removeBullet = true;
+							removeBullet = true;
 						}
 					}
 				}

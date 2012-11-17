@@ -32,7 +32,7 @@ public class Entity implements Teamable, Weaponable {
 		else if (type == MeshType.RectMeshActor)
 			meshActor = new RectMeshActor();
 		else
-			return;
+			meshActor = new MeshActor();
 		
 		meshActor.setEntity(this);
 		
