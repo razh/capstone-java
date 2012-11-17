@@ -9,7 +9,7 @@ import com.badlogic.gdx.utils.SnapshotArray;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 
-public class Bullet extends Character {
+public class Bullet extends Entity {
 	protected boolean collides = true;
 
 	public Bullet(float x, float y, Color color, float radius) {
@@ -30,17 +30,17 @@ public class Bullet extends Character {
 		boolean removeBullet = false;
 		if (isColliding()) {
 			float distance;
-			SnapshotArray<Actor> characters = State.getStage().getCharacters().getChildren();
+			SnapshotArray<Actor> characters = State.getStage().getEntities().getChildren();
 			Actor[] actors = characters.begin();
 
 			for (int i = 0; i < characters.size; i++) {
 				Actor child = actors[i];
 
-				if (child instanceof Character) {
-					if (((Character) child).getTeam() != getTeam()) {
+				if (child instanceof Entity) {
+					if (((Entity) child).getTeam() != getTeam()) {
 						distance = distanceToActor(child);
 						if (distance < getWidth() + child.getWidth()) {
-							((Character) child).takeFire();
+							((Entity) child).takeFire();
 							removeBullet = true;
 						}
 					}

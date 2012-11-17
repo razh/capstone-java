@@ -10,7 +10,7 @@ public class MeshStage extends Stage {
 	private MeshGroup root;
 	private ShaderProgram shaderProgram;
 	
-	private MeshGroup characters;
+	private MeshGroup entities;
 	private MeshGroup projectiles;
 	
 	public MeshStage() {
@@ -53,17 +53,17 @@ public class MeshStage extends Stage {
 		root.addActor(actor);
 	}
 	
-	public void addCharacter(Actor actor) {
-		if (characters == null) {
-			characters = new MeshGroup();
-			root.addActor(characters);
+	public void addEntity(Actor actor) {
+		if (entities == null) {
+			entities = new MeshGroup();
+			root.addActor(entities);
 		}
 		
-		characters.addActor(actor);
+		entities.addActor(actor);
 	}
 	
-	public MeshGroup getCharacters() {
-		return characters;
+	public MeshGroup getEntities() {
+		return entities;
 	}
 
 	public void addProjectile(Actor actor) {

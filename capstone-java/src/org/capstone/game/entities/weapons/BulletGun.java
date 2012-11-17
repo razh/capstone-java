@@ -3,7 +3,7 @@ package org.capstone.game.entities.weapons;
 import org.capstone.game.MeshActor;
 import org.capstone.game.State;
 import org.capstone.game.entities.Bullet;
-import org.capstone.game.entities.Character;
+import org.capstone.game.entities.Entity;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
@@ -30,8 +30,8 @@ public class BulletGun extends Gun {
 			return;
 		
 		Bullet bullet = new Bullet(point.x, point.y, color, radius);
-		if (actor instanceof Character)
-			bullet.setTeam(((Character) actor).getTeam());
+		if (actor instanceof Entity)
+			bullet.setTeam(((Entity) actor).getTeam());
 
 		bullet.setVelocityX(getTargetX() - actor.getX());
 		bullet.setVelocityY(getTargetY() - actor.getY());

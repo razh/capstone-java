@@ -2,7 +2,7 @@ package org.capstone.game.entities.weapons;
 
 import org.capstone.game.MeshActor;
 import org.capstone.game.State;
-import org.capstone.game.entities.Character;
+import org.capstone.game.entities.Entity;
 import org.capstone.game.entities.LaserBeam;
 
 import com.badlogic.gdx.graphics.Color;
@@ -70,7 +70,7 @@ public class LaserGun extends Gun {
 
 		laserBeam.setPosition(point.x, point.y);
 
-		((Character) targetActor).takeFire();
+		((Entity) targetActor).takeFire();
 
 		if (!isDrawingBeam()) {
 			State.getStage().getProjectiles().addActor(laserBeam);

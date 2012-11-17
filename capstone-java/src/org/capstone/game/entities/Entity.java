@@ -3,6 +3,8 @@ package org.capstone.game.entities;
 import java.util.ArrayList;
 
 import org.capstone.game.CircleMeshActor;
+import org.capstone.game.MeshActor;
+import org.capstone.game.MeshType;
 import org.capstone.game.RectMeshActor;
 import org.capstone.game.State;
 import org.capstone.game.entities.weapons.Weapon;
@@ -15,14 +17,16 @@ import com.badlogic.gdx.utils.SnapshotArray;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 
-public class Character extends CircleMeshActor implements Teamable, Weaponable {
+public class Entity extends CircleMeshActor implements Teamable, Weaponable {
+	protected MeshActor meshActor;
+	protected MeshType meshType; 
 	protected int team = 0;
 	protected boolean takingFire = false;
 	protected ArrayList<Weapon> weapons;
 
-	public Character(float x, float y, Color color, float radius) {
+	public Entity(float x, float y, Color color, float radius) {
 		super();
-
+		
 		setPosition(x, y);
 		setColor(color);
 		setWidth(radius);
@@ -34,7 +38,7 @@ public class Character extends CircleMeshActor implements Teamable, Weaponable {
 	public void act(float delta) {
 		super.act(delta);
 		
-		Actor enemy = this.getNearestActor(State.getStage().getCharacters().getChildren());
+		Actor enemy = this.getNearestActor(State.getStage().getEntities().getChildren());
 		if (enemy == null)
 			return;
 		
@@ -50,7 +54,7 @@ public class Character extends CircleMeshActor implements Teamable, Weaponable {
 		float min = Float.POSITIVE_INFINITY;
 
 		for (int i = 0; i < actors.length; i++) {
-			if (actors[i] instanceof Character && ((Character) actors[i]).getTeam() != getTeam()) {
+			if (actors[i] instanceof Entity && ((Entity) actors[i]).getTeam() != getTeam()) {
 				distance = distanceToActor(actors[i]);
 				if (distance < min) {
 					min = distance;
@@ -93,7 +97,7 @@ public class Character extends CircleMeshActor implements Teamable, Weaponable {
 					),
 					new Action() {
 						public boolean act(float delta) {
-							((Character) actor).takingFire = false;
+							((Entity) actor).takingFire = false;
 							return true;
 						}
 					}
