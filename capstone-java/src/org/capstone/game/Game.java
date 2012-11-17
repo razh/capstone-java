@@ -243,23 +243,23 @@ public class Game implements ApplicationListener {
 		System.out.println("Compiled (vB): " + verticalBlurShader.isCompiled() + "---------");
 		System.out.println("Compiled (b): " + batchShader.isCompiled() + "---------");
 
-		Character circle = new Character(100, 200, new Color(0.173f, 0.204f, 0.220f, 1.0f), 30);
-		circle.addWeapon(new BulletGun(circle, 1.0f, 0.15f, -1.0f, 600.0f, new Color(0.106f, 0.126f, 0.146f, 1.0f), 4.0f));
-		circle.addWeapon(new LaserGun(circle, 1.0f, 0.2f, 200.0f, new Color(0.941f, 0.404f, 0.365f, 0.75f), 1.5f));
-		circle.setVelocity(200.0f, 100.0f);
-		circle.setTeam(1);
-		circle.setRotation(25);
+		Character redCircle = new Character(100, 200, new Color(0.941f, 0.247f, 0.208f, 1.0f), 30);
+		redCircle.addWeapon(new BulletGun(redCircle, 1.0f, 0.15f, -1.0f, 600.0f, new Color(0.106f, 0.126f, 0.146f, 1.0f), 4.0f));
+		redCircle.addWeapon(new LaserGun(redCircle, 1.0f, 0.2f, 200.0f, new Color(0.941f, 0.404f, 0.365f, 0.75f), 1.5f));
+		redCircle.setVelocity(200.0f, 100.0f);
+		redCircle.setTeam(1);
+		redCircle.setRotation(25);
 
-		Character circle2 = new Character(200, 200, new Color(0.173f, 0.204f, 0.220f, 1.0f), 30);
-		circle2.setVelocity(100.0f, 100.0f);
+		Character blueCircle = new Character(200, 200, new Color(0.173f, 0.204f, 0.220f, 1.0f), 30);
+		blueCircle.setVelocity(100.0f, 100.0f);
 		
 		Character whiteCircle = new Character(300, 400, new Color(0.941f, 0.941f, 0.827f, 1.0f), 30);		
 
 		new State(width, height);
 		State.getStage().setShaderProgram(shaderProgram);
 
-		State.getStage().addCharacter(circle);
-		State.getStage().addCharacter(circle2);
+		State.getStage().addCharacter(redCircle);
+		State.getStage().addCharacter(blueCircle);
 		State.getStage().addCharacter(whiteCircle);
 		
 //		for (int i = 0; i < 500; i++) {

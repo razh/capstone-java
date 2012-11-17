@@ -6,6 +6,7 @@ import org.capstone.game.entities.Bullet;
 import org.capstone.game.entities.Character;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
 public class BulletGun extends Gun {
@@ -24,7 +25,9 @@ public class BulletGun extends Gun {
 	}
 
 	public void fire() {
-		Bullet bullet = new Bullet(actor.getX(), actor.getY(), color, radius);
+		Vector2 point = ((MeshActor) actor).getIntersection(getTargetX(), getTargetY()); 
+				
+		Bullet bullet = new Bullet(point.x, point.y, color, radius);
 		if (actor instanceof Character)
 			bullet.setTeam(((Character) actor).getTeam());
 
