@@ -18,7 +18,7 @@ import com.badlogic.gdx.utils.SnapshotArray;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 
-public class Entity implements Teamable, Weaponable {
+public class Entity {
 	protected MeshActor meshActor;
 	protected MeshType meshType; 
 	protected int team = 0;
@@ -201,27 +201,22 @@ public class Entity implements Teamable, Weaponable {
 		this.meshActor = meshActor;
 	}
 
-	@Override
 	public int getTeam() {
 		return team;
 	}
 
-	@Override
 	public void setTeam(int team) {
 		this.team = team;
 	}
 	
-	@Override
 	public void addWeapon(Weapon weapon) {
 		weapons.add(weapon);
 	}
 	
-	@Override
 	public void removeWeapon(Weapon weapon) {
 		weapons.remove(weapon);
 	}
 
-	@Override
 	public ArrayList<Weapon> getWeapons() {
 		return weapons;
 	}
