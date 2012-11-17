@@ -15,7 +15,7 @@ import com.badlogic.gdx.utils.SnapshotArray;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 
-public class Character extends CircleMeshActor {
+public class Character extends CircleMeshActor implements Teamable, Weaponable {
 	protected int team = 0;
 	protected boolean takingFire = false;
 	protected ArrayList<Weapon> weapons;
@@ -93,7 +93,7 @@ public class Character extends CircleMeshActor {
 					),
 					new Action() {
 						public boolean act(float delta) {
-							((Character) this.actor).takingFire = false;
+							((Character) actor).takingFire = false;
 							return true;
 						}
 					}
@@ -102,19 +102,28 @@ public class Character extends CircleMeshActor {
 		}
 	}
 
+	@Override
 	public int getTeam() {
 		return team;
 	}
 
+	@Override
 	public void setTeam(int team) {
 		this.team = team;
 	}
 	
+	@Override
 	public void addWeapon(Weapon weapon) {
 		weapons.add(weapon);
 	}
 	
+	@Override
 	public void removeWeapon(Weapon weapon) {
 		weapons.remove(weapon);
+	}
+
+	@Override
+	public ArrayList<Weapon> getWeapons() {
+		return weapons;
 	}
 }
