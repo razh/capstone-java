@@ -2,6 +2,7 @@ package org.capstone.game.entities.weapons;
 
 import org.capstone.game.MeshActor;
 import org.capstone.game.State;
+import org.capstone.game.entities.Character;
 import org.capstone.game.entities.LaserBeam;
 
 import com.badlogic.gdx.graphics.Color;
@@ -19,7 +20,7 @@ public class LaserGun extends Gun {
 	public LaserGun(Actor actor, float damage, float rate, float range,
 	                Color color, float width) {
 		super(actor, damage, rate, range);
-		
+
 		setColor(color);
 		laserBeam = new LaserBeam(actor, getTargetX(), getTargetY(), getColor(), width);
 	}
@@ -39,7 +40,7 @@ public class LaserGun extends Gun {
 	@Override
 	public void setActorAsTarget(Actor targetActor) {
 		super.setActorAsTarget(targetActor);
-		
+
 		this.targetActor = targetActor;
 	}
 
@@ -50,16 +51,28 @@ public class LaserGun extends Gun {
 	public void setDrawingBeam(boolean drawingBeam) {
 		this.drawingBeam = drawingBeam;
 	}
-	
+
 	public void act(float delta) {
 		super.act(delta);
-		
+
 		if (isDrawingBeam() && !isFiring()) {
 			laserBeam.addAction(removeActor());
 			setDrawingBeam(false);
 		}
 	}
-	
+
 	public void fire() {
+		super.fire();
+		
+		Vector2 point = ((MeshActor) targetActor).getIntersection(actor.getX(), actor.getY());
+
+		laserBeam.setPosition(point.x, point.y);
+
+		((Character) targetActor).takeFire();
+
+		if (!isDrawingBeam()) {
+			State.getStage().getProjectiles().addActor(laserBeam);
+			setDrawingBeam(true);
+		}
 	}
 }

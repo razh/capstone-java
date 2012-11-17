@@ -3,6 +3,7 @@ package org.capstone.game;
 import org.capstone.game.entities.Bullet;
 import org.capstone.game.entities.Character;
 import org.capstone.game.entities.weapons.BulletGun;
+import org.capstone.game.entities.weapons.LaserGun;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
@@ -42,7 +43,7 @@ public class Game implements ApplicationListener {
 		"    float r_cos = cos(radians(rotation));\n" +
 		"    float r_sin = sin(radians(rotation));\n" +
 		"    mat2 rotationMatrix = mat2(r_cos, r_sin, -r_sin, r_cos);\n" +
-		"    position = rotationMatrix * a_position * scale + translate;\n" +
+		"    position = rotationMatrix * (a_position * scale) + translate;\n" +
 		"  }\n" +
 		"  else {\n" +
 		"    position = a_position * scale + translate;\n" +
@@ -243,7 +244,8 @@ public class Game implements ApplicationListener {
 		System.out.println("Compiled (b): " + batchShader.isCompiled() + "---------");
 
 		Character circle = new Character(100, 200, new Color(0.173f, 0.204f, 0.220f, 1.0f), 30);
-		circle.addWeapon(new BulletGun(circle, 1.0f, 0.2f, -1.0f, 600.0f, new Color(0.106f, 0.126f, 0.146f, 1.0f), 4.0f));
+		circle.addWeapon(new BulletGun(circle, 1.0f, 0.15f, -1.0f, 600.0f, new Color(0.106f, 0.126f, 0.146f, 1.0f), 4.0f));
+		circle.addWeapon(new LaserGun(circle, 1.0f, 0.2f, 200.0f, new Color(0.941f, 0.404f, 0.365f, 0.75f), 1.5f));
 		circle.setVelocity(200.0f, 100.0f);
 		circle.setTeam(1);
 		circle.setRotation(25);
@@ -353,6 +355,7 @@ public class Game implements ApplicationListener {
 	}
 
 	private void handleInput() {
+		State.getStage().getCharacters().getChildren().get(0).rotate(1.0f);
 //		MeshGroup test = State.getStage().getProjectiles();
 //		if (test != null)
 //			System.out.println("size" + test.getChildren().size);
@@ -369,6 +372,7 @@ public class Game implements ApplicationListener {
 		}
 
 		if (Gdx.input.isKeyPressed(Input.Keys.W)) {
+			System.out.println(State.getStage().getProjectiles().getChildren().size);
 //			System.out.println("vel" + ((Bullet) State.getStage().getProjectiles().getChildren().get(0)).getVelocityX() + ", " + ((Bullet) State.getStage().getProjectiles().getChildren().get(0)).getVelocityY());
 		}
 		if (Gdx.input.isKeyPressed(Input.Keys.A)) {}

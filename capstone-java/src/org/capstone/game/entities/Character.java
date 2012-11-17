@@ -91,7 +91,6 @@ public class Character extends CircleMeshActor {
 						color(new Color(getColor().r, getColor().g, getColor().b, 1.0f), 0.15f, Interpolation.linear),
 						sizeBy(-20, -20, 0.15f, Interpolation.linear)
 					),
-					delay(0.1f),
 					new Action() {
 						public boolean act(float delta) {
 							((Character) this.actor).takingFire = false;
