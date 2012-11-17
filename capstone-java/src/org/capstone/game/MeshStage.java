@@ -65,7 +65,7 @@ public class MeshStage extends Stage {
 	}
 	
 	public void addEntity(Entity entity) {
-		addEntity(entity.getMeshActor());
+		addEntity(entity.getActor());
 	}
 	
 	public MeshGroup getEntities() {
@@ -82,7 +82,7 @@ public class MeshStage extends Stage {
 	}
 	
 	public void addProjectile(Entity projectile) {
-		addProjectile(projectile.getMeshActor());
+		addProjectile(projectile.getActor());
 	}
 	
 	public MeshGroup getProjectiles() {

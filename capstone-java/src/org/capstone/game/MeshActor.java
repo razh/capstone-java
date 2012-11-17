@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 
 public class MeshActor extends PhysicsActor {
 	protected ShaderProgram shaderProgram;
@@ -43,6 +44,9 @@ public class MeshActor extends PhysicsActor {
 
 	@Override
 	public Actor hit(float x, float y, boolean touchable) {
+		if (touchable && this.getTouchable() != Touchable.enabled)
+			return null;
+		
 		if (x == getX() && y == getY())
 			return this;
 		

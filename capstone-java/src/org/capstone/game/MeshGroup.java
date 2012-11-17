@@ -1,5 +1,7 @@
 package org.capstone.game;
 
+import org.capstone.game.entities.Entity;
+
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.Matrix4;
@@ -16,6 +18,15 @@ public class MeshGroup extends Group {
 	protected Rectangle cullingArea;
 	protected ShaderProgram shaderProgram;
 	private MeshStage stage;
+	protected Entity entity;
+
+	public Entity getEntity() {
+		return entity;
+	}
+
+	public void setEntity(Entity entity) {
+		this.entity = entity;
+	}
 
 	@Override
 	public void draw(SpriteBatch batch, float parentAlpha) {
@@ -92,6 +103,12 @@ public class MeshGroup extends Group {
 //				// No transform for this group, offset children.
 //			}
 //		}
+	}
+	
+	public void act(float delta) {
+		super.act(delta);
+		if (entity != null)
+			entity.act(delta);
 	}
 	
 	

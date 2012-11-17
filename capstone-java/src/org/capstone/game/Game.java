@@ -2,6 +2,7 @@ package org.capstone.game;
 
 import org.capstone.game.entities.CircleEntity;
 import org.capstone.game.entities.Entity;
+import org.capstone.game.entities.EntityGroup;
 import org.capstone.game.entities.RectEntity;
 import org.capstone.game.entities.weapons.BulletGun;
 import org.capstone.game.entities.weapons.LaserGun;
@@ -254,7 +255,10 @@ public class Game implements ApplicationListener {
 		Entity blueCircle = new CircleEntity(200, 200, new Color(0.173f, 0.204f, 0.220f, 1.0f), 30);
 		blueCircle.setVelocity(100.0f, 100.0f);
 		
-		Entity whiteRect = new RectEntity(300, 400, new Color(0.941f, 0.941f, 0.827f, 1.0f), 30, 40);		
+		Entity whiteRect = new RectEntity(300, 400, new Color(0.941f, 0.941f, 0.827f, 1.0f), 30, 40);
+		
+		Entity group = new EntityGroup(MeshType.CircleMeshActor, 400, 400, new Color(1.0f, 0.0f, 0.0f, 1.0f), 20, 20, 10, 60);
+		group.setVelocity(200.0f, 100.0f);
 
 		new State(width, height, new Color(0.572f, 0.686f, 0.624f, 1.0f));
 		State.getStage().setShaderProgram(shaderProgram);
@@ -262,6 +266,7 @@ public class Game implements ApplicationListener {
 		State.getStage().addEntity(redCircle);
 		State.getStage().addEntity(blueCircle);
 		State.getStage().addEntity(whiteRect);
+		State.getStage().addEntity(group);
 		
 //		for (int i = 0; i < 500; i++) {
 //			Character ctest = new Character(i, i, new Color(i / 500.0f, i / 10000.0f, 0.24f, 1.0f), 10);

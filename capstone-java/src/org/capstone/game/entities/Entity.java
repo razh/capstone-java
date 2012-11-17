@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import org.capstone.game.CircleMeshActor;
 import org.capstone.game.MeshActor;
+import org.capstone.game.MeshGroup;
 import org.capstone.game.MeshType;
 import org.capstone.game.RectMeshActor;
 import org.capstone.game.State;
@@ -19,7 +20,8 @@ import com.badlogic.gdx.utils.SnapshotArray;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 
 public class Entity {
-	protected MeshActor meshActor;
+	// We use Actor instead of MeshActor so that we can use (Mesh)Groups.
+	protected Actor actor;
 	protected MeshType meshType; 
 	protected int team = 0;
 	protected boolean takingFire = false;
@@ -28,13 +30,15 @@ public class Entity {
 	public Entity(MeshType type, float x, float y, Color color, float width, float height) {
 		setMeshType(type);
 		if (type == MeshType.CircleMeshActor)
-			meshActor = new CircleMeshActor();
+			actor = new CircleMeshActor();
 		else if (type == MeshType.RectMeshActor)
-			meshActor = new RectMeshActor();
+			actor = new RectMeshActor();
+		else if (type == MeshType.Group)
+			actor = new MeshGroup();
 		else
-			meshActor = new MeshActor();
+			actor = new MeshActor();
 		
-		meshActor.setEntity(this);
+		((MeshActor) actor).setEntity(this);
 		
 		setPosition(x, y);
 		setColor(color);
@@ -92,7 +96,7 @@ public class Entity {
 		if (!takingFire) {
 			takingFire = true;
 
-			meshActor.addAction(
+			actor.addAction(
 				sequence(
 					parallel(
 						color(new Color(getColor().r + 0.784f, getColor().g, getColor().b, 1.0f), 0.05f, Interpolation.pow3),
@@ -114,75 +118,75 @@ public class Entity {
 	}
 	
 	public float getX() {
-		return meshActor.getX();
+		return actor.getX();
 	}
 	
 	public void setX(float x) {
-		meshActor.setX(x);
+		actor.setX(x);
 	}
 	
 	public float getY() {
-		return meshActor.getY();
+		return actor.getY();
 	}
 	
 	public void setY(float y) {
-		meshActor.setY(y);
+		actor.setY(y);
 	}
 	
 	public void setPosition(float x, float y) {
-		meshActor.setPosition(x, y);
+		actor.setPosition(x, y);
 	}
 	
 	public float getWidth() {
-		return meshActor.getWidth();
+		return actor.getWidth();
 	}
 	
 	public void setWidth(float width) {
-		meshActor.setWidth(width);
+		actor.setWidth(width);
 	}
 	
 	public float getHeight() {
-		return meshActor.getHeight();
+		return actor.getHeight();
 	}
 	
 	public void setHeight(float height) {
-		meshActor.setHeight(height);
+		actor.setHeight(height);
 	}
 	
 	public Color getColor() {
-		return meshActor.getColor();
+		return actor.getColor();
 	}	
 	
 	public void setColor(Color color) {
-		meshActor.setColor(color);
+		actor.setColor(color);
 	}
 	
 	public float getVelocityX() {
-		return meshActor.getVelocityX();
+		return ((MeshActor) actor).getVelocityX();
 	}
 	
 	public void setVelocityX(float velocityX) {
-		meshActor.setVelocityX(velocityX);
+		((MeshActor) actor).setVelocityX(velocityX);
 	}
 	
 	public float getVelocityY() {
-		return meshActor.getVelocityY();
+		return ((MeshActor) actor).getVelocityY();
 	}
 	
 	public void setVelocityY(float velocityY) {
-		meshActor.setVelocityY(velocityY);
+		((MeshActor) actor).setVelocityY(velocityY);
 	}
 	
 	public Vector2 getVelocity() {
-		return meshActor.getVelocity();
+		return ((MeshActor) actor).getVelocity();
 	}
 	
 	public void setVelocity(float velocityX, float velocityY) {
-		meshActor.setVelocity(velocityX, velocityY);
+		((MeshActor) actor).setVelocity(velocityX, velocityY);
 	}
 	
 	public void addAction(Action action) {
-		meshActor.addAction(action);
+		actor.addAction(action);
 	}
 
 	public MeshType getMeshType() {
@@ -193,12 +197,16 @@ public class Entity {
 		this.meshType = meshType;
 	}
 
-	public MeshActor getMeshActor() {
-		return meshActor;
+	public Actor getActor() {
+		return actor;
 	}
 
 	public void setMeshActor(MeshActor meshActor) {
-		this.meshActor = meshActor;
+		this.actor = meshActor;
+	}
+	
+	public Vector2 getIntersection(float x, float y) {
+		return ((MeshActor) actor).getIntersection(x, y);
 	}
 
 	public int getTeam() {

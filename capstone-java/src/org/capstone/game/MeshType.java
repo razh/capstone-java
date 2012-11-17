@@ -2,5 +2,6 @@ package org.capstone.game;
 
 public enum MeshType {
 	CircleMeshActor,
-	RectMeshActor
+	RectMeshActor,
+	Group
 }

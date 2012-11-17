@@ -26,7 +26,7 @@ public class BulletGun extends Gun {
 	
 	public BulletGun(Entity entity, float damage, float rate, float range, float speed,
                      Color color, float radius) {
-		this(entity.getMeshActor(), damage, rate, range, speed, color, radius);
+		this(entity.getActor(), damage, rate, range, speed, color, radius);
 	}
 
 	public void fire() {

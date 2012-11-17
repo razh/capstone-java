@@ -27,7 +27,7 @@ public class LaserGun extends Gun {
 	
 	public LaserGun(Entity entity, float damage, float rate, float range,
 	                Color color, float width) {
-		this(entity.getMeshActor(), damage, rate, range, color, width);
+		this(entity.getActor(), damage, rate, range, color, width);
 	}
 
 	public Color getColor() {

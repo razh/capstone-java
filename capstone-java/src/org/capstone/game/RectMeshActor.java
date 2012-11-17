@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.VertexAttributes.Usage;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 
 public class RectMeshActor extends MeshActor {
 	protected static Mesh mesh;
@@ -65,6 +66,9 @@ public class RectMeshActor extends MeshActor {
 
 	@Override
 	public Actor hit(float x, float y, boolean touchable) {
+		if (touchable && this.getTouchable() != Touchable.enabled)
+			return null;
+		
 		if (getX() - getWidth()  <= x && x <= getX() + getWidth() &&
 		    getY() - getHeight() <= y && y <= getY() + getHeight()) {
 			return this;

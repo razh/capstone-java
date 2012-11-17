@@ -24,7 +24,7 @@ public abstract class Weapon {
 	}
 	
 	public Weapon(Entity entity, float damage, float rate, float range) {
-		setActor(entity.getMeshActor());
+		setActor(entity.getActor());
 		setDamage(damage);
 		setRate(rate);
 		setRange(range);		

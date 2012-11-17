@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.VertexAttributes.Usage;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 
 public class CircleMeshActor extends MeshActor {
 	protected static Mesh mesh;
@@ -60,6 +61,9 @@ public class CircleMeshActor extends MeshActor {
 
 	@Override
 	public Actor hit(float x, float y, boolean touchable) {
+		if (touchable && this.getTouchable() != Touchable.enabled)
+			return null;
+		
 		float dx = x - getX();
 		float dy = y - getY();
 
