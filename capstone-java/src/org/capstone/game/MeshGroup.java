@@ -16,7 +16,6 @@ public class MeshGroup extends Group {
 	protected Rectangle cullingArea;
 	protected ShaderProgram shaderProgram;
 	private MeshStage stage;
-	private final Vector2 point = new Vector2();
 
 	@Override
 	public void draw(SpriteBatch batch, float parentAlpha) {

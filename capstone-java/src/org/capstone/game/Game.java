@@ -1,6 +1,5 @@
 package org.capstone.game;
 
-import org.capstone.game.entities.Bullet;
 import org.capstone.game.entities.Character;
 import org.capstone.game.entities.weapons.BulletGun;
 import org.capstone.game.entities.weapons.LaserGun;
@@ -365,10 +364,10 @@ public class Game implements ApplicationListener {
 		}
 
 		if (Gdx.input.isTouched()) {
-			MeshActor hit = (MeshActor) State.getStage().hit(Gdx.input.getX(), Gdx.input.getY(), true);
+			MeshActor hit = (MeshActor) State.getStage().hit(Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY(), true);
 			if (hit != null)
-				hit.setPosition(Gdx.input.getX(), Gdx.input.getY());
-			((Character) State.getStage().getCharacters().getChildren().get(0)).takeFire();
+				hit.setPosition(Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY());
+//			((Character) State.getStage().getCharacters().getChildren().get(0)).takeFire();
 		}
 
 		if (Gdx.input.isKeyPressed(Input.Keys.W)) {
@@ -386,6 +385,7 @@ public class Game implements ApplicationListener {
 			if (State.debugRendering) {
 				State.debugRendering = false;
 				System.out.println("Debug rendering off.");
+				Gdx.gl.glEnable(GL20.GL_BLEND);
 				Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 			}
 		}
