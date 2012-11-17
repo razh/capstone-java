@@ -364,7 +364,7 @@ public class Game implements ApplicationListener {
 		}
 
 		if (Gdx.input.isTouched()) {
-			MeshActor hit = (MeshActor) State.getStage().hit(Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY(), true);
+			MeshActor hit = (MeshActor) State.getStage().getCharacters().hit(Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY(), true);
 			if (hit != null)
 				hit.setPosition(Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY());
 //			((Character) State.getStage().getCharacters().getChildren().get(0)).takeFire();
