@@ -80,14 +80,15 @@ public class Character extends CircleMeshActor {
 	public void takeFire() {
 		if (!takingFire) {
 			takingFire = true;
+
 			addAction(
 				sequence(
 					parallel(
-						color(new Color(0.96f, 0.204f, 0.220f, 1.0f), 0.05f, Interpolation.pow3),
+						color(new Color(getColor().r + 0.784f, getColor().g, getColor().b, 1.0f), 0.05f, Interpolation.pow3),
 						sizeBy(20, 20, 0.05f, Interpolation.pow3)
 					),
 					parallel(
-						color(new Color(0.173f, 0.204f, 0.220f, 1.0f), 0.15f, Interpolation.linear),
+						color(new Color(getColor().r, getColor().g, getColor().b, 1.0f), 0.15f, Interpolation.linear),
 						sizeBy(-20, -20, 0.15f, Interpolation.linear)
 					),
 					delay(0.1f),

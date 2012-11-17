@@ -30,13 +30,23 @@ public class Game implements ApplicationListener {
 
 	private String vertexShader =
 		"uniform mat4 projection;\n" +
+		"uniform float rotation;\n" +
 		"uniform vec2 translate;\n" +
 		"uniform vec2 scale;\n" +
 		"attribute vec2 a_position;\n" +
 		"\n" +
 		"void main()\n" +
 		"{\n" +
-		"  vec2 position = a_position * scale + translate;\n" +
+		"  vec2 position = vec2(0.0);\n" +
+		"  if (rotation != 0.0) {\n" +
+		"    float r_cos = cos(radians(rotation));\n" +
+		"    float r_sin = sin(radians(rotation));\n" +
+		"    mat2 rotationMatrix = mat2(r_cos, r_sin, -r_sin, r_cos);\n" +
+		"    position = rotationMatrix * a_position * scale + translate;\n" +
+		"  }\n" +
+		"  else {\n" +
+		"    position = a_position * scale + translate;\n" +
+		"  }\n" +
 		"  gl_Position = projection * vec4(position, 0.0, 1.0);\n" +
 		"}";
 
@@ -236,15 +246,19 @@ public class Game implements ApplicationListener {
 		circle.addWeapon(new BulletGun(circle, 1.0f, 0.2f, -1.0f, 600.0f, new Color(0.106f, 0.126f, 0.146f, 1.0f), 4.0f));
 		circle.setVelocity(200.0f, 100.0f);
 		circle.setTeam(1);
+		circle.setRotation(25);
 
 		Character circle2 = new Character(200, 200, new Color(0.173f, 0.204f, 0.220f, 1.0f), 30);
 		circle2.setVelocity(100.0f, 100.0f);
+		
+		Character whiteCircle = new Character(300, 400, new Color(0.941f, 0.941f, 0.827f, 1.0f), 30);		
 
 		new State(width, height);
 		State.getStage().setShaderProgram(shaderProgram);
 
 		State.getStage().addCharacter(circle);
 		State.getStage().addCharacter(circle2);
+		State.getStage().addCharacter(whiteCircle);
 		
 //		for (int i = 0; i < 500; i++) {
 //			Character ctest = new Character(i, i, new Color(i / 500.0f, i / 10000.0f, 0.24f, 1.0f), 10);

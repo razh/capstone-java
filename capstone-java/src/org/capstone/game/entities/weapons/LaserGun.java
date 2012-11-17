@@ -1,9 +1,11 @@
 package org.capstone.game.entities.weapons;
 
+import org.capstone.game.MeshActor;
 import org.capstone.game.State;
 import org.capstone.game.entities.LaserBeam;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;

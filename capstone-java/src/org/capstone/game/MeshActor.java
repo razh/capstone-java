@@ -26,6 +26,7 @@ public class MeshActor extends Actor {
 	}
 
 	public void draw(float parentAlpha) {
+		shaderProgram.setUniformf("rotation", getRotation());
 		shaderProgram.setUniformf("translate", getX(), getY());
 		shaderProgram.setUniformf("scale", getWidth(), getHeight());
 		shaderProgram.setUniformf("v_color", getColor());
@@ -34,9 +35,13 @@ public class MeshActor extends Actor {
 	public Actor hit(float x, float y) {
 		return null;
 	}
-	
+
 	@Override
 	public Vector2 parentToLocalCoordinates(Vector2 parentCoords) {
-		return parentCoords;		
+		return parentCoords;
+	}
+
+	public Vector2 getIntersection(float x, float y) {
+		return new Vector2(getX(), getY());
 	}
 }

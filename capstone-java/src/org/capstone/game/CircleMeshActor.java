@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Mesh;
 import com.badlogic.gdx.graphics.VertexAttribute;
 import com.badlogic.gdx.graphics.VertexAttributes.Usage;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
 public class CircleMeshActor extends PhysicsActor {
@@ -106,5 +107,21 @@ public class CircleMeshActor extends PhysicsActor {
 			setY(height - getHeight());
 			setVelocityY(-getVelocityY());
 		}
+	}
+
+	@Override
+	public Vector2 getIntersection(float x1, float y1) {
+		float x0 = getX();
+		float y0 = getY();
+		float r0 = getWidth();
+
+		float dx = x1 - x0;
+		float dy = y1 - y0;
+
+		float length = (float) Math.sqrt(dx * dx + dy * dy);
+		dx = dx / length;
+		dy = dy / length;
+
+		return new Vector2(x0 + dx * r0, y0 + dy * r0);
 	}
 }
