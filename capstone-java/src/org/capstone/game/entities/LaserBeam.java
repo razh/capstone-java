@@ -37,7 +37,7 @@ public class LaserBeam extends RectMeshActor {
 
 		float distance = (float) Math.sqrt(dx * dx + dy * dy);
 		
-		setHeight(distance / 2.0f);
+		setHeight(distance * 0.5f);
 		
 		// dx and dy are switched here, as height is the length of the laser beam.
 		setRotation((float) (Math.atan2(dx, -dy) * MathUtils.radiansToDegrees));

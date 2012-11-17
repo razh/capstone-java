@@ -116,10 +116,10 @@ public class RectMeshActor extends PhysicsActor {
 
 	@Override
 	public Vector2 getIntersection(float x, float y) {
-		float x0 = getX() - 0.5f * getWidth();
-		float y0 = getY() - 0.5f * getHeight();
-		float x1 = getX() + 0.5f * getWidth();
-		float y1 = getY() + 0.5f * getHeight();
+		float x0 = getX() - getWidth();
+		float y0 = getY() - getHeight();
+		float x1 = getX() + getWidth();
+		float y1 = getY() + getHeight();
 
 		Vector2 point = new Vector2(getX(), getY());
 
