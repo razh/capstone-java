@@ -244,6 +244,8 @@ public class CircleMeshActor extends MeshActor {
 			If the discriminant = 0, there is one intersection point.
 			If the discriminant > 0, there are two intersection points.
 			If the discriminant < 0, there are no intersection points.
+
+			These intersection points lie on the line segment if 0 <= t <= 1.
 		*/
 
 		// Transform coordinates to circle space.
@@ -253,10 +255,12 @@ public class CircleMeshActor extends MeshActor {
 		y1 -= getY();
 		float r = getWidth();
 
+		// Compute coefficients.
 		float a = x0 * x0 + x1 * x1 - 2.0f * x1 * x0 + (y0 - y1) * (y0 - y1);
 		float b = 2.0f * (x0 * x1 + y0 * y1 - x1 * x1 - y1 * y1);
 		float c = x1 * x1 + y1 * y1 - r * r;
 
+		// Compute discriminant.
 		float d = b * b - 4.0f * a * c;
 
 		if (d < 0.0f)

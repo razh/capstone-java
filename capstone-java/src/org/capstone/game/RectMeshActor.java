@@ -223,6 +223,33 @@ public class RectMeshActor extends MeshActor {
 		float w1 = actor.getWidth();
 		float h1 = actor.getHeight();
 
+		float dx = actor.getX() - getX();
+		float dy = actor.getY() - getY();
+		// float distance = Math.sqrt(dx, dy);
+
+		float ax = 0.0f;
+		float ay = 1.0f;
+
+		float r0 = getRotation() * MathUtils.degreesToRadians;
+		if (r0 != 0.0f) {
+			ax = (float) Math.cos(r0);
+			ay = (float) Math.sin(r0);
+		}
+
+		float bx = 0.0f;
+		float by = 0.0f;
+
+		float r1 = getRotation() * MathUtils.degreesToRadians;
+		if (r1 != 0.0f) {
+			bx = (float) Math.cos(r1);
+			by = (float) Math.sin(r1);
+		}
+
+
+		/*
+
+		*/
+
 		// Points in Rectangle starting from top-left, going clockwise.
 		float x0 = -w0;
 		float y0 = -h0;
@@ -243,13 +270,51 @@ public class RectMeshActor extends MeshActor {
 		float y7 =  h1;
 
 		float r0 = getRotation() * MathUtils.degreesToRadians;
-		float r1 = actor.getRotation() * MathUtils.degreesToRadians;
 		if (r0 != 0.0f) {
+			float cos = (float) Math.cos(r0);
+			float sin = (float) Math.sin(r0);
 
+			float rX0 = cos * x0 - sin * y0;
+			float rY0 = sin * x0 + cos * y0;
+			float rX1 = cos * x1 - sin * y1;
+			float rY1 = sin * x1 + cos * y1;
+			float rX2 = cos * x2 - sin * y2;
+			float rY2 = sin * x2 + cos * y2;
+			float rX3 = cos * x3 - sin * y3;
+			float rY3 = sin * x3 + cos * y3;
+
+			x0 = rX0;
+			y0 = rY0;
+			x1 = rX1;
+			y1 = rY1;
+			x2 = rX2;
+			y2 = rY2;
+			x3 = rX3;
+			y3 = rY3;
 		}
 
+		float r1 = actor.getRotation() * MathUtils.degreesToRadians;
 		if (r1 != 0.0f) {
+			float cos = (float) Math.cos(r1);
+			float sin = (float) Math.sin(r1);
 
+			float rX4 = cos * x4 - sin * y4;
+			float rY4 = sin * x4 + cos * y4;
+			float rX5 = cos * x5 - sin * y5;
+			float rY5 = sin * x5 + cos * y5;
+			float rX6 = cos * x6 - sin * y6;
+			float rY6 = sin * x6 + cos * y6;
+			float rX7 = cos * x7 - sin * y7;
+			float rY7 = sin * x7 + cos * y7;
+
+			x4 = rX4;
+			y4 = rY4;
+			x5 = rX5;
+			y5 = rY5;
+			x6 = rX6;
+			y6 = rY6;
+			x7 = rX7;
+			y7 = rY7;
 		}
 
 		return false;
