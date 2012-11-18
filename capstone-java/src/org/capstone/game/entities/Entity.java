@@ -153,6 +153,18 @@ public class Entity {
 		actor.setHeight(height);
 	}
 	
+	public float getRotation() {
+		return actor.getRotation();
+	}
+	
+	public void setRotation(float degrees) {
+		actor.setRotation(degrees);
+	}
+	
+	public void rotateBy(float amountInDegrees) {
+		actor.rotate(amountInDegrees);
+	}
+	
 	public Color getColor() {
 		return actor.getColor();
 	}	
