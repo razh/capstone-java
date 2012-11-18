@@ -70,12 +70,33 @@ public class RectMeshActor extends MeshActor {
 		if (touchable && this.getTouchable() != Touchable.enabled)
 			return null;
 
-		if (getX() - getWidth()  <= x && x <= getX() + getWidth() &&
-		    getY() - getHeight() <= y && y <= getY() + getHeight()) {
+		if (contains(x, y))
 			return this;
-		}
 
 		return null;
+	}
+
+	public boolean contains(float x, float y) {
+		x -= getX();
+		y -= getY();
+
+		float rotation = getRotation() * MathUtils.degreesToRadians;
+		if (rotation != 0.0f) {
+			float cos = (float) Math.cos(rotation);
+			float sin = (float) Math.sin(rotation);
+
+			// Rotated coordinates.
+			float rX =  cos * x + sin * y;
+			float rY = -sin * x + cos * y;
+
+			x = rX;
+			y = rY;
+		}
+
+		if (Math.abs(x) <= getWidth() && Math.abs(y) <= getHeight())
+			return true;
+
+		return false;
 	}
 
 	protected Mesh getMesh() {
@@ -124,7 +145,7 @@ public class RectMeshActor extends MeshActor {
 		float cY = getY();
 
 		float rotation = getRotation() * MathUtils.degreesToRadians;
-		if (rotation != 0) {
+		if (rotation != 0.0f) {
 			float cos = (float) Math.cos(rotation);
 			float sin = (float) Math.sin(rotation);
 
