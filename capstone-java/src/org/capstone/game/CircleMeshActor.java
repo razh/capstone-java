@@ -174,8 +174,6 @@ public class CircleMeshActor extends MeshActor {
 		float x3 = -width;
 		float y3 =  height;
 
-		// System.out.println(x0 + ", " + y0 + ", " + x1 + ", " + y1 + ", " + x2 + ", " + y2 + ", " + x3 + ", " + y3);
-
 		float rotation = actor.getRotation() * MathUtils.degreesToRadians;
 		if (rotation != 0.0f) {
 			float cos = (float) Math.cos(rotation);
@@ -198,8 +196,6 @@ public class CircleMeshActor extends MeshActor {
 			y2 = rY2;
 			x3 = rX3;
 			y3 = rY3;
-
-			// System.out.println(x0 + ", " + y0 + ", " + x1 + ", " + y1 + ", " + x2 + ", " + y2 + ", " + x3 + ", " + y3);
 		}
 
 		float cX = actor.getX();
@@ -214,14 +210,11 @@ public class CircleMeshActor extends MeshActor {
 		x3 += cX;
 		y3 += cY;
 
-		// System.out.println(x0 + ", " + y0 + ", " + x1 + ", " + y1 + ", " + x2 + ", " + y2 + ", " + x3 + ", " + y3);
-
-
-		return // actor.contains(getX(), getY()) ||
-		       intersectsLine(x0, y0, x1, y1);// ||
-		       // intersectsLine(x1, y1, x2, y2) ||
-		       // intersectsLine(x2, y2, x3, y3) ||
-		       // intersectsLine(x3, y3, x1, y1);
+		return actor.contains(getX(), getY()) ||
+		       intersectsLine(x0, y0, x1, y1) ||
+		       intersectsLine(x1, y1, x2, y2) ||
+		       intersectsLine(x2, y2, x3, y3) ||
+		       intersectsLine(x3, y3, x0, y0);
 	}
 
 	// Line intersection test is not used much as actor.contains() suffices.
@@ -267,35 +260,21 @@ public class CircleMeshActor extends MeshActor {
 
 		float d = b * b - 4.0f * a * c;
 
-		if (Gdx.input.isKeyPressed(Input.Keys.F)) {
-			System.out.println("x0: " + x0 + ", y0: " + y0 + ", x1: " + x1 + ", y1: " + y1);
-			System.out.println("a: " + a + ", b: " + b + ", c: " + c);
-			System.out.println(d);
-		}
-
 		if (d < 0.0f)
 			return false;
 
 		if (d == 0.0f) {
 			float t = (float) (-b / (2.0f * a));
-			System.out.println(t);
 			return 0.0f <= t && t <= 1.0f;
 		}
 
 		float t0 = (float) ((-b - Math.sqrt(d)) / (2.0f * a));
 		float t1 = (float) ((-b + Math.sqrt(d)) / (2.0f * a));
 
-		System.out.println(t0 + ", " + t1);
-
 		if (0.0f <= t0 && t0 <= 1.0f || 0.0f <= t1 && t1 <= 1.0f )
 			return true;
-		else
-			return false;
 
-		// System.out.println(t0 + ", " + t1);
-
-		// return b * b - 4.0f * a * c >= 0.0f;
-		// return d >= 0.0f;
+		return false;
 	}
 
 	public boolean intersectsLine(float x0, float y0, float x1, float y1, float rotation) {

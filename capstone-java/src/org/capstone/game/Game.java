@@ -249,18 +249,18 @@ public class Game implements ApplicationListener {
 		Entity redCircle = new CircleEntity(100, 200, new Color(0.941f, 0.247f, 0.208f, 1.0f), 30);
 		redCircle.addWeapon(new BulletGun(redCircle, 1.0f, 0.15f, -1.0f, 600.0f, new Color(0.106f, 0.126f, 0.146f, 1.0f), 4.0f));
 		redCircle.addWeapon(new LaserGun(redCircle, 1.0f, 0.2f, 200.0f, new Color(0.941f, 0.404f, 0.365f, 0.75f), 1.5f));
-//		redCircle.setVelocity(200.0f, 100.0f);
+		redCircle.setVelocity(200.0f, 100.0f);
 		redCircle.setTeam(1);
 //		redCircle.setRotation(25);
 
 		Entity blueCircle = new CircleEntity(200, 200, new Color(0.173f, 0.204f, 0.220f, 1.0f), 30);
-//		blueCircle.setVelocity(100.0f, 100.0f);
+		blueCircle.setVelocity(100.0f, 100.0f);
 
 		Entity whiteRect = new RectEntity(300, 400, new Color(0.941f, 0.941f, 0.827f, 1.0f), 30, 40);
 
 		Entity redRect = new RectEntity(200, 40, new Color(1.0f, 0.0f, 0.0f, 1.0f), 100.0f, 20.0f);
 		redRect.setTeam(1);
-		// redRect.setRotation(35.0f);
+		redRect.setRotation(35.0f);
 		redRect.getActor().setTouchable(Touchable.disabled);
 
 		Entity group = new EntityGroup(MeshType.RectMeshActor, 400, 400, new Color(1.0f, 0.0f, 0.0f, 1.0f), 20, 20, 10, 60);
@@ -270,9 +270,9 @@ public class Game implements ApplicationListener {
 		State.getStage().setShaderProgram(shaderProgram);
 
 		State.getStage().addEntity(redCircle);
-		// State.getStage().addEntity(blueCircle);
-		// State.getStage().addEntity(whiteRect);
-		// State.getStage().addEntity(group);
+		State.getStage().addEntity(blueCircle);
+		State.getStage().addEntity(whiteRect);
+		State.getStage().addEntity(group);
 		State.getStage().addEntity(redRect);
 
 //		for (int i = 0; i < 500; i++) {
@@ -378,17 +378,18 @@ public class Game implements ApplicationListener {
 		if (State.getStage().getRoot()!= null) {
 			// State.getStage().getRoot().getChildren().get(0).setPosition(Gdx.input.getX(), -Gdx.input.getY() + State.getHeight());
 			// if (((CircleMeshActor) State.getStage().getEntities().getChildren().get(0)).intersectsLine(0, 40, 1280, 40)) {
-			RectMeshActor actor = ((RectMeshActor) State.getStage().getEntities().getChildren().get(1));
-			if (((CircleMeshActor) State.getStage().getEntities().getChildren().get(0)).intersects(actor)) {
-				System.out.println("HELLO!");
-			}
+			// 	System.out.println("HELLO!");
+			// }
 		}
 
 		if (Gdx.input.isTouched()) {
-			// MeshActor hit = (MeshActor) State.getStage().getEntities().hit(Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY(), true);
-			// if (hit != null)
-			// 	hit.setPosition(Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY());
-			State.getStage().getEntities().getChildren().get(0).setPosition(Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY());
+			if (!Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) {
+				MeshActor hit = (MeshActor) State.getStage().getEntities().hit(Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY(), true);
+				if (hit != null)
+					hit.setPosition(Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY());
+			} else {
+				State.getStage().getEntities().getChildren().get(0).setPosition(Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY());
+			}
 		}
 
 		if (Gdx.input.isKeyPressed(Input.Keys.W)) {
@@ -422,9 +423,7 @@ public class Game implements ApplicationListener {
 		}
 
 		if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
-			// State.getStage().getEntities().getChildren().get(2).rotate(1.0f);
-			State.getStage().getEntities().getChildren().get(1).rotate(1.0f);
-
+			State.getStage().getEntities().getChildren().get(2).rotate(1.0f);
 		}
 	}
 
