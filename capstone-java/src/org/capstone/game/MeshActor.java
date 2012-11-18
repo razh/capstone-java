@@ -61,6 +61,10 @@ public class MeshActor extends PhysicsActor {
 	public Vector2 getIntersection(float x, float y) {
 		return new Vector2(getX(), getY());
 	}
+	
+	public boolean intersects(Actor actor) {
+		return false;
+	}
 
 	public Entity getEntity() {
 		return entity;

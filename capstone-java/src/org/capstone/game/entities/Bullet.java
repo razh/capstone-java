@@ -40,22 +40,14 @@ public class Bullet extends CircleEntity {
 			for (int i = 0; i < characters.size; i++) {
 				Actor child = actors[i];
 
-				if (child instanceof CircleMeshActor) {
+				if (child instanceof CircleMeshActor || child instanceof RectMeshActor) {
 					if (((MeshActor) child).getEntity().getTeam() != getTeam()) {
-						if (((CircleMeshActor) getActor()).intersects(((CircleMeshActor) child))) {
+						if (intersects(child)) {
 							((MeshActor) child).getEntity().takeFire();
 							removeBullet = true;
 							break;
 						}
 					}
-				} else if (child instanceof RectMeshActor) {
-					if (((MeshActor) child).getEntity().getTeam() != getTeam()) {
-						if (((CircleMeshActor) getActor()).intersects(((RectMeshActor) child))) {
-							((MeshActor) child).getEntity().takeFire();
-							removeBullet = true;
-							break;
-						}
-					}	
 				}
 			}
 

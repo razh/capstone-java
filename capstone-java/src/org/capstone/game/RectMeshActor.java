@@ -216,6 +216,10 @@ public class RectMeshActor extends MeshActor {
 
 		return point;
 	}
+	
+	public boolean intersects(CircleMeshActor actor) {
+		return actor.intersects(this);
+	}
 
 	private Vector2 intersectionOfTwoLines(float x0, float y0,
 	                                       float x1, float y1,

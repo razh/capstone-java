@@ -200,6 +200,10 @@ public class Entity {
 	public Actor getActor() {
 		return actor;
 	}
+	
+	public MeshActor getMeshActor() {
+		return (MeshActor) actor;
+	}
 
 	public void setMeshActor(MeshActor meshActor) {
 		this.actor = meshActor;
@@ -207,6 +211,10 @@ public class Entity {
 	
 	public Vector2 getIntersection(float x, float y) {
 		return ((MeshActor) actor).getIntersection(x, y);
+	}
+
+	public boolean intersects(Actor actor) {
+		return getMeshActor().intersects(actor);
 	}
 
 	public int getTeam() {

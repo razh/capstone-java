@@ -129,6 +129,16 @@ public class CircleMeshActor extends MeshActor {
 
 		return new Vector2(x0 + dx * r0, y0 + dy * r0);
 	}
+	
+	public boolean intersects(Actor actor) {
+		if (actor instanceof CircleMeshActor) {
+			return intersects((CircleMeshActor) actor);
+		} else if (actor instanceof RectMeshActor) {
+			return intersects((RectMeshActor) actor);
+		} else {
+			return false;
+		}
+	}
 
 	public boolean intersects(CircleMeshActor actor) {
 		float dx = actor.getX() - getX();
