@@ -30,7 +30,8 @@ public class EntityGroup extends Entity {
 		
 		Entity segment;
 		for (int i = 1; i < numSegments; i++) {
-			segment = new Entity(type, x + i * 60.0f, y, new Color(color.r - i * 0.1f, color.g, color.b, color.a), width, height);
+//			segment = new Entity(type, x + i * 60.0f, y, new Color(color.r - i * 0.1f, color.g, color.b, color.a), width, height);
+			segment = new Entity(type, x, y, color, width, height);
 			segmentGroup.addActor(segment.getActor());
 			segments.add(segment);
 			
@@ -40,12 +41,7 @@ public class EntityGroup extends Entity {
 	
 	public void act(float delta) {
 		super.act(delta);
-		
-		// TODO: Very hacky. To prevent stack overflow.
-		((MeshActor) actor).setEntity(null);
-		actor.act(delta);
-		((MeshActor) actor).setEntity(this);
-		
+
 		float x0, y0, x1, y1;
 		float dx, dy;
 		float distance;
@@ -97,6 +93,11 @@ public class EntityGroup extends Entity {
 	
 	public Vector2 getIntersection(float x, float y) {
 		return ((MeshActor) actor).getIntersection(x, y);
+	}
+	
+	public void takeFire() {
+		System.out.println("TAKING FIRE");
+		super.takeFire();
 	}
 	
 	@Override

@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Mesh;
 import com.badlogic.gdx.graphics.VertexAttribute;
 import com.badlogic.gdx.graphics.VertexAttributes.Usage;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
@@ -63,7 +64,7 @@ public class CircleMeshActor extends MeshActor {
 	public Actor hit(float x, float y, boolean touchable) {
 		if (touchable && this.getTouchable() != Touchable.enabled)
 			return null;
-		
+
 		float dx = x - getX();
 		float dy = y - getY();
 
@@ -127,5 +128,32 @@ public class CircleMeshActor extends MeshActor {
 		dy = dy / length;
 
 		return new Vector2(x0 + dx * r0, y0 + dy * r0);
+	}
+
+	public boolean intersectsRect(RectMeshActor actor) {
+		float rotation = getRotation() * MathUtils.degreesToRadians;
+		if (actor.getRotation() != 0) {
+			float x0 = -actor.getWidth();
+			float y0 = -actor.getHeight();
+			float x1 = actor.getX() - actor.getWidth();
+			float y1 = actor.getX() - actor.getWidth();
+			float x2 = actor.getX() - actor.getWidth();
+			float y2 = actor.getX() - actor.getWidth();
+			float x3 = actor.getX() - actor.getWidth();
+			float y3 = actor.getX() - actor.getWidth();
+		}
+
+		return false;
+	}
+
+	public boolean intersectsRect(float x0, float y0,
+	                              float x1, float y1,
+	                              float x2, float y2,
+	                              float x3, float y3) {
+		return false;
+	}
+
+	public boolean intersectsLine() {
+		return true;
 	}
 }

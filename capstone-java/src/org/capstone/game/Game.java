@@ -248,16 +248,16 @@ public class Game implements ApplicationListener {
 		Entity redCircle = new CircleEntity(100, 200, new Color(0.941f, 0.247f, 0.208f, 1.0f), 30);
 		redCircle.addWeapon(new BulletGun(redCircle, 1.0f, 0.15f, -1.0f, 600.0f, new Color(0.106f, 0.126f, 0.146f, 1.0f), 4.0f));
 		redCircle.addWeapon(new LaserGun(redCircle, 1.0f, 0.2f, 200.0f, new Color(0.941f, 0.404f, 0.365f, 0.75f), 1.5f));
-		redCircle.setVelocity(200.0f, 100.0f);
+//		redCircle.setVelocity(200.0f, 100.0f);
 		redCircle.setTeam(1);
 //		redCircle.setRotation(25);
 
 		Entity blueCircle = new CircleEntity(200, 200, new Color(0.173f, 0.204f, 0.220f, 1.0f), 30);
-		blueCircle.setVelocity(100.0f, 100.0f);
+//		blueCircle.setVelocity(100.0f, 100.0f);
 		
 		Entity whiteRect = new RectEntity(300, 400, new Color(0.941f, 0.941f, 0.827f, 1.0f), 30, 40);
 		
-		Entity group = new EntityGroup(MeshType.CircleMeshActor, 400, 400, new Color(1.0f, 0.0f, 0.0f, 1.0f), 20, 20, 10, 60);
+		Entity group = new EntityGroup(MeshType.RectMeshActor, 400, 400, new Color(1.0f, 0.0f, 0.0f, 1.0f), 20, 20, 10, 60);
 		group.setVelocity(200.0f, 100.0f);
 
 		new State(width, height, new Color(0.572f, 0.686f, 0.624f, 1.0f));
@@ -407,6 +407,10 @@ public class Game implements ApplicationListener {
 		if (Gdx.input.isKeyPressed(Input.Keys.N)) {}
 		if (Gdx.input.isKeyPressed(Input.Keys.Q)) {
 			running = false;
+		}
+		
+		if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
+			State.getStage().getEntities().getChildren().get(2).rotate(1.0f);
 		}
 	}
 

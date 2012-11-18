@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Mesh;
 import com.badlogic.gdx.graphics.VertexAttribute;
 import com.badlogic.gdx.graphics.VertexAttributes.Usage;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
@@ -68,7 +69,7 @@ public class RectMeshActor extends MeshActor {
 	public Actor hit(float x, float y, boolean touchable) {
 		if (touchable && this.getTouchable() != Touchable.enabled)
 			return null;
-		
+
 		if (getX() - getWidth()  <= x && x <= getX() + getWidth() &&
 		    getY() - getHeight() <= y && y <= getY() + getHeight()) {
 			return this;
@@ -118,44 +119,78 @@ public class RectMeshActor extends MeshActor {
 
 	@Override
 	public Vector2 getIntersection(float x, float y) {
-		float x0 = getX() - getWidth();
-		float y0 = getY() - getHeight();
-		float x1 = getX() + getWidth();
-		float y1 = getY() + getHeight();
+		// Center of rectangle.
+		float cX = getX();
+		float cY = getY();
 
-		Vector2 point = new Vector2(getX(), getY());
+		float rotation = getRotation() * MathUtils.degreesToRadians;
+		if (rotation != 0) {
+			float cos = (float) Math.cos(rotation);
+			float sin = (float) Math.sin(rotation);
+
+			x -= cX;
+			y -= cY;
+
+			// Rotated coordinates.
+			float rX =  cos * x + sin * y;
+			float rY = -sin * x + cos * y;
+
+			x = rX;
+			y = rY;
+
+			cX = 0.0f;
+			cY = 0.0f;
+		}
+
+		float x0 = cX - getWidth();
+		float y0 = cY - getHeight();
+		float x1 = cX + getWidth();
+		float y1 = cY + getHeight();
+
+		Vector2 point = new Vector2(cX, cY);
 
 		// Divide the areas into a 3 by 3 grid for a total of 9 areas (1 center).
 		if (x0 <= x && x <= x1) {
 			if (y <= y0) {
-				point = intersectionOfTwoLines(getX(), getY(), x, y, x0, y0, x1, y0);
+				point = intersectionOfTwoLines(cX, cY, x, y, x0, y0, x1, y0);
 			} else if (y1 <= y) {
-				point = intersectionOfTwoLines(getX(), getY(), x, y, x0, y1, x1, y1);
+				point = intersectionOfTwoLines(cX, cY, x, y, x0, y1, x1, y1);
 			}
 		} else if (y0 <= y && y <= y1) {
 			if (x <= x0) {
-				point = intersectionOfTwoLines(getX(), getY(), x, y, x0, y0, x0, y1);
+				point = intersectionOfTwoLines(cX, cY, x, y, x0, y0, x0, y1);
 			} else if (x1 <= x) {
-				point = intersectionOfTwoLines(getX(), getY(), x, y, x1, y0, x1, y1);
+				point = intersectionOfTwoLines(cX, cY, x, y, x1, y0, x1, y1);
 			}
 		} else {
-			float dx = x - getX();
-			float dy = y - getY();
+			float dx = x - cX;
+			float dy = y - cY;
 
 			float m = -dy / dx;
 			if (Math.abs(m) > getHeight() / getWidth()) {
 				if (y <= y0) {
-					point = intersectionOfTwoLines(getX(), getY(), x, y, x0, y0, x1, y0);
+					point = intersectionOfTwoLines(cX, cY, x, y, x0, y0, x1, y0);
 				} else if (y1 <= y) {
-					point = intersectionOfTwoLines(getX(), getY(), x, y, x0, y1, x1, y1);
+					point = intersectionOfTwoLines(cX, cY, x, y, x0, y1, x1, y1);
 				}
 			} else {
 				if (x <= x0) {
-					point = intersectionOfTwoLines(getX(), getY(), x, y, x0, y0, x0, y1);
+					point = intersectionOfTwoLines(cX, cY, x, y, x0, y0, x0, y1);
 				} else if (x1 <= x) {
-					point = intersectionOfTwoLines(getX(), getY(), x, y, x1, y0, x1, y1);
+					point = intersectionOfTwoLines(cX, cY, x, y, x1, y0, x1, y1);
 				}
 			}
+		}
+
+		if (rotation != 0) {
+			float cos = (float) Math.cos(rotation);
+			float sin = (float) Math.sin(rotation);
+
+			float rX = cos * point.x - sin * point.y;
+			float rY = sin * point.x + cos * point.y;
+
+			point.x = rX + getX();
+			point.y = rY + getY();
 		}
 
 		return point;

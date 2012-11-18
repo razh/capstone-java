@@ -1,6 +1,9 @@
 package org.capstone.game.entities;
 
+import org.capstone.game.CircleMeshActor;
 import org.capstone.game.MeshActor;
+import org.capstone.game.MeshGroup;
+import org.capstone.game.RectMeshActor;
 import org.capstone.game.State;
 
 import com.badlogic.gdx.graphics.Color;
@@ -37,14 +40,17 @@ public class Bullet extends CircleEntity {
 			for (int i = 0; i < characters.size; i++) {
 				Actor child = actors[i];
 
-				if (child instanceof MeshActor) {
+				if (child instanceof CircleMeshActor) {
 					if (((MeshActor) child).getEntity().getTeam() != getTeam()) {
 						distance = distanceToActor(child);
 						if (distance < getWidth() + child.getWidth()) {
 							((MeshActor) child).getEntity().takeFire();
 							removeBullet = true;
+							break;
 						}
 					}
+				} else if (child instanceof RectMeshActor) {
+					
 				}
 			}
 
