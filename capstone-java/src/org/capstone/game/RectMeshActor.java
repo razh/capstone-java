@@ -140,17 +140,14 @@ public class RectMeshActor extends MeshActor {
 
 	@Override
 	public Vector2 getIntersection(float x, float y) {
-		// Center of rectangle.
-		float cX = getX();
-		float cY = getY();
+		// Translate coordinates to rectangle space.
+		x -= getX();
+		y -= getY();
 
 		float rotation = getRotation() * MathUtils.degreesToRadians;
 		if (rotation != 0.0f) {
 			float cos = (float) Math.cos(rotation);
 			float sin = (float) Math.sin(rotation);
-
-			x -= cX;
-			y -= cY;
 
 			// Rotated coordinates.
 			float rX =  cos * x + sin * y;
@@ -158,61 +155,59 @@ public class RectMeshActor extends MeshActor {
 
 			x = rX;
 			y = rY;
-
-			cX = 0.0f;
-			cY = 0.0f;
 		}
 
-		float x0 = cX - getWidth();
-		float y0 = cY - getHeight();
-		float x1 = cX + getWidth();
-		float y1 = cY + getHeight();
+		float x0 = -getWidth();
+		float y0 = -getHeight();
+		float x1 =  getWidth();
+		float y1 =  getHeight();
 
-		Vector2 point = new Vector2(cX, cY);
+		Vector2 point = new Vector2(0.0f, 0.0f);
 
 		// Divide the areas into a 3 by 3 grid for a total of 9 areas (1 center).
 		if (x0 <= x && x <= x1) {
 			if (y <= y0) {
-				point = intersectionOfTwoLines(cX, cY, x, y, x0, y0, x1, y0);
+				point = intersectionOfTwoLines(0.0f, 0.0f, x, y, x0, y0, x1, y0);
 			} else if (y1 <= y) {
-				point = intersectionOfTwoLines(cX, cY, x, y, x0, y1, x1, y1);
+				point = intersectionOfTwoLines(0.0f, 0.0f, x, y, x0, y1, x1, y1);
 			}
 		} else if (y0 <= y && y <= y1) {
 			if (x <= x0) {
-				point = intersectionOfTwoLines(cX, cY, x, y, x0, y0, x0, y1);
+				point = intersectionOfTwoLines(0.0f, 0.0f, x, y, x0, y0, x0, y1);
 			} else if (x1 <= x) {
-				point = intersectionOfTwoLines(cX, cY, x, y, x1, y0, x1, y1);
+				point = intersectionOfTwoLines(0.0f, 0.0f, x, y, x1, y0, x1, y1);
 			}
 		} else {
-			float dx = x - cX;
-			float dy = y - cY;
-
-			float m = -dy / dx;
+			float m = -y / x;
 			if (Math.abs(m) > getHeight() / getWidth()) {
 				if (y <= y0) {
-					point = intersectionOfTwoLines(cX, cY, x, y, x0, y0, x1, y0);
+					point = intersectionOfTwoLines(0.0f, 0.0f, x, y, x0, y0, x1, y0);
 				} else if (y1 <= y) {
-					point = intersectionOfTwoLines(cX, cY, x, y, x0, y1, x1, y1);
+					point = intersectionOfTwoLines(0.0f, 0.0f, x, y, x0, y1, x1, y1);
 				}
 			} else {
 				if (x <= x0) {
-					point = intersectionOfTwoLines(cX, cY, x, y, x0, y0, x0, y1);
+					point = intersectionOfTwoLines(0.0f, 0.0f, x, y, x0, y0, x0, y1);
 				} else if (x1 <= x) {
-					point = intersectionOfTwoLines(cX, cY, x, y, x1, y0, x1, y1);
+					point = intersectionOfTwoLines(0.0f, 0.0f, x, y, x1, y0, x1, y1);
 				}
 			}
 		}
 
-		if (rotation != 0) {
+		if (rotation != 0.0f) {
 			float cos = (float) Math.cos(rotation);
 			float sin = (float) Math.sin(rotation);
 
 			float rX = cos * point.x - sin * point.y;
 			float rY = sin * point.x + cos * point.y;
 
-			point.x = rX + getX();
-			point.y = rY + getY();
+			point.x = rX;
+			point.y = rY;
 		}
+
+		// Translate back to world space.
+		point.x += getX();
+		point.y += getY();
 
 		return point;
 	}
@@ -223,6 +218,40 @@ public class RectMeshActor extends MeshActor {
 
 	public boolean intersects(RectMeshActor actor) {
 		// Separating Axis Theorem.
+		float w0 = getWidth();
+		float h0 = getHeight();
+		float w1 = actor.getWidth();
+		float h1 = actor.getHeight();
+
+		// Points in Rectangle starting from top-left, going clockwise.
+		float x0 = -w0;
+		float y0 = -h0;
+		float x1 =  w0;
+		float y1 = -h0;
+		float x2 =  w0;
+		float y2 =  h0;
+		float x3 = -w0;
+		float y3 =  h0;
+
+		float x4 = -w1;
+		float y4 = -h1;
+		float x5 =  w1;
+		float y5 = -h1;
+		float x6 =  w1;
+		float y6 =  h1;
+		float x7 = -w1;
+		float y7 =  h1;
+
+		float r0 = getRotation() * MathUtils.degreesToRadians;
+		float r1 = actor.getRotation() * MathUtils.degreesToRadians;
+		if (r0 != 0.0f) {
+
+		}
+
+		if (r1 != 0.0f) {
+
+		}
+
 		return false;
 	}
 

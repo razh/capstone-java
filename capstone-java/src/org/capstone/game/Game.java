@@ -384,11 +384,11 @@ public class Game implements ApplicationListener {
 
 		if (Gdx.input.isTouched()) {
 			if (!Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) {
+				State.getStage().getEntities().getChildren().get(0).setPosition(Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY());
+			} else {
 				MeshActor hit = (MeshActor) State.getStage().getEntities().hit(Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY(), true);
 				if (hit != null)
 					hit.setPosition(Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY());
-			} else {
-				State.getStage().getEntities().getChildren().get(0).setPosition(Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY());
 			}
 		}
 

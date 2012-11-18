@@ -24,7 +24,7 @@ public class LaserGun extends Gun {
 		setColor(color);
 		laserBeam = new LaserBeam(actor, getTargetX(), getTargetY(), getColor(), width);
 	}
-	
+
 	public LaserGun(Entity entity, float damage, float rate, float range,
 	                Color color, float width) {
 		this(entity.getActor(), damage, rate, range, color, width);
@@ -68,7 +68,10 @@ public class LaserGun extends Gun {
 
 	public void fire() {
 		super.fire();
-		
+
+		if (targetActor == null)
+			return;
+
 		Vector2 point = ((MeshActor) targetActor).getIntersection(actor.getX(), actor.getY());
 		if (point == null)
 			return;

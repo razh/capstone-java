@@ -22,7 +22,7 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 public class Entity {
 	// We use Actor instead of MeshActor so that we can use (Mesh)Groups.
 	protected Actor actor;
-	protected MeshType meshType; 
+	protected MeshType meshType;
 	protected int team = 0;
 	protected boolean takingFire = false;
 	protected ArrayList<Weapon> weapons;
@@ -37,9 +37,9 @@ public class Entity {
 			actor = new MeshGroup();
 		else
 			actor = new MeshActor();
-		
+
 		((MeshActor) actor).setEntity(this);
-		
+
 		setPosition(x, y);
 		setColor(color);
 		setWidth(width);
@@ -52,7 +52,7 @@ public class Entity {
 		Actor enemy = this.getNearestActor(State.getStage().getEntities().getChildren());
 		if (enemy == null)
 			return;
-		
+
 		for (int i = 0; i < weapons.size(); i++) {
 			weapons.get(i).setActorAsTarget(enemy);
 			weapons.get(i).act(delta);
@@ -88,7 +88,7 @@ public class Entity {
 		Actor[] actorArray = actors.begin();
 		Actor actor = getNearestActor(actorArray);
 		actors.end();
-		
+
 		return actor;
 	}
 
@@ -116,87 +116,87 @@ public class Entity {
 			);
 		}
 	}
-	
+
 	public float getX() {
 		return actor.getX();
 	}
-	
+
 	public void setX(float x) {
 		actor.setX(x);
 	}
-	
+
 	public float getY() {
 		return actor.getY();
 	}
-	
+
 	public void setY(float y) {
 		actor.setY(y);
 	}
-	
+
 	public void setPosition(float x, float y) {
 		actor.setPosition(x, y);
 	}
-	
+
 	public float getWidth() {
 		return actor.getWidth();
 	}
-	
+
 	public void setWidth(float width) {
 		actor.setWidth(width);
 	}
-	
+
 	public float getHeight() {
 		return actor.getHeight();
 	}
-	
+
 	public void setHeight(float height) {
 		actor.setHeight(height);
 	}
-	
+
 	public float getRotation() {
 		return actor.getRotation();
 	}
-	
+
 	public void setRotation(float degrees) {
 		actor.setRotation(degrees);
 	}
-	
+
 	public void rotateBy(float amountInDegrees) {
 		actor.rotate(amountInDegrees);
 	}
-	
+
 	public Color getColor() {
 		return actor.getColor();
-	}	
-	
+	}
+
 	public void setColor(Color color) {
 		actor.setColor(color);
 	}
-	
+
 	public float getVelocityX() {
 		return ((MeshActor) actor).getVelocityX();
 	}
-	
+
 	public void setVelocityX(float velocityX) {
 		((MeshActor) actor).setVelocityX(velocityX);
 	}
-	
+
 	public float getVelocityY() {
 		return ((MeshActor) actor).getVelocityY();
 	}
-	
+
 	public void setVelocityY(float velocityY) {
 		((MeshActor) actor).setVelocityY(velocityY);
 	}
-	
+
 	public Vector2 getVelocity() {
 		return ((MeshActor) actor).getVelocity();
 	}
-	
+
 	public void setVelocity(float velocityX, float velocityY) {
 		((MeshActor) actor).setVelocity(velocityX, velocityY);
 	}
-	
+
 	public void addAction(Action action) {
 		actor.addAction(action);
 	}
@@ -212,7 +212,7 @@ public class Entity {
 	public Actor getActor() {
 		return actor;
 	}
-	
+
 	public MeshActor getMeshActor() {
 		return (MeshActor) actor;
 	}
@@ -220,7 +220,7 @@ public class Entity {
 	public void setMeshActor(MeshActor meshActor) {
 		this.actor = meshActor;
 	}
-	
+
 	public Vector2 getIntersection(float x, float y) {
 		return ((MeshActor) actor).getIntersection(x, y);
 	}
@@ -236,11 +236,11 @@ public class Entity {
 	public void setTeam(int team) {
 		this.team = team;
 	}
-	
+
 	public void addWeapon(Weapon weapon) {
 		weapons.add(weapon);
 	}
-	
+
 	public void removeWeapon(Weapon weapon) {
 		weapons.remove(weapon);
 	}
