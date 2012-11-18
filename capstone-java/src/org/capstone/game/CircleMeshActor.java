@@ -217,7 +217,6 @@ public class CircleMeshActor extends MeshActor {
 		       intersectsLine(x3, y3, x0, y0);
 	}
 
-	// Line intersection test is not used much as actor.contains() suffices.
 	public boolean intersectsLine(float x0, float y0, float x1, float y1) {
 		/* Given the parametric formula of a line segment formed by the points
 		   (x, y) and (i, j):

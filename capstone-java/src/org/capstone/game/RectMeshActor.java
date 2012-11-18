@@ -216,9 +216,14 @@ public class RectMeshActor extends MeshActor {
 
 		return point;
 	}
-	
+
 	public boolean intersects(CircleMeshActor actor) {
 		return actor.intersects(this);
+	}
+
+	public boolean intersects(RectMeshActor actor) {
+		// Separating Axis Theorem.
+		return false;
 	}
 
 	private Vector2 intersectionOfTwoLines(float x0, float y0,
