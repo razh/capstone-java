@@ -1,6 +1,7 @@
 package org.capstone.game;
 
 import org.capstone.game.entities.Entity;
+import org.capstone.game.entities.EntityGroup;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
@@ -9,6 +10,8 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.SnapshotArray;
 
 public class MeshGroup extends Group {
@@ -120,6 +123,10 @@ public class MeshGroup extends Group {
 		super.addActor(actor);
 	}
 	
+	public Actor getFirstActor() {
+		return getChildren().get(0);
+	}
+	
 	@Override
 	public float getX() {
 		return getChildren().get(0).getX();		
@@ -129,13 +136,21 @@ public class MeshGroup extends Group {
 	public float getY() {
 		return getChildren().get(0).getY();		
 	}
-	
+
 	public Vector2 getIntersection(float x, float y) {
 		return ((MeshActor) getChildren().get(0)).getIntersection(x, y);
 	}
 	
 	@Override
 	public Actor hit(float x, float y, boolean touchable) {
-		return super.hit(x, y, touchable);
+		if (touchable && getTouchable() == Touchable.disabled) return null;
+		Array<Actor> children = getChildren();
+		for (int i = children.size - 1; i >= 0; i--) {
+			Actor child = children.get(i);
+			if (!child.isVisible()) continue;
+			Actor hit = child.hit(x, y, touchable);
+			if (hit != null) return hit;
+		}
+		return null;
 	}
 }

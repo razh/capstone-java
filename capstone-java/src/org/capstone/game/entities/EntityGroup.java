@@ -5,6 +5,7 @@ import org.capstone.game.MeshGroup;
 import org.capstone.game.MeshType;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
@@ -16,6 +17,8 @@ public class EntityGroup extends Entity {
 	protected float segmentDistance;
 	protected Array<Entity> segments = new Array<Entity>();
 	protected MeshGroup segmentGroup = new MeshGroup();
+	
+	private boolean oriented = false;
 
 	public EntityGroup(MeshType type, float x, float y, Color color,
 	                   float width, float height, int numSegments, float segmentDistance) {
@@ -42,6 +45,10 @@ public class EntityGroup extends Entity {
 	public void act(float delta) {
 		super.act(delta);
 
+		if (isOriented()) {
+			segments.get(0).setRotation((float) Math.atan2(segments.get(0).getVelocityY(), segments.get(0).getVelocityX()) * MathUtils.radiansToDegrees);
+		}
+
 		float x0, y0, x1, y1;
 		float dx, dy;
 		float distance;
@@ -62,6 +69,10 @@ public class EntityGroup extends Entity {
 				segments.get(i + 1).setX(x0 + dx);
 				segments.get(i + 1).setY(y0 + dy);
 			}
+			
+			if (isOriented()) {
+				segments.get(i + 1).setRotation((float) Math.atan2(dy, dx) * MathUtils.radiansToDegrees);
+			}
 		}
 	}
 
@@ -81,20 +92,14 @@ public class EntityGroup extends Entity {
 		this.segmentDistance = segmentDistance;
 	}
 	
-	@Override
-	public float getX() {
-		return actor.getX();
+	public boolean isOriented() {
+		return oriented;
 	}
-	
-	@Override
-	public float getY() {
-		return actor.getY();
+
+	public void setOriented(boolean oriented) {
+		this.oriented = oriented;
 	}
-	
-	public Vector2 getIntersection(float x, float y) {
-		return ((MeshActor) actor).getIntersection(x, y);
-	}
-	
+
 	public void takeFire() {
 		super.takeFire();
 	}

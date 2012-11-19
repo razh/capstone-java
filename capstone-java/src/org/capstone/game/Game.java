@@ -19,6 +19,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 
 
@@ -258,13 +259,17 @@ public class Game implements ApplicationListener {
 
 		Entity whiteRect = new RectEntity(300, 400, new Color(0.941f, 0.941f, 0.827f, 1.0f), 30, 70);
 
-		Entity redRect = new RectEntity(200, 40, new Color(1.0f, 0.0f, 0.0f, 1.0f), 100.0f, 20.0f);
+		Entity redRect = new RectEntity(200, 40, new Color(0.941f, 0.247f, 0.208f, 1.0f), 100.0f, 20.0f);
 		redRect.setTeam(1);
 		redRect.setRotation(35.0f);
 		redRect.getActor().setTouchable(Touchable.disabled);
 
-		Entity group = new EntityGroup(MeshType.RectMeshActor, 400, 400, new Color(1.0f, 0.0f, 0.0f, 1.0f), 20, 20, 10, 60);
+		Entity group = new EntityGroup(MeshType.RectMeshActor, 400, 400, new Color(0.941f, 0.247f, 0.208f, 1.0f), 20, 10, 10, 60);
 		group.setVelocity(200.0f, 100.0f);
+		((EntityGroup) group).setOriented(true);
+		
+		Entity group2 = new EntityGroup(MeshType.CircleMeshActor, 600, 400, new Color(0.173f, 0.204f, 0.220f, 1.0f), 20, 20, 10, 80);
+		group2.setVelocity(-200.0f, 100.0f);
 
 		new State(width, height, new Color(0.572f, 0.686f, 0.624f, 1.0f));
 		State.getStage().setShaderProgram(shaderProgram);
@@ -273,6 +278,7 @@ public class Game implements ApplicationListener {
 		State.getStage().addEntity(blueCircle);
 		State.getStage().addEntity(whiteRect);
 		State.getStage().addEntity(group);
+		State.getStage().addEntity(group2);
 		State.getStage().addEntity(redRect);
 
 //		for (int i = 0; i < 500; i++) {
@@ -384,16 +390,17 @@ public class Game implements ApplicationListener {
 
 		if (Gdx.input.isTouched()) {
 			if (!Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) {
-				State.getStage().getEntities().getChildren().get(0).setPosition(Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY());
-			} else {
-				MeshActor hit = (MeshActor) State.getStage().getEntities().hit(Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY(), true);
+				Actor hit = State.getStage().getEntities().hit(Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY(), true);
 				if (hit != null)
 					hit.setPosition(Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY());
+			} else {
+				State.getStage().getEntities().getChildren().get(0).setPosition(Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY());
 			}
 		}
 
 		if (Gdx.input.isKeyPressed(Input.Keys.W)) {
-			System.out.println(State.getStage().getProjectiles().getChildren().size);
+			System.out.println("entities: " + State.getStage().getEntities().getChildren().size);
+			System.out.println("projectiles: " + State.getStage().getProjectiles().getChildren().size);
 //			System.out.println("vel" + ((Bullet) State.getStage().getProjectiles().getChildren().get(0)).getVelocityX() + ", " + ((Bullet) State.getStage().getProjectiles().getChildren().get(0)).getVelocityY());
 		}
 		if (Gdx.input.isKeyPressed(Input.Keys.A)) {}

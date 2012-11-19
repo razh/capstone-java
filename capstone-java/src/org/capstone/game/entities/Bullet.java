@@ -3,6 +3,7 @@ package org.capstone.game.entities;
 import org.capstone.game.CircleMeshActor;
 import org.capstone.game.MeshActor;
 import org.capstone.game.MeshGroup;
+import org.capstone.game.MeshType;
 import org.capstone.game.RectMeshActor;
 import org.capstone.game.State;
 
@@ -13,18 +14,26 @@ import com.badlogic.gdx.utils.SnapshotArray;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 
-public class Bullet extends CircleEntity {
+public class Bullet extends Entity {
 	protected boolean collides = true;
 	protected float range;
 	protected float originX;
 	protected float originY;
 
 	public Bullet(float x, float y, Color color, float radius) {
-		this(x, y, color, radius, -1.0f);
+		this(MeshType.CircleMeshActor, x, y, color, radius, radius, -1.0f);
+	}
+	
+	public Bullet(float x, float y, Color color, float radius, float range) {
+		this(MeshType.CircleMeshActor, x, y, color, radius, radius, range);
+	}
+	
+	public Bullet(MeshType type, float x, float y, Color color, float width, float height) {
+		this(type, x, y, color, width, height, -1.0f);
 	}
 
-	public Bullet(float x, float y, Color color, float radius, float range) {
-		super(x, y, color, radius);
+	public Bullet(MeshType type, float x, float y, Color color, float width, float height, float range) {
+		super(type, x, y, color, width, height);
 
 		setRange(range);
 
@@ -53,7 +62,6 @@ public class Bullet extends CircleEntity {
 
 		boolean removeBullet = false;
 		if (isColliding()) {
-			float distance;
 			SnapshotArray<Actor> characters = State.getStage().getEntities().getChildren();
 			Actor[] actors = characters.begin();
 
