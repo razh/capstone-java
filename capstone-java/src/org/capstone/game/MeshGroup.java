@@ -143,13 +143,19 @@ public class MeshGroup extends Group {
 	
 	@Override
 	public Actor hit(float x, float y, boolean touchable) {
-		if (touchable && getTouchable() == Touchable.disabled) return null;
+		if (touchable && getTouchable() == Touchable.disabled)
+			return null;
+
 		Array<Actor> children = getChildren();
 		for (int i = children.size - 1; i >= 0; i--) {
 			Actor child = children.get(i);
-			if (!child.isVisible()) continue;
+			if (!child.isVisible())
+				continue;
+
 			Actor hit = child.hit(x, y, touchable);
-			if (hit != null) return hit;
+
+			if (hit != null)
+				return hit;
 		}
 		return null;
 	}
