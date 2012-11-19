@@ -212,12 +212,25 @@ public class RectMeshActor extends MeshActor {
 		return point;
 	}
 
+	public boolean intersects(Actor actor) {
+		if (actor instanceof CircleMeshActor) {
+			return intersects((CircleMeshActor) actor);
+		} else if (actor instanceof RectMeshActor) {
+			return intersects((RectMeshActor) actor);
+		} else {
+			return false;
+		}
+	}
+
+
 	public boolean intersects(CircleMeshActor actor) {
 		return actor.intersects(this);
 	}
 
 	public boolean intersects(RectMeshActor actor) {
 		// Separating Axis Theorem.
+		// Rectangle A = this.
+		// Rectangle B = actor.
 		float w0 = getWidth();
 		float h0 = getHeight();
 		float w1 = actor.getWidth();
@@ -225,10 +238,9 @@ public class RectMeshActor extends MeshActor {
 
 		float dx = actor.getX() - getX();
 		float dy = actor.getY() - getY();
-		// float distance = Math.sqrt(dx, dy);
 
-		float ax = 0.0f;
-		float ay = 1.0f;
+		float ax = 1.0f;
+		float ay = 0.0f;
 
 		float r0 = getRotation() * MathUtils.degreesToRadians;
 		if (r0 != 0.0f) {
@@ -236,88 +248,36 @@ public class RectMeshActor extends MeshActor {
 			ay = (float) Math.sin(r0);
 		}
 
-		float bx = 0.0f;
+		float bx = 1.0f;
 		float by = 0.0f;
 
-		float r1 = getRotation() * MathUtils.degreesToRadians;
+		float r1 = actor.getRotation() * MathUtils.degreesToRadians;
 		if (r1 != 0.0f) {
 			bx = (float) Math.cos(r1);
 			by = (float) Math.sin(r1);
 		}
 
+		// Project B on to y-axis of A.
+		float a0b0 = Math.abs(ax *  bx + ay * by);
+		float a0b1 = Math.abs(ax * -by + ay * bx);
+		if (Math.abs(-ay * dx + ax * dy) > h0 + h1 * a0b0 + w1 * a0b1)
+			return false;
 
-		/*
+		// Project B on to x-axis of A.
+		float a1b0 = Math.abs(-ay * bx + ax * by);
+		float a1b1 = a0b0;
+		if (Math.abs(ax * dx + ay * dy) > w0 + h1 * a1b0 + w1 * a1b1)
+			return false;
 
-		*/
+		// Project A on to y-axis of B.
+		if (Math.abs(-by * dx + bx * dy) > h1 + h0 * a0b0 + w0 * a1b0)
+			return false;
 
-		// Points in Rectangle starting from top-left, going clockwise.
-		float x0 = -w0;
-		float y0 = -h0;
-		float x1 =  w0;
-		float y1 = -h0;
-		float x2 =  w0;
-		float y2 =  h0;
-		float x3 = -w0;
-		float y3 =  h0;
+		// Project A on to x-axis of B.
+		if (Math.abs(bx * dx + by * dy) > w1 + h0 * a0b1 + w0 * a1b1)
+			return false;
 
-		float x4 = -w1;
-		float y4 = -h1;
-		float x5 =  w1;
-		float y5 = -h1;
-		float x6 =  w1;
-		float y6 =  h1;
-		float x7 = -w1;
-		float y7 =  h1;
-
-		float r0 = getRotation() * MathUtils.degreesToRadians;
-		if (r0 != 0.0f) {
-			float cos = (float) Math.cos(r0);
-			float sin = (float) Math.sin(r0);
-
-			float rX0 = cos * x0 - sin * y0;
-			float rY0 = sin * x0 + cos * y0;
-			float rX1 = cos * x1 - sin * y1;
-			float rY1 = sin * x1 + cos * y1;
-			float rX2 = cos * x2 - sin * y2;
-			float rY2 = sin * x2 + cos * y2;
-			float rX3 = cos * x3 - sin * y3;
-			float rY3 = sin * x3 + cos * y3;
-
-			x0 = rX0;
-			y0 = rY0;
-			x1 = rX1;
-			y1 = rY1;
-			x2 = rX2;
-			y2 = rY2;
-			x3 = rX3;
-			y3 = rY3;
-		}
-
-		float r1 = actor.getRotation() * MathUtils.degreesToRadians;
-		if (r1 != 0.0f) {
-			float cos = (float) Math.cos(r1);
-			float sin = (float) Math.sin(r1);
-
-			float rX4 = cos * x4 - sin * y4;
-			float rY4 = sin * x4 + cos * y4;
-			float rX5 = cos * x5 - sin * y5;
-			float rY5 = sin * x5 + cos * y5;
-			float rX6 = cos * x6 - sin * y6;
-			float rY6 = sin * x6 + cos * y6;
-			float rX7 = cos * x7 - sin * y7;
-			float rY7 = sin * x7 + cos * y7;
-
-			x4 = rX4;
-			y4 = rY4;
-			x5 = rX5;
-			y5 = rY5;
-			x6 = rX6;
-			y6 = rY6;
-			x7 = rX7;
-			y7 = rY7;
-		}
-
-		return false;
+		return true;
 	}
 
 	private Vector2 intersectionOfTwoLines(float x0, float y0,

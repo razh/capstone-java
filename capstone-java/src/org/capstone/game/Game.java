@@ -256,7 +256,7 @@ public class Game implements ApplicationListener {
 		Entity blueCircle = new CircleEntity(200, 200, new Color(0.173f, 0.204f, 0.220f, 1.0f), 30);
 		blueCircle.setVelocity(100.0f, 100.0f);
 
-		Entity whiteRect = new RectEntity(300, 400, new Color(0.941f, 0.941f, 0.827f, 1.0f), 30, 40);
+		Entity whiteRect = new RectEntity(300, 400, new Color(0.941f, 0.941f, 0.827f, 1.0f), 30, 70);
 
 		Entity redRect = new RectEntity(200, 40, new Color(1.0f, 0.0f, 0.0f, 1.0f), 100.0f, 20.0f);
 		redRect.setTeam(1);
