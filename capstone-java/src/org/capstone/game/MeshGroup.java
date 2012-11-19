@@ -107,12 +107,14 @@ public class MeshGroup extends Group {
 //		}
 	}
 	
+	@Override
 	public void act(float delta) {
 		super.act(delta);
 		if (entity != null)
 			entity.act(delta);
 	}
 	
+	@Override
 	public MeshStage getStage() {
 		return stage;
 	}
@@ -121,6 +123,7 @@ public class MeshGroup extends Group {
 		this.stage = stage;
 	}
 	
+	@Override
 	public void addActor(Actor actor) {
 		super.addActor(actor);
 	}
