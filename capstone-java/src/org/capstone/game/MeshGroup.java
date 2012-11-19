@@ -143,6 +143,7 @@ public class MeshGroup extends Group {
 	
 	@Override
 	public Actor hit(float x, float y, boolean touchable) {
+		// The same as Group.hit(), except we do not transform coordinates.
 		if (touchable && getTouchable() == Touchable.disabled)
 			return null;
 
