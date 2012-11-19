@@ -65,7 +65,8 @@ public class Entity {
 		float min = Float.POSITIVE_INFINITY;
 
 		for (int i = 0; i < actors.length; i++) {
-			if (actors[i] instanceof MeshActor && ((MeshActor) actors[i]).getEntity().getTeam() != getTeam()) {
+			if ((actors[i] instanceof MeshActor && ((MeshActor) actors[i]).getEntity().getTeam() != getTeam()) ||
+				(actors[i] instanceof MeshGroup && ((MeshGroup) actors[i]).getEntity().getTeam() != getTeam())) {
 				distance = distanceToActor(actors[i]);
 				if (distance < min) {
 					min = distance;

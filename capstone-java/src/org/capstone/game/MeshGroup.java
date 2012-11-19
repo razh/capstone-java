@@ -121,6 +121,20 @@ public class MeshGroup extends Group {
 	}
 	
 	@Override
+	public float getX() {
+		return getChildren().get(0).getX();		
+	}
+	
+	@Override
+	public float getY() {
+		return getChildren().get(0).getY();		
+	}
+	
+	public Vector2 getIntersection(float x, float y) {
+		return ((MeshActor) getChildren().get(0)).getIntersection(x, y);
+	}
+	
+	@Override
 	public Actor hit(float x, float y, boolean touchable) {
 		return super.hit(x, y, touchable);
 	}

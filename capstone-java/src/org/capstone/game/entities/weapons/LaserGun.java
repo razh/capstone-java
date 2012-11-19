@@ -1,6 +1,7 @@
 package org.capstone.game.entities.weapons;
 
 import org.capstone.game.MeshActor;
+import org.capstone.game.MeshGroup;
 import org.capstone.game.State;
 import org.capstone.game.entities.Entity;
 import org.capstone.game.entities.LaserBeam;
@@ -72,13 +73,19 @@ public class LaserGun extends Gun {
 		if (targetActor == null)
 			return;
 
-		Vector2 point = ((MeshActor) targetActor).getIntersection(actor.getX(), actor.getY());
+		Vector2 point = null;
+		if (targetActor instanceof MeshActor) {
+			point = ((MeshActor) targetActor).getIntersection(actor.getX(), actor.getY());
+			((MeshActor) targetActor).getEntity().takeFire();
+		} else if (targetActor instanceof MeshGroup) {
+			point = ((MeshGroup) targetActor).getIntersection(actor.getX(), actor.getY());
+			((MeshGroup) targetActor).getEntity().takeFire();
+		}
+
 		if (point == null)
 			return;
 
 		laserBeam.setPosition(point.x, point.y);
-
-		((MeshActor) targetActor).getEntity().takeFire();
 
 		if (!isDrawingBeam()) {
 			State.getStage().getProjectiles().addActor(laserBeam);

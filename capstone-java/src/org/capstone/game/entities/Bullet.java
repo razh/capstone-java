@@ -68,6 +68,15 @@ public class Bullet extends CircleEntity {
 							break;
 						}
 					}
+				} else if (child instanceof MeshGroup) {
+					EntityGroup entityGroup = (EntityGroup) ((MeshGroup) child).getEntity();
+					if (entityGroup.getTeam() != getTeam()) {
+						if (intersects(entityGroup.getFirstActor())) {
+							entityGroup.takeFire();
+							removeBullet = true;
+							break;
+						}
+					}
 				}
 			}
 

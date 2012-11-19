@@ -96,13 +96,16 @@ public class EntityGroup extends Entity {
 	}
 	
 	public void takeFire() {
-		System.out.println("TAKING FIRE");
 		super.takeFire();
 	}
 	
 	@Override
 	public Actor getActor() {
 		return segmentGroup;
+	}
+	
+	public Actor getFirstActor() {
+		return actor;
 	}
 
 }
