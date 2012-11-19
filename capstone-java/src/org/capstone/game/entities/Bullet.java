@@ -15,9 +15,21 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 
 public class Bullet extends CircleEntity {
 	protected boolean collides = true;
+	protected float range;
+	protected float originX;
+	protected float originY;
 
 	public Bullet(float x, float y, Color color, float radius) {
+		this(x, y, color, radius, -1.0f);
+	}
+
+	public Bullet(float x, float y, Color color, float radius, float range) {
 		super(x, y, color, radius);
+
+		setRange(range);
+
+		originX = x;
+		originY = y;
 	}
 
 	public boolean isColliding() {
@@ -26,6 +38,14 @@ public class Bullet extends CircleEntity {
 
 	public void setCollides(boolean collides) {
 		this.collides = collides;
+	}
+
+	public float getRange() {
+		return range;
+	}
+
+	public void setRange(float range) {
+		this.range = range;
 	}
 
 	public void act(float delta) {
@@ -52,6 +72,14 @@ public class Bullet extends CircleEntity {
 			}
 
 			characters.end();
+		}
+
+		if (collides && range >= 0.0f &&
+		    range <= Math.sqrt((getX() - originX) *
+		                       (getX() - originX) +
+		                       (getY() - originY) *
+		                       (getY() - originY))) {
+			removeBullet = true;
 		}
 
 		if (removeBullet) {
