@@ -1,39 +1,32 @@
 package org.capstone.game;
 
-import org.capstone.game.entities.Character;
-
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.utils.TimeUtils;
-
-import java.util.ArrayList;
+import com.badlogic.gdx.graphics.Color;
 
 public class State {
-	private long prevTime;
-	private long currTime;
-
 	private static float width;
 	private static float height;
+	private static Color color;
 
-	private MeshStage stage;
+	private static MeshStage stage;
 
-	public State(float width, float height) {
+	public static float EPSILON = 1E-10f;
+	public static boolean debug = true;
+	public static boolean debugRendering = false;
+
+	public State(float width, float height, Color color) {
 		stage = new MeshStage(width, height, true);
-		
-		prevTime = System.nanoTime();
-		currTime = prevTime;
 
 		setWidth(width);
 		setHeight(height);
+		setColor(color);
 	}
 
-	public void update() {
-//		currTime = TimeUtils.millis();
-//		long elapsedTime = currTime - prevTime;
-//		prevTime = currTime;
-
+	public static void update() {
 		stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30.0f));
 	}
 
+	// Do not use these. Use Gdx.graphics.getWidth() and Gdx.graphics.getHeight() instead!
 	public static float getWidth() {
 		return width;
 	}
@@ -50,7 +43,15 @@ public class State {
 		height = h;
 	}
 
-	public MeshStage getStage() {
+	public static Color getColor() {
+		return color;
+	}
+
+	public static void setColor(Color color) {
+		State.color = color;
+	}
+
+	public static MeshStage getStage() {
 		return stage;
 	}
 }
