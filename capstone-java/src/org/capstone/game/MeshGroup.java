@@ -1,7 +1,6 @@
 package org.capstone.game;
 
 import org.capstone.game.entities.Entity;
-import org.capstone.game.entities.EntityGroup;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
@@ -114,6 +113,9 @@ public class MeshGroup extends Group {
 			entity.act(delta);
 	}
 	
+	public MeshStage getStage() {
+		return stage;
+	}
 	
 	public void setStage(MeshStage stage) {
 		this.stage = stage;

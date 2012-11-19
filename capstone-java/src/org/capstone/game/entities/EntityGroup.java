@@ -1,14 +1,11 @@
 package org.capstone.game.entities;
 
-import org.capstone.game.MeshActor;
 import org.capstone.game.MeshGroup;
 import org.capstone.game.MeshType;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.utils.Array;
 
