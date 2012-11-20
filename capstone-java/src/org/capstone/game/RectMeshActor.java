@@ -26,7 +26,7 @@ public class RectMeshActor extends MeshActor {
 
 	private void initMesh(int subdivsX, int subdivsY) {
 		int numVertices = (subdivsX + 1) * (subdivsY + 1) * 2;
-		int numIndices  = (subdivsX + 1) * (subdivsY + 1) * 2;
+		int numIndices  = subdivsX * ( subdivsY + 1 ) * 2;
 		// System.out.println("numIdx:" + numIndices);
 		mesh = new Mesh(Mesh.VertexDataType.VertexBufferObject,
 		                true, numVertices, numIndices,
@@ -48,15 +48,18 @@ public class RectMeshActor extends MeshActor {
 				vertices[vtxIndex++] = j * subdivHeight - 1.0f;
 			}
 
-			if (i % 2 == 0) {
-				for (int j = 0; j < subdivsY + 1; j++) {
-					indices[idxIndex++]  = (short) ((subdivsY + 1) * i + j);
-					indices[idxIndex++]  = (short) ((subdivsY + 1) * (i + 1) + j);
-				}
-			} else {
-				for (int j = subdivsY; j >= 0; j--) {
-					indices[idxIndex++]  = (short) ((subdivsY + 1) * i + j);
-					indices[idxIndex++]  = (short) ((subdivsY + 1) * (i + 1) + j);
+			// Compute indices.
+			if (i < subdivsX) {
+				if (i % 2 == 0) {
+					for (int j = 0; j < subdivsY + 1; j++) {
+						indices[idxIndex++]  = (short) ((subdivsY + 1) * i + j);
+						indices[idxIndex++]  = (short) ((subdivsY + 1) * (i + 1) + j);
+					}
+				} else {
+					for (int j = subdivsY; j >= 0; j--) {
+						indices[idxIndex++]  = (short) ((subdivsY + 1) * i + j);
+						indices[idxIndex++]  = (short) ((subdivsY + 1) * (i + 1) + j);
+					}
 				}
 			}
 		}
