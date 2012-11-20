@@ -100,11 +100,11 @@ public class Entity {
 			addAction(
 				sequence(
 					parallel(
-						color(new Color(getColor().r + 0.784f, getColor().g, getColor().b, 1.0f), 0.05f, Interpolation.pow3),
+						color(new Color(getColor().r + 0.784f, getColor().g, getColor().b, getColor().a), 0.05f, Interpolation.pow3),
 						sizeBy(20, 20, 0.05f, Interpolation.pow3)
 					),
 					parallel(
-						color(new Color(getColor().r, getColor().g, getColor().b, 1.0f), 0.15f, Interpolation.linear),
+						color(new Color(getColor().r, getColor().g, getColor().b, getColor().a), 0.15f, Interpolation.linear),
 						sizeBy(-20, -20, 0.15f, Interpolation.linear)
 					),
 					new Action() {
