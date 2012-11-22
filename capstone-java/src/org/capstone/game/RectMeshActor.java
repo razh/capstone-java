@@ -16,15 +16,15 @@ public class RectMeshActor extends MeshActor {
 
 	public RectMeshActor() {
 		if (mesh == null) {
-			initMesh();
+			createMesh();
 		}
 	}
 
-	private void initMesh() {
-		initMesh(1, 1);
+	private void createMesh() {
+		createMesh(1, 1);
 	}
 
-	private void initMesh(int subdivsX, int subdivsY) {
+	private void createMesh(int subdivsX, int subdivsY) {
 		int numVertices = (subdivsX + 1) * (subdivsY + 1) * 2;
 		int numIndices  = subdivsX * ( subdivsY + 1 ) * 2;
 		// System.out.println("numIdx:" + numIndices);

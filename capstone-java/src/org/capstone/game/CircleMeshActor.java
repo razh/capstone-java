@@ -16,15 +16,15 @@ public class CircleMeshActor extends MeshActor {
 
 	public CircleMeshActor() {
 		if (mesh == null) {
-			initMesh();
+			createMesh();
 		}
 	}
 
-	private void initMesh() {
-		initMesh(32);
+	private void createMesh() {
+		createMesh(32);
 	}
 
-	private void initMesh(int subdivisions) {
+	private void createMesh(int subdivisions) {
 		int numVertices = (subdivisions + 1) * 2;
 		int numIndices  = subdivisions + 2; // Include center and one rotation.
 		mesh = new Mesh(Mesh.VertexDataType.VertexBufferObject,
