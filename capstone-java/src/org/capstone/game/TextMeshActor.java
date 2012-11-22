@@ -9,33 +9,39 @@ public class TextMeshActor extends MeshActor {
 	protected static float[] vertices = new float[24];
 
 	/*
+		From http://www.maximintegrated.com/app-notes/index.mvp/id/3212:
 		For a sixteen-segment display:
 
 		     A1     A2
 		   ------ ------
 		  | \    |    / |
-		F | H \ J|  / K | B
+		F | H \ I|  / J | B
 		  | G1  \|/  G2 |
 		   ------ ------
 		  |     /|\     |
-		E | N / M|  \ L | C
+		E | M / L|  \ K | C
 		  | /    |    \ |
 		   ------ ------
 		     D1     D2
 
 		Each of these segments is constructed from two vertices:
 
-		    0--1   2--3
-		  4      5      6
-		  |      |      |
-		  7      8      9
-		    A--B   C--D
-		  E      F      G
-		  |      |      |
-		  H      I      J
-		    K--L   M--N
+		    0---1   2---3
+		  4 \     5     / 6
+		  |   \   |   /   |
+		  7     \ 8 /     9
+		    A---B   C---D
+		  E     / F \     G
+		  |   /   |   \   |
+		  H /     I     \ J
+		    K---L   M---N
 
-		where A-M represent 10-24.
+		    10  11  12  13
+		   14     15      16
+		   17     18      19
+		    20 21    22 23
+
+		where A-N represent 10-23.
 	*/
 
 	// Segment states.
@@ -79,6 +85,28 @@ public class TextMeshActor extends MeshActor {
 	private static final int[] X     = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
 	private static final int[] Y     = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
 	private static final int[] Z     = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
+
+	private static final short[] segmentIndices = {
+		 0,  1, // A1
+		 2,  3, // A2
+		 6,  9, // B
+		16, 19, // C
+		20, 21, // D1
+		22, 23, // D2
+		14, 17, // E
+		 4,  7, // F
+		10, 11, // G1
+		12, 13, // G2
+		 4,  8, // H
+		 5,  8, // I
+		 6, 12, // J
+		// K
+		// L
+		// M
+		// N
+
+
+	};
 
 	public TextMeshActor(Character character, float x, float y, Color color, float width, float height) {
 		super();
@@ -144,6 +172,8 @@ public class TextMeshActor extends MeshActor {
 	}
 
 	private void generateVertices() {
+		float segmentLength = 0.5f;
+
 		// Coordinates for the horizontal segments of the display.
 		float[] xCoordsX = {1.0f, 2.0f, 3.0f, 4.0f};
 		float[] xCoordsY = {0.5f, 3.5f, 6.5f};
@@ -151,44 +181,47 @@ public class TextMeshActor extends MeshActor {
 		float[] yCoordsX = {0.5f, 2.5f, 4.0f};
 		float[] yCoordsY = {1.0f, 3.0f, 5.0f, 6.0f};
 
+		float xScale = 1.0f / 5.0f;
+		float yScale = 1.0f / 7.0f;
+
 		int index = 0;
 		int i;
 		// Top horizontal segments.
 		for (i = 0; i < xCoordsX.length; i++) {
-			vertices[index++] = xCoordsX[i];
-			vertices[index++] = xCoordsY[0];
+			vertices[index++] = xCoordsX[i] * xScale;
+			vertices[index++] = xCoordsY[0] * yScale;
 		}
 
 		// Top vertical segments.
 		for (i = 0; i < yCoordsX.length; i++) {
-			vertices[index++] = yCoordsX[i];
-			vertices[index++] = yCoordsY[0];
+			vertices[index++] = yCoordsX[i] * xScale;
+			vertices[index++] = yCoordsY[0] * yScale;
 		}
 		for (i = 0; i < yCoordsX.length; i++) {
-			vertices[index++] = yCoordsX[i];
-			vertices[index++] = yCoordsY[1];
+			vertices[index++] = yCoordsX[i] * xScale;
+			vertices[index++] = yCoordsY[1] * yScale;
 		}
 
 		// Middle horizontal segments.
 		for (i = 0; i < xCoordsX.length; i++) {
-			vertices[index++] = xCoordsX[i];
-			vertices[index++] = xCoordsY[1];
+			vertices[index++] = xCoordsX[i] * xScale;
+			vertices[index++] = xCoordsY[1] * yScale;
 		}
 
 		// Bottom horizontal segments.
 		for (i = 0; i < yCoordsX.length; i++) {
-			vertices[index++] = yCoordsX[i];
-			vertices[index++] = yCoordsY[2];
+			vertices[index++] = yCoordsX[i] * xScale;
+			vertices[index++] = yCoordsY[2] * yScale;
 		}
 		for (i = 0; i < yCoordsX.length; i++) {
-			vertices[index++] = yCoordsX[i];
-			vertices[index++] = yCoordsY[3];
+			vertices[index++] = yCoordsX[i] * xScale;
+			vertices[index++] = yCoordsY[3] * yScale;
 		}
 
 		// Bottom horizontal segments.
 		for (i = 0; i < xCoordsX.length; i++) {
-			vertices[index++] = xCoordsX[i];
-			vertices[index++] = xCoordsY[2];
+			vertices[index++] = xCoordsX[i] * xScale;
+			vertices[index++] = xCoordsY[2] * yScale;
 		}
 	}
 
