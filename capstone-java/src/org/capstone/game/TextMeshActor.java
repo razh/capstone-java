@@ -1,12 +1,19 @@
 package org.capstone.game;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Mesh;
+import com.badlogic.gdx.graphics.VertexAttribute;
+import com.badlogic.gdx.graphics.VertexAttributes.Usage;
+import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 
 public class TextMeshActor extends MeshActor {
 	protected Mesh mesh;
 	protected Character character;
-	protected static float[] vertices = new float[24];
+	protected short[] indices;
+
+	protected static float[] vertices;
 
 	/*
 		From http://www.maximintegrated.com/app-notes/index.mvp/id/3212:
@@ -26,23 +33,118 @@ public class TextMeshActor extends MeshActor {
 
 		Each of these segments is constructed from two vertices:
 
-		    0---1   2---3
-		  4 \     5     / 6
-		  |   \   |   /   |
-		  7     \ 8 /     9
-		    A---B   C---D
-		  E     / F \     G
-		  |   /   |   \   |
-		  H /     I     \ J
-		    K---L   M---N
+		   0------1   2------3
+		4  5        6        7  8
+		|   \       |       /   |
+		|     \     |     /     |
+		|       \   |   /       |
+		9         A B C         D
+		   E------F   G------H
+		I         J K L         M
+		|       /   |   \       |
+		|     /     |     \     |
+		|   /       |       \   |
+		N  O        P        Q  R
+		   S------T   U------V
 
-		    10  11  12  13
-		   14     15      16
-		   17     18      19
-		    20 21    22 23
+	A = 10
+	B = 11
+	C = 12
+	D = 13
+	E = 14
+	F = 15
+	G = 16
+	H = 17
+	I = 18
+	J = 19
+	K = 20
+	L = 21
+	M = 22
+	N = 23
+	O = 24
+	P = 25
+	Q = 26
+	R = 27
+	S = 28
+	T = 29
+	U = 30
+	V = 31
 
-		where A-N represent 10-23.
+
+		where A to N represents 10 to 31.
 	*/
+
+	private static final short[] segmentIndices = {
+		 0,  1, // A1
+		 2,  3, // A2
+		 8, 13, // B
+		22, 27, // C
+		28, 29, // D1
+		30, 31, // D2
+		18, 23, // E
+		 4,  9, // F
+		14, 15, // G1
+		16, 17, // G2
+		 5, 10, // H
+		 6, 11, // I
+		 7, 12, // J
+		21, 26, // K
+		20, 25, // L
+		19, 24  // M
+	};
+
+	private void generateVertices() {
+		vertices = new float[64];
+
+		float[] xCoordsHoriz    = {0.25f, 2.25f, 2.75f, 4.75f};
+		float[] xCoordsFarDiag  = {0.0f, 0.25f, 2.5f, 4.75f, 5.0f};
+		float[] xCoordsNearDiag = {0.0f, 2.25f, 2.5f, 2.75f, 5.0f};
+		float[] yCoords         = {0.0f, 0.5f, 3.25f, 3.5f, 3.75f, 6.5f, 7.0f};
+
+		int index = 0;
+		int i;
+		// Top horizontal segments.
+		for (i = 0; i < xCoordsHoriz.length; i++) {
+			vertices[index++] = xCoordsHoriz[i];
+			vertices[index++] = yCoords[0];
+		}
+
+		// Far/distal vertices of top vertical and diagonal segments.
+		for (i = 0; i < xCoordsFarDiag.length; i++) {
+			vertices[index++] = xCoordsFarDiag[i];
+			vertices[index++] = yCoords[1];
+		}
+
+		// Near/proximal vertices of top vertical and diagonal segments.
+		for (i = 0; i < xCoordsNearDiag.length; i++) {
+			vertices[index++] = xCoordsNearDiag[i];
+			vertices[index++] = yCoords[2];
+		}
+
+		// Middle horizontal segments.
+		for (i = 0; i < xCoordsHoriz.length; i++) {
+			vertices[index++] = xCoordsHoriz[i];
+			vertices[index++] = yCoords[3];
+		}
+
+		// Near/proximal vertices of bottom vertical and diagonal segments.
+		for (i = 0; i < xCoordsNearDiag.length; i++) {
+			vertices[index++] = xCoordsNearDiag[i];
+			vertices[index++] = yCoords[4];
+		}
+
+		// Far/distal vertices of bottom vertical and diagonal segments.
+		for (i = 0; i < xCoordsFarDiag.length; i++) {
+			vertices[index++] = xCoordsFarDiag[i];
+			vertices[index++] = yCoords[5];
+		}
+
+		// Bottom horizontal segments.
+		for (i = 0; i < xCoordsHoriz.length; i++) {
+			vertices[index++] = xCoordsHoriz[i];
+			vertices[index++] = yCoords[6];
+		}
+	}
 
 	// Segment states.
 	// We use ints instead of booleans for readability.
@@ -86,28 +188,6 @@ public class TextMeshActor extends MeshActor {
 	private static final int[] Y     = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
 	private static final int[] Z     = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
 
-	private static final short[] segmentIndices = {
-		 0,  1, // A1
-		 2,  3, // A2
-		 6,  9, // B
-		16, 19, // C
-		20, 21, // D1
-		22, 23, // D2
-		14, 17, // E
-		 4,  7, // F
-		10, 11, // G1
-		12, 13, // G2
-		 4,  8, // H
-		 5,  8, // I
-		 6, 12, // J
-		// K
-		// L
-		// M
-		// N
-
-
-	};
-
 	public TextMeshActor(Character character, float x, float y, Color color, float width, float height) {
 		super();
 
@@ -129,7 +209,11 @@ public class TextMeshActor extends MeshActor {
 	}
 
 	private void createMesh() {
-		switch (character) {
+		if (vertices == null) {
+			generateVertices();
+		}
+
+		switch (getChar()) {
 			case '0':
 			case '1':
 			case '2':
@@ -166,66 +250,22 @@ public class TextMeshActor extends MeshActor {
 			case 'X':
 			case 'Y':
 			case 'Z':
-
+				setIndices(generateIndices(ON));
 				break;
 		}
+
+		int numVertices = vertices.length;
+		int numIndices  = indices.length;
+
+		mesh = new Mesh(Mesh.VertexDataType.VertexBufferObject,
+		                true, numVertices, numIndices,
+		                new VertexAttribute(Usage.Position, 2,
+		                                    ShaderProgram.POSITION_ATTRIBUTE));
+		mesh.setVertices(vertices);
+		mesh.setIndices(indices);
 	}
 
-	private void generateVertices() {
-		float segmentLength = 0.5f;
-
-		// Coordinates for the horizontal segments of the display.
-		float[] xCoordsX = {1.0f, 2.0f, 3.0f, 4.0f};
-		float[] xCoordsY = {0.5f, 3.5f, 6.5f};
-		// Coordinates for the vertical segments of the display.
-		float[] yCoordsX = {0.5f, 2.5f, 4.0f};
-		float[] yCoordsY = {1.0f, 3.0f, 5.0f, 6.0f};
-
-		float xScale = 1.0f / 5.0f;
-		float yScale = 1.0f / 7.0f;
-
-		int index = 0;
-		int i;
-		// Top horizontal segments.
-		for (i = 0; i < xCoordsX.length; i++) {
-			vertices[index++] = xCoordsX[i] * xScale;
-			vertices[index++] = xCoordsY[0] * yScale;
-		}
-
-		// Top vertical segments.
-		for (i = 0; i < yCoordsX.length; i++) {
-			vertices[index++] = yCoordsX[i] * xScale;
-			vertices[index++] = yCoordsY[0] * yScale;
-		}
-		for (i = 0; i < yCoordsX.length; i++) {
-			vertices[index++] = yCoordsX[i] * xScale;
-			vertices[index++] = yCoordsY[1] * yScale;
-		}
-
-		// Middle horizontal segments.
-		for (i = 0; i < xCoordsX.length; i++) {
-			vertices[index++] = xCoordsX[i] * xScale;
-			vertices[index++] = xCoordsY[1] * yScale;
-		}
-
-		// Bottom horizontal segments.
-		for (i = 0; i < yCoordsX.length; i++) {
-			vertices[index++] = yCoordsX[i] * xScale;
-			vertices[index++] = yCoordsY[2] * yScale;
-		}
-		for (i = 0; i < yCoordsX.length; i++) {
-			vertices[index++] = yCoordsX[i] * xScale;
-			vertices[index++] = yCoordsY[3] * yScale;
-		}
-
-		// Bottom horizontal segments.
-		for (i = 0; i < xCoordsX.length; i++) {
-			vertices[index++] = xCoordsX[i] * xScale;
-			vertices[index++] = xCoordsY[2] * yScale;
-		}
-	}
-
-	private short[] getIndices(float[] segmentStates) {
+	private short[] generateIndices(int[] segmentStates) {
 		// Loop through once to get the number of segments we need to draw.
 		int numSegments = 0;
 		for (int i = 0; i < segmentStates.length; i++) {
@@ -233,14 +273,37 @@ public class TextMeshActor extends MeshActor {
 				numSegments++;
 		}
 
+		numSegments *= 2;
+
 		short[] indices = new short[numSegments];
 		int index = 0;
 		for (int i = 0; i < segmentStates.length; i++) {
 			if (segmentStates[i] == 1) {
-				indices[index] = 0;
+				indices[index++] = segmentIndices[2 * i];
+				indices[index++] = segmentIndices[2 * i + 1];
 			}
 		}
 
 		return indices;
 	}
+
+	private void setIndices(short[] indices) {
+		this.indices = indices;
+	}
+
+	protected Mesh getMesh() {
+		return mesh;
+	}
+
+	protected boolean hasMesh() {
+		return mesh != null;
+	}
+
+	@Override
+	public void draw(ShaderProgram shaderProgram, float parentAlpha) {
+		super.draw(shaderProgram, parentAlpha);
+		if (hasMesh())
+			getMesh().render(shaderProgram, GL20.GL_LINES);
+	}
+
 }

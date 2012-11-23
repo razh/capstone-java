@@ -267,7 +267,7 @@ public class Game implements ApplicationListener {
 		Entity group = new EntityGroup(MeshType.RectMeshActor, 400, 400, new Color(0.941f, 0.247f, 0.208f, 1.0f), 20, 10, 10, 60);
 		group.setVelocity(200.0f, 100.0f);
 		((EntityGroup) group).setOriented(true);
-		
+
 		Entity group2 = new EntityGroup(MeshType.CircleMeshActor, 600, 400, new Color(0.173f, 0.204f, 0.220f, 1.0f), 20, 20, 10, 80);
 		group2.setVelocity(-200.0f, 100.0f);
 
@@ -280,6 +280,7 @@ public class Game implements ApplicationListener {
 		State.getStage().addEntity(group);
 		State.getStage().addEntity(group2);
 		State.getStage().addEntity(redRect);
+		State.getStage().addText(new TextMeshActor('A', 200, 200, new Color(1.0f, 1.0f, 1.0f, 1.0f), 30, 30));
 
 //		for (int i = 0; i < 500; i++) {
 //			Character ctest = new Character(i, i, new Color(i / 500.0f, i / 10000.0f, 0.24f, 1.0f), 10);

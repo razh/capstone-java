@@ -14,6 +14,8 @@ public class MeshStage extends Stage {
 
 	private MeshGroup entities;
 	private MeshGroup projectiles;
+	private MeshGroup text;
+
 
 	public MeshStage() {
 		this(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
@@ -99,6 +101,29 @@ public class MeshStage extends Stage {
 			initProjectiles();
 
 		return projectiles;
+	}
+
+	private void initText() {
+		text = new MeshGroup();
+		root.addActor(text);
+	}
+
+	public void addText(Actor actor) {
+		if (text == null)
+			initText();
+
+		text.addActor(actor);
+	}
+
+	public void addText(Entity text) {
+		addText(text.getActor());
+	}
+
+	public MeshGroup getText() {
+		if (text == null)
+			initText();
+
+		return text;
 	}
 
 	public void act(float delta) {
