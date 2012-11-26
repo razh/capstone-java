@@ -316,6 +316,7 @@ public class Game implements ApplicationListener {
 		State.getStage().addText(new TextMeshActor('X', 320, 300, new Color(1.0f, 1.0f, 1.0f, 1.0f), 30, 30));
 		State.getStage().addText(new TextMeshActor('Y', 360, 300, new Color(1.0f, 1.0f, 1.0f, 1.0f), 30, 30));
 		State.getStage().addText(new TextMeshActor('Z', 400, 300, new Color(1.0f, 1.0f, 1.0f, 1.0f), 30, 30));
+		State.getStage().addText(new TextMeshGroup("IMMA GONNA GET YOUSE SUCKA", 200, 100, new Color(0.0f, 0.0f, 0.0f, 1.0f), 20, 70, 20));
 
 //		for (int i = 0; i < 500; i++) {
 //			Character ctest = new Character(i, i, new Color(i / 500.0f, i / 10000.0f, 0.24f, 1.0f), 10);
@@ -429,6 +430,11 @@ public class Game implements ApplicationListener {
 				Actor hit = State.getStage().getEntities().hit(Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY(), true);
 				if (hit != null)
 					hit.setPosition(Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY());
+				else {
+					hit = State.getStage().getText().hit(Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY(), true);
+					if (hit != null)
+						hit.setPosition(Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY());
+				}
 			} else {
 				State.getStage().getEntities().getChildren().get(0).setPosition(Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY());
 			}

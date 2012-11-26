@@ -124,8 +124,8 @@ public class CircleMeshActor extends MeshActor {
 		float dy = y - y0;
 
 		float length = (float) Math.sqrt(dx * dx + dy * dy);
-		dx = dx / length;
-		dy = dy / length;
+		dx /= length;
+		dy /= length;
 
 		return new Vector2(x0 + dx * r0, y0 + dy * r0);
 	}

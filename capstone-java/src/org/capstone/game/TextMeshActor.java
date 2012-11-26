@@ -7,10 +7,13 @@ import com.badlogic.gdx.graphics.Mesh;
 import com.badlogic.gdx.graphics.VertexAttribute;
 import com.badlogic.gdx.graphics.VertexAttributes.Usage;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
+import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 
 public class TextMeshActor extends MeshActor {
 	protected Mesh mesh;
-	protected Character character;
+	protected char character;
 	protected short[] indices;
 
 	protected static float[] vertices;
@@ -171,7 +174,7 @@ public class TextMeshActor extends MeshActor {
 	private static final int[] Y     = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0};
 	private static final int[] Z     = {1, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1};
 
-	public TextMeshActor(Character character, float x, float y, Color color, float width, float height) {
+	public TextMeshActor(char character, float x, float y, Color color, float width, float height) {
 		super();
 
 		setChar(character);
@@ -183,11 +186,11 @@ public class TextMeshActor extends MeshActor {
 		createMesh();
 	}
 
-	public Character getChar() {
+	public char getChar() {
 		return character;
 	}
 
-	public void setChar(Character character) {
+	public void setChar(char character) {
 		this.character = character;
 	}
 
@@ -392,5 +395,40 @@ public class TextMeshActor extends MeshActor {
 		super.draw(shaderProgram, parentAlpha);
 		if (hasMesh())
 			getMesh().render(shaderProgram, GL20.GL_LINES);
+	}
+
+	@Override
+	public Actor hit(float x, float y, boolean touchable) {
+		if (touchable && this.getTouchable() != Touchable.enabled)
+			return null;
+
+		if (contains(x, y))
+			return this;
+
+		return null;
+	}
+
+	// Reusing same code as RectMeshActor. Not cool.
+	public boolean contains(float x, float y) {
+		x -= getX();
+		y -= getY();
+
+		float rotation = getRotation() * MathUtils.degreesToRadians;
+		if (rotation != 0.0f) {
+			float cos = (float) Math.cos(rotation);
+			float sin = (float) Math.sin(rotation);
+
+			// Rotated coordinates.
+			float rX =  cos * x + sin * y;
+			float rY = -sin * x + cos * y;
+
+			x = rX;
+			y = rY;
+		}
+
+		if (Math.abs(x) <= getWidth() && Math.abs(y) <= getHeight())
+			return true;
+
+		return false;
 	}
 }
