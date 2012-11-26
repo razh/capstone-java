@@ -15,6 +15,7 @@ public class TextMeshActor extends MeshActor {
 	protected Mesh mesh;
 	protected char character;
 	protected short[] indices;
+	protected float lineWidth = 1.0f;
 
 	protected static float[] vertices;
 
@@ -77,10 +78,10 @@ public class TextMeshActor extends MeshActor {
 	private void generateVertices() {
 		vertices = new float[64];
 
-		float[] xCoordsHoriz    = {0.25f, 2.25f, 2.75f, 4.75f};
-		float[] xCoordsFarDiag  = {0.0f, 0.25f, 2.5f, 4.75f, 5.0f};
-		float[] xCoordsNearDiag = {0.0f, 2.25f, 2.5f, 2.75f, 5.0f};
-		float[] yCoords         = {0.0f, 0.5f, 3.25f, 3.5f, 3.75f, 6.5f, 7.0f};
+		float[] xCoordsHoriz    = {-2.25f, -0.25f, 0.25f, 2.25f};
+		float[] xCoordsFarDiag  = {-2.5f, -2.25f, 0.0f, 2.25f, 2.5f};
+		float[] xCoordsNearDiag = {-2.5f, -0.25f, 0.0f, 0.25f, 2.5f};
+		float[] yCoords         = {-3.5f, -3.0f, -0.25f, 0.0f, 0.25f, 3.0f, 3.5f};
 
 		float xScale = 1.0f / 5.0f;
 		float yScale = 1.0f / 7.0f;
@@ -192,6 +193,14 @@ public class TextMeshActor extends MeshActor {
 
 	public void setChar(char character) {
 		this.character = character;
+	}
+
+	public float getLineWidth() {
+		return lineWidth;
+	}
+
+	public void setLineWidth(float lineWidth) {
+		this.lineWidth = lineWidth;
 	}
 
 	private void createMesh() {
@@ -393,6 +402,7 @@ public class TextMeshActor extends MeshActor {
 	@Override
 	public void draw(ShaderProgram shaderProgram, float parentAlpha) {
 		super.draw(shaderProgram, parentAlpha);
+		Gdx.gl.glLineWidth(lineWidth);
 		if (hasMesh())
 			getMesh().render(shaderProgram, GL20.GL_LINES);
 	}

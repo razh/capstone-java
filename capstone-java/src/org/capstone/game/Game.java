@@ -316,7 +316,7 @@ public class Game implements ApplicationListener {
 		State.getStage().addText(new TextMeshActor('X', 320, 300, new Color(1.0f, 1.0f, 1.0f, 1.0f), 30, 30));
 		State.getStage().addText(new TextMeshActor('Y', 360, 300, new Color(1.0f, 1.0f, 1.0f, 1.0f), 30, 30));
 		State.getStage().addText(new TextMeshActor('Z', 400, 300, new Color(1.0f, 1.0f, 1.0f, 1.0f), 30, 30));
-		State.getStage().addText(new TextMeshGroup("IMMA GONNA GET YOUSE SUCKA", 200, 100, new Color(0.0f, 0.0f, 0.0f, 1.0f), 20, 70, 20));
+		State.getStage().addText(new TextMeshGroup("THE QUICK BROWN FOX", 200, 100, new Color(0.2f, 0.4f, 0.3f, 1.0f), 30, 50, 10, 4.0f));
 
 //		for (int i = 0; i < 500; i++) {
 //			Character ctest = new Character(i, i, new Color(i / 500.0f, i / 10000.0f, 0.24f, 1.0f), 10);

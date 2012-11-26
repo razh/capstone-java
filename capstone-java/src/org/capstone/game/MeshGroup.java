@@ -134,12 +134,20 @@ public class MeshGroup extends Group {
 	
 	@Override
 	public float getX() {
-		return getChildren().get(0).getX();		
+		// Get x-coordinate of first child.
+		// If first child does not exist, default to the MeshGroup's x-coord.
+		if (getChildren().size <= 0)
+			return super.getX();
+		
+		return getFirstActor().getX();		
 	}
 	
 	@Override
 	public float getY() {
-		return getChildren().get(0).getY();		
+		if (getChildren().size <= 0)
+			return super.getY();
+		
+		return getFirstActor().getY();		
 	}
 
 	public Vector2 getIntersection(float x, float y) {
