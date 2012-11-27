@@ -33,6 +33,8 @@ public class Entity {
 			actor = new CircleMeshActor();
 		else if (type == MeshType.RectMeshActor)
 			actor = new RectMeshActor();
+		else if (type == MeshType.PolygonMeshActor)
+			actor = new PolygonMeshActor();
 		else if (type == MeshType.Group)
 			actor = new MeshGroup();
 		else

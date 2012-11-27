@@ -15,6 +15,8 @@ public class CircleMeshActor extends MeshActor {
 	protected static Mesh mesh;
 
 	public CircleMeshActor() {
+		super();
+
 		if (mesh == null) {
 			createMesh();
 		}

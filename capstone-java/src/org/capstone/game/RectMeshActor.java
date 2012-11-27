@@ -15,6 +15,8 @@ public class RectMeshActor extends MeshActor {
 	protected static Mesh mesh;
 
 	public RectMeshActor() {
+		super();
+
 		if (mesh == null) {
 			createMesh();
 		}
