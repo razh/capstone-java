@@ -9,6 +9,6 @@ public class PolygonEntity extends Entity {
 	public PolygonEntity(float[] vertices, float x, float y, Color color, float width, float height) {
 		super(MeshType.PolygonMeshActor, x, y, color, width, height);
 		
-		((PolygonMeshActor) getMeshActor()).setVertices(vertices);
+		((PolygonMeshActor) getActor()).setVertices(vertices);
 	}
 }

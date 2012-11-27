@@ -31,7 +31,7 @@ public class PolygonMeshActor extends MeshActor {
 	}
 
 	public int getNumVertices() {
-		return boundingVertices.length;
+		return boundingVertices.length / 2;
 	}
 
 	public void setVertices(float[] vertices) {
