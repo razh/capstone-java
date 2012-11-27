@@ -2,6 +2,8 @@ package org.capstone.game;
 
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Mesh;
+import com.badlogic.gdx.graphics.VertexAttribute;
+import com.badlogic.gdx.graphics.VertexAttributes.Usage;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 
 public class PolygonMeshActor extends MeshActor {
@@ -52,7 +54,7 @@ public class PolygonMeshActor extends MeshActor {
 		                                    ShaderProgram.POSITION_ATTRIBUTE));
 
 		float[] vertices = new float[numVertices];
-		float[] indices  = new short[numIndices];
+		short[] indices  = new short[numIndices];
 
 		int vtxIndex = 0;
 		int idxIndex = 0;

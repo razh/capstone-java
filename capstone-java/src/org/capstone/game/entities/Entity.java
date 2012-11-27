@@ -6,6 +6,7 @@ import org.capstone.game.CircleMeshActor;
 import org.capstone.game.MeshActor;
 import org.capstone.game.MeshGroup;
 import org.capstone.game.MeshType;
+import org.capstone.game.PolygonMeshActor;
 import org.capstone.game.RectMeshActor;
 import org.capstone.game.State;
 import org.capstone.game.entities.weapons.Weapon;
