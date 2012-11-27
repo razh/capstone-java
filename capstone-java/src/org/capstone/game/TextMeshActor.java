@@ -418,27 +418,7 @@ public class TextMeshActor extends MeshActor {
 		return null;
 	}
 
-	// Reusing same code as RectMeshActor. Not cool.
 	public boolean contains(float x, float y) {
-		x -= getX();
-		y -= getY();
-
-		float rotation = getRotation() * MathUtils.degreesToRadians;
-		if (rotation != 0.0f) {
-			float cos = (float) Math.cos(rotation);
-			float sin = (float) Math.sin(rotation);
-
-			// Rotated coordinates.
-			float rX =  cos * x + sin * y;
-			float rY = -sin * x + cos * y;
-
-			x = rX;
-			y = rY;
-		}
-
-		if (Math.abs(x) <= getWidth() && Math.abs(y) <= getHeight())
-			return true;
-
-		return false;
+		return Geometry.obbContains(x, y, getX(), getY(), getWidth(), getHeight(), getRotation());
 	}
 }
