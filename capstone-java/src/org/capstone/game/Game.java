@@ -1,5 +1,7 @@
 package org.capstone.game;
 
+import java.util.ArrayList;
+
 import org.capstone.game.entities.CircleEntity;
 import org.capstone.game.entities.Entity;
 import org.capstone.game.entities.EntityGroup;
@@ -22,6 +24,7 @@ import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
+import com.badlogic.gdx.utils.SnapshotArray;
 
 
 public class Game implements ApplicationListener {
@@ -33,6 +36,9 @@ public class Game implements ApplicationListener {
 	private int frameBufferSize = 512;
 	private FPSLogger fpsLogger = new FPSLogger();
 	private boolean running = true;
+
+	private ArrayList<Entity> testEntities = new ArrayList<Entity>();
+
 
 	private String vertexShader =
 		"uniform mat4 projection;\n" +
@@ -321,7 +327,26 @@ public class Game implements ApplicationListener {
 		State.getStage().addText(new TextMeshActor('Z', 400, 300, new Color(1.0f, 1.0f, 1.0f, 1.0f), 30, 30));
 		State.getStage().addText(new TextMeshGroup("THE QUICK BROWN FOX", 200, 100, new Color(0.2f, 0.4f, 0.3f, 1.0f), 30, 50, 10, 4.0f));
 
-		State.getStage().addEntity(new PolygonEntity(new float[] {-1.0f, -1.0f, 1.0f, -1.0f, 0.0f, 1.0f}, 400, 500, new Color(0.0f, 0.5f, 0.0f, 1.0f), 20, 30));
+		float[] testVertices = new float[8 * 2];
+		float subdivAngle = (float) (Math.PI * 2 / 8);
+		int vtxIndex = 0;
+		for (int i = 0; i < 8; i++) {
+			testVertices[vtxIndex++] = (float) Math.sin(i * subdivAngle);
+			testVertices[vtxIndex++] = (float) Math.cos(i * subdivAngle);
+		}
+		State.getStage().addEntity(new PolygonEntity(new float[] {-1.0f, -1.0f, 1.0f, -1.0f, 1.0f, 1.0f, -1.0f, 0.0f}, 400, 500, new Color(0.0f, 0.5f, 0.0f, 0.5f), 50, 60));
+		State.getStage().addEntity(new PolygonEntity(testVertices, 200, 500, new Color(0.0f, 0.25f, 0.0f, 1.0f), 20, 30));
+
+		// Test intersection grid.
+		// RectEntity rectEnt;
+		// for (int i = 0; i < 50; i++) {
+		// 	for (int j = 0; j < 50; j++) {
+		// 		rectEnt = new RectEntity(350 + i * 4, 430 + j * 4, new Color(Color.BLACK), 1, 1);
+		// 		State.getStage().addProjectile(rectEnt);
+		// 	}
+		// }
+
+
 
 //		for (int i = 0; i < 500; i++) {
 //			Character ctest = new Character(i, i, new Color(i / 500.0f, i / 10000.0f, 0.24f, 1.0f), 10);
@@ -348,6 +373,24 @@ public class Game implements ApplicationListener {
 	public void render() {
 		if (!running)
 			return;
+
+		// Intersection testing code.
+		// SnapshotArray<Actor> children = State.getStage().getProjectiles().getChildren();
+		// Actor[] actors = children.begin();
+		// for (int i = 0, n = children.size; i < n; i++) {
+		// 	Actor child = actors[i];
+
+		// 	if (State.getStage().getEntities().hit(child.getX(), child.getY(), false) != null) {
+		// 		child.setColor(Color.GREEN);
+		// 	} else if (State.getStage().getText().hit(child.getX(), child.getY(), false) != null) {
+		// 		child.setColor(Color.BLUE);
+		// 	}
+		// 	else {
+		// 		child.setColor(Color.BLACK);
+		// 	}
+		// }
+
+		// children.end();
 
 		handleInput();
 		State.update();
@@ -477,6 +520,8 @@ public class Game implements ApplicationListener {
 		}
 
 		if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
+			State.getStage().getEntities().getChildren().get(0).rotate(1.0f);
+			State.getStage().getEntities().getChildren().get(1).rotate(1.0f);
 			State.getStage().getEntities().getChildren().get(2).rotate(1.0f);
 		}
 	}

@@ -5,6 +5,9 @@ import com.badlogic.gdx.graphics.Mesh;
 import com.badlogic.gdx.graphics.VertexAttribute;
 import com.badlogic.gdx.graphics.VertexAttributes.Usage;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
+import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 
 public class PolygonMeshActor extends MeshActor {
 	private Mesh mesh;
@@ -90,6 +93,65 @@ public class PolygonMeshActor extends MeshActor {
 
 		mesh.setVertices(vertices);
 		mesh.setIndices(indices);
+	}
+
+	@Override
+	public Actor hit(float x, float y, boolean touchable) {
+		if (touchable && this.getTouchable() != Touchable.enabled)
+			return null;
+
+		if (contains(x, y))
+			return this;
+
+		return null;
+	}
+
+	public boolean contains(float x, float y) {
+		// Translate coordinates to polygon space.
+		x -= getX();
+		y -= getY();
+
+		float rotation = getRotation() * MathUtils.degreesToRadians;
+		if (rotation != 0.0f) {
+			float cos = (float) Math.cos(rotation);
+			float sin = (float) Math.sin(rotation);
+
+			// Rotated coordinates.
+			float rX =  cos * x + sin * y;
+			float rY = -sin * x + cos * y;
+
+			x = rX;
+			y = rY;
+		}
+
+		x /= getWidth();
+		y /= getHeight();
+
+		y = -y; // Flip over vertically.
+
+		// System.out.println(x + ", " + y + ", x: " + xmin + ", " + xmax + ", y: " + ymin + ", " + ymax);
+
+		if (xmin > x || x > xmax ||
+		    ymin > y || y > ymax) {
+			return false;
+		}
+
+		int numVertices = getNumVertices();
+		boolean contains = false;
+		float xi, yi, xj, yj;
+		for (int i = 0, j = numVertices - 1; i < numVertices; j = i++) {
+			xi = boundingVertices[2 * i];
+			yi = boundingVertices[2 * i + 1];
+			xj = boundingVertices[2 * j];
+			yj = boundingVertices[2 * j + 1];
+
+			if (((yi > y) != (yj > y)) &&
+			    (x < (xj - xi) * (y - yi) / (yj - yi) + xi)) {
+				contains = !contains;
+			}
+		}
+
+		return contains;
 	}
 
 	@Override

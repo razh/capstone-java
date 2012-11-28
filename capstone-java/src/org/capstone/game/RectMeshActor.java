@@ -82,7 +82,7 @@ public class RectMeshActor extends MeshActor {
 	}
 
 	public boolean contains(float x, float y) {
-		return Geometry.obbContains(x, y, getX(), getY(), getWidth(), getHeight(), getRotation());
+		return Geometry.obbContains(x, y, getX(), getY(), getWidth(), getHeight(), getRotation() * MathUtils.degreesToRadians);
 	}
 
 	protected Mesh getMesh() {
