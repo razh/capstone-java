@@ -9,10 +9,10 @@ import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 public class PolygonMeshActor extends MeshActor {
 	private Mesh mesh;
 	private float[] boundingVertices;
-	private float xmin;
-	private float ymin;
-	private float xmax;
-	private float ymax;
+	private float xmin = Float.MAX_VALUE;
+	private float ymin = Float.MAX_VALUE;
+	private float xmax = Float.MIN_VALUE;
+	private float ymax = Float.MIN_VALUE;
 
 	public PolygonMeshActor() {
 		super();
@@ -65,9 +65,22 @@ public class PolygonMeshActor extends MeshActor {
 
 		indices[idxIndex++] = 0;
 
+		float x, y;
 		for (int i = 0; i < vtxCount; i++) {
-			vertices[vtxIndex++] = boundingVertices[2 * i];
-			vertices[vtxIndex++] = boundingVertices[2 * i + 1];
+			x =  boundingVertices[2 * i];
+			y = -boundingVertices[2 * i + 1]; // Screen is flipped vertically.
+
+			if (x < xmin)
+				xmin = x;
+			if (x > xmax)
+				xmax = x;
+			if (y < ymin)
+				ymin = y;
+			if (y > ymax)
+				ymax = y;
+
+			vertices[vtxIndex++] = x;
+			vertices[vtxIndex++] = y;
 
 			indices[idxIndex++] = (short) (i + 1);
 		}

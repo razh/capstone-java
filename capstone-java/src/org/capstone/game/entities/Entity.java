@@ -13,6 +13,7 @@ import org.capstone.game.entities.weapons.Weapon;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Interpolation;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -27,6 +28,8 @@ public class Entity {
 	protected int team = 0;
 	protected boolean takingFire = false;
 	protected ArrayList<Weapon> weapons;
+
+	private boolean oriented = false;
 
 	public Entity(MeshType type, float x, float y, Color color, float width, float height) {
 		setMeshType(type);
@@ -52,6 +55,11 @@ public class Entity {
 	}
 
 	public void act(float delta) {
+		if (isOriented()) {
+			actor.setRotation((float) Math.atan2(((MeshActor) actor).getVelocityY(),
+			                                     ((MeshActor) actor).getVelocityX()) * MathUtils.radiansToDegrees);
+		}
+
 		Actor enemy = this.getNearestActor(State.getStage().getEntities().getChildren());
 		if (enemy == null)
 			return;
@@ -167,6 +175,14 @@ public class Entity {
 
 	public void rotateBy(float amountInDegrees) {
 		actor.rotate(amountInDegrees);
+	}
+
+	public boolean isOriented() {
+		return oriented;
+	}
+
+	public void setOriented(boolean oriented) {
+		this.oriented = oriented;
 	}
 
 	public Color getColor() {

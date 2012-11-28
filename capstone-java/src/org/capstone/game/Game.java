@@ -263,7 +263,9 @@ public class Game implements ApplicationListener {
 		Entity redRect = new RectEntity(200, 40, new Color(0.941f, 0.247f, 0.208f, 1.0f), 100.0f, 20.0f);
 		redRect.setTeam(1);
 		redRect.setRotation(35.0f);
+		redRect.setOriented(true);
 		redRect.getActor().setTouchable(Touchable.disabled);
+		redRect.setVelocity(-50.0f, 100.0f);
 
 		Entity group = new EntityGroup(MeshType.RectMeshActor, 400, 400, new Color(0.941f, 0.247f, 0.208f, 1.0f), 20, 10, 10, 60);
 		group.setVelocity(200.0f, 100.0f);
@@ -318,7 +320,7 @@ public class Game implements ApplicationListener {
 		State.getStage().addText(new TextMeshActor('Y', 360, 300, new Color(1.0f, 1.0f, 1.0f, 1.0f), 30, 30));
 		State.getStage().addText(new TextMeshActor('Z', 400, 300, new Color(1.0f, 1.0f, 1.0f, 1.0f), 30, 30));
 		State.getStage().addText(new TextMeshGroup("THE QUICK BROWN FOX", 200, 100, new Color(0.2f, 0.4f, 0.3f, 1.0f), 30, 50, 10, 4.0f));
-		
+
 		State.getStage().addEntity(new PolygonEntity(new float[] {-1.0f, -1.0f, 1.0f, -1.0f, 0.0f, 1.0f}, 400, 500, new Color(0.0f, 0.5f, 0.0f, 1.0f), 20, 30));
 
 //		for (int i = 0; i < 500; i++) {
