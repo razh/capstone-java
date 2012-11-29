@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.VertexAttribute;
 import com.badlogic.gdx.graphics.VertexAttributes.Usage;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 
@@ -152,6 +153,61 @@ public class PolygonMeshActor extends MeshActor {
 		}
 
 		return contains;
+	}
+
+	@Override
+	public Vector2 getIntersection(float x, float y) {
+		// Translate coordinates to polygon space.
+		x -= getX();
+		y -= getY();
+
+		float rotation = getRotation() * MathUtils.degreesToRadians;
+		if (rotation != 0.0f) {
+			float cos = (float) Math.cos(rotation);
+			float sin = (float) Math.sin(rotation);
+
+			// Rotated coordinates.
+			float rX =  cos * x + sin * y;
+			float rY = -sin * x + cos * y;
+
+			x = rX;
+			y = rY;
+		}
+
+		x /= getWidth();
+		y /= getHeight();
+
+		y = -y; // Flip over vertically.
+
+		if (Math.abs(x) < 0.0f && Math.abs(y) < 0.0f)
+			return new Vector2(getX(), getY());
+
+    // http://www.softsurfer.com/Archive/algorithm_0111/algorithm_0111.htm
+    // Segment parameters.
+		float tEnter = 0.0f;
+		float tLeave = 1.0f;
+
+		float dx = x;
+		float dy = y;
+
+		Vector2 point = new Vector2(0.0f, 0.0f);
+		// int numVertices = getNumVertices() - 1;
+		// float xi, yi, xj, yj;
+		// for (int i = 0; i < numVertices - 1; i++) {
+		// 	xi = boundingVertices[2 * i];
+		// 	yi = boundingVertices[2 * i + 1];
+		// 	xj = boundingVertices[2 * (i + 1)];
+		// 	yj = boundingVertices[2 * (i + 1) + 1];
+
+		// 	point = Geometry.lineLineIntersection(0.0f, 0.0f, x, y, xi, yi, xj, yj);
+		// 	if (point != null)
+		// 		break;
+		// }
+
+		// point.x += getX();
+		// point.y += getY();
+
+		return point;
 	}
 
 	@Override
