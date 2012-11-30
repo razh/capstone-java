@@ -48,4 +48,13 @@ public class Geometry {
 
 		return false;
 	}
+
+	public static float dot(float x0, float y0, float x1, float y1) {
+		return x0 * x1 + y0 * y1;
+	}
+
+	// This is the magnitude of the three-dimensional cross product.
+	public static float cross(float x0, float y0, float x1, float y1) {
+		return x0 * y1 - y0 * x1;
+	}
 }

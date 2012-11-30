@@ -179,18 +179,81 @@ public class PolygonMeshActor extends MeshActor {
 
 		y = -y; // Flip over vertically.
 
-		if (Math.abs(x) < 0.0f && Math.abs(y) < 0.0f)
+		if (Math.abs(x) < State.EPSILON && Math.abs(y) < State.EPSILON)
 			return new Vector2(getX(), getY());
+		// http://stackoverflow.com/questions/563198/how-do-you-detect-where-two-line-segments-intersect
+
 
     // http://www.softsurfer.com/Archive/algorithm_0111/algorithm_0111.htm
     // Segment parameters.
-		float tEnter = 0.0f;
-		float tLeave = 1.0f;
+		// float tEnter = 0.0f;
+		// float tLeave = 1.0f;
 
-		float dx = x;
-		float dy = y;
+		// // From (0, 0) to (x, y).
+		// float dx = x;
+		// float dy = y;
 
-		Vector2 point = new Vector2(0.0f, 0.0f);
+		//  Vector2 point = new Vector2(0.0f, 0.0f);
+
+		// int numVertices = getNumVertices();
+		// float xi, yi, xj, yj;
+		// float edgeNormalX, edgeNormalY;
+
+		// float t, n, d;
+
+		// n = 0.0f;
+		// d = 0.0f;
+
+		// for (int i = 0; i < numVertices; i++) {
+		// 	xi = boundingVertices[2 * i];
+		// 	yi = boundingVertices[2 * i + 1];
+		// 	xj = boundingVertices[(2 * (i + 1)) % numVertices];
+		// 	yj = boundingVertices[(2 * (i + 1) + 1) % numVertices];
+
+		// 	// The normal to the vector (x, y) is (y, -x), assuming clockwise order.
+		// 	edgeNormalX = yj - yi;
+		// 	edgeNormalY = xi - xj;
+
+		// 	n = Geometry.dot(edgeNormalX, edgeNormalY, xi, yi);
+		// 	d = Geometry.dot(edgeNormalX, edgeNormalY, dx, dy);
+
+		// 	// The segment is nearly parallel to the edge.
+		// 	if (Math.abs(d) < State.EPSILON) {
+		// 		// Segment is outside the polygon. Should not happen.
+		// 		if (n < 0)
+		// 			return null;
+		// 		else
+		// 			continue;
+		// 	}
+
+		// 	t = n / d;
+		// 	// The segment enters across this edge.
+		// 	if (d < 0) {
+		// 		// New max entering parameter.
+		// 		if (t > tEnter) {
+		// 			tEnter = t;
+		// 			// The segment enters AFTER leaving the polygon.
+		// 			if (tEnter > tLeave)
+		// 				return null;
+		// 		}
+		// 	}
+		// 	// The segment leaves across this edge.
+		// 	else {
+		// 		// New min leaving parameter.
+		// 		if (t < tLeave) {
+		// 			tLeave = t;
+		// 			// The segment leaves BEFORE entering the polygon.
+		// 			if (tLeave < tEnter)
+		// 				return null;
+		// 		}
+		// 	}
+		// }
+
+		// // System.out.println(n + ", " + d);
+		// System.out.println(tLeave);
+
+		// return new Vector2(getX() + tLeave * dx, getY() + tLeave * dy);
+
 		// int numVertices = getNumVertices() - 1;
 		// float xi, yi, xj, yj;
 		// for (int i = 0; i < numVertices - 1; i++) {
@@ -207,7 +270,7 @@ public class PolygonMeshActor extends MeshActor {
 		// point.x += getX();
 		// point.y += getY();
 
-		return point;
+//		return point;
 	}
 
 	@Override

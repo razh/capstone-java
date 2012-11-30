@@ -19,7 +19,9 @@ public class Level {
 	
 	private MeshStage stage;
 	
-	public Level() {}
+	public Level(MeshStage stage) {
+		setStage(stage);
+	}
 	
 	public void act(float delta) {
 		int numEnemyTypes = getNumEnemyTypes();
@@ -35,6 +37,7 @@ public class Level {
 					// Reset timer.
 					spawnTimes.set(i, spawnIntervals.get(i));
 
+					// Decrement spawn count.
 					spawnCounts.set(i, spawnCounts.get(i) - 1);
 				}
 			}

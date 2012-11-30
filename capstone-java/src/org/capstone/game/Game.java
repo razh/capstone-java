@@ -284,11 +284,11 @@ public class Game implements ApplicationListener {
 		State.getStage().setShaderProgram(shaderProgram);
 
 		State.getStage().addEntity(redCircle);
-		State.getStage().addEntity(blueCircle);
-		State.getStage().addEntity(whiteRect);
-		State.getStage().addEntity(group);
-		State.getStage().addEntity(group2);
-		State.getStage().addEntity(redRect);
+//		State.getStage().addEntity(blueCircle);
+//		State.getStage().addEntity(whiteRect);
+//		State.getStage().addEntity(group);
+//		State.getStage().addEntity(group2);
+//		State.getStage().addEntity(redRect);
 		State.getStage().addText(new TextMeshActor('0',  40, 100, new Color(1.0f, 1.0f, 1.0f, 1.0f), 30, 30));
 		State.getStage().addText(new TextMeshActor('1',  80, 100, new Color(1.0f, 1.0f, 1.0f, 1.0f), 30, 30));
 		State.getStage().addText(new TextMeshActor('2',  40, 200, new Color(1.0f, 1.0f, 1.0f, 1.0f), 30, 30));
@@ -334,7 +334,10 @@ public class Game implements ApplicationListener {
 			testVertices[vtxIndex++] = (float) Math.sin(i * subdivAngle);
 			testVertices[vtxIndex++] = (float) Math.cos(i * subdivAngle);
 		}
+		// Clockwise order.
 		State.getStage().addEntity(new PolygonEntity(new float[] {-1.0f, -1.0f, 1.0f, -1.0f, 1.0f, 1.0f, -1.0f, 0.0f}, 400, 500, new Color(0.0f, 0.5f, 0.0f, 0.5f), 50, 60));
+		// Counterclockwise order.
+		State.getStage().addEntity(new PolygonEntity(new float[] {-1.0f, 0.0f, 1.0f, 1.0f, 1.0f, -1.0f, -1.0f, -1.0f}, 300, 600, new Color(0.0f, 0.0f, 0.5f, 0.5f), 50, 60));
 		State.getStage().addEntity(new PolygonEntity(testVertices, 200, 500, new Color(0.0f, 0.25f, 0.0f, 1.0f), 20, 30));
 
 		// Test intersection grid.
