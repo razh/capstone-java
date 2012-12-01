@@ -37,7 +37,7 @@ public class Game implements ApplicationListener {
 	private FPSLogger fpsLogger = new FPSLogger();
 	private boolean running = true;
 
-	private Level level = new Level();
+	private Level level;
 
 	private String vertexShader =
 		"uniform mat4 projection;\n" +
@@ -261,8 +261,9 @@ public class Game implements ApplicationListener {
 //		redCircle.setRotation(25);
 		
 		new State(width, height, new Color(0.572f, 0.686f, 0.624f, 1.0f));
+		level = new Level();
+		level.addEntitySpawner(redCircle, 0.0f, 100, 1.5f);
 		State.setLevel(level);
-		level.addEntitySpawner(redCircle, 0.01f, 100, 1.5f);
 
 		Entity blueCircle = new CircleEntity(200, 200, new Color(0.173f, 0.204f, 0.220f, 1.0f), 30);
 		blueCircle.setVelocity(100.0f, 100.0f);

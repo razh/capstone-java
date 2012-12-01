@@ -41,6 +41,7 @@ public class LaserGun extends Gun {
 
 		laserBeam = new LaserBeam(actor, getTargetX(), getTargetY(), getColor(), 0.0f);
 		setLaserWidth(gun.getLaserWidth());
+		setActorAsTarget(gun.getTargetActor());
 	}
 
 	public Color getColor() {

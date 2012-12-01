@@ -204,7 +204,7 @@ public class PolygonMeshActor extends MeshActor {
 		}
 
 		if (point == null)
-			return null;
+			return new Vector2(getX(), getY());
 
 		return localToScreenCoordinates(point);
 	}

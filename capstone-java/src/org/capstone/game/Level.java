@@ -6,24 +6,28 @@ import org.capstone.game.entities.Entity;
 
 public class Level {
 	// All the prototypical entities to be spawned.
-	private ArrayList<Entity> entities = new ArrayList<Entity>();
+	private ArrayList<Entity> entities;
 
 	// Initial spawning time.
-	private ArrayList<Float> spawnTimes = new ArrayList<Float>();
+	private ArrayList<Float> spawnTimes;
 
 	// Number of times to spawn.
-	private ArrayList<Integer> spawnCounts = new ArrayList<Integer>();
+	private ArrayList<Integer> spawnCounts;
 
 	// Time interval between spawning.
-	private ArrayList<Float> spawnIntervals = new ArrayList<Float>();
+	private ArrayList<Float> spawnIntervals;
 
 	private MeshStage stage;
 
-	private ArrayList<Entity> addedEntities = new ArrayList<Entity>();
-
-	public Level() {}
+	public Level() {
+		entities = new ArrayList<Entity>();
+		spawnTimes = new ArrayList<Float>();
+		spawnCounts = new ArrayList<Integer>();
+		spawnIntervals = new ArrayList<Float>();
+	}
 
 	public Level(MeshStage stage) {
+		this();
 		setStage(stage);
 	}
 
@@ -40,13 +44,6 @@ public class Level {
 					if (stage != null) {
 						entity = new Entity(entities.get(i));
 						stage.addEntity(entity);
-						addedEntities.add(entity);
-						System.out.println("Adding entity.");
-						
-
-						for (int j = 0; j < addedEntities.size(); j++) {
-							System.out.println(j + ": " + addedEntities.get(j).getX() + ", " + addedEntities.get(j).getY() + ", " + State.getStage().getEntities().getChildren().size);
-						}
 					}
 
 					// Reset timer.
