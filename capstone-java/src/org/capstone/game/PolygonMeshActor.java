@@ -112,27 +112,9 @@ public class PolygonMeshActor extends MeshActor {
 	}
 
 	public boolean contains(float x, float y) {
-		// Translate coordinates to polygon space.
-		x -= getX();
-		y -= getY();
-
-		float rotation = getRotation() * MathUtils.degreesToRadians;
-		if (rotation != 0.0f) {
-			float cos = (float) Math.cos(rotation);
-			float sin = (float) Math.sin(rotation);
-
-			// Rotated coordinates.
-			float rX =  cos * x + sin * y;
-			float rY = -sin * x + cos * y;
-
-			x = rX;
-			y = rY;
-		}
-
-		x /= getWidth();
-		y /= getHeight();
-
-		y = -y; // Flip over vertically.
+		Vector2 v = screenToLocalCoordinates(new Vector2(x, y));
+		x = v.x;
+		y = v.y;
 
 		// System.out.println(x + ", " + y + ", x: " + xmin + ", " + xmax + ", y: " + ymin + ", " + ymax);
 
@@ -161,29 +143,9 @@ public class PolygonMeshActor extends MeshActor {
 
 	@Override
 	public Vector2 getIntersection(float x, float y) {
-		// Translate coordinates to polygon space.
-		x -= getX();
-		y -= getY();
-
-		float rotation = getRotation() * MathUtils.degreesToRadians;
-		if (rotation != 0.0f) {
-			float cos = (float) Math.cos(rotation);
-			float sin = (float) Math.sin(rotation);
-
-			// Rotated coordinates.
-			float rX =  cos * x + sin * y;
-			float rY = -sin * x + cos * y;
-
-			x = rX;
-			y = rY;
-		}
-
-		x /= getWidth();
-		y /= getHeight();
-
-		y = -y; // Flip over vertically.
-		// if (true)
-		// 	return new Vector2(getX(), getY());
+		Vector2 v = screenToLocalCoordinates(new Vector2(x, y));
+		x = v.x;
+		y = v.y;
 
 		if (Math.abs(x) < State.EPSILON && Math.abs(y) < State.EPSILON)
 			return new Vector2(getX(), getY());
@@ -233,7 +195,7 @@ public class PolygonMeshActor extends MeshActor {
 
 			// (q - p) x s / (r x s).
 			t = Geometry.cross(xi, yi, ex, ey) * cross;
-			// (q − p) × r / (r × s)
+			// (q - p) x r / (r x s)
 			u = Geometry.cross(xi, yi, x, y) * cross;
 			if (0.0f <= t && t <= 1.0f && 0.0f <= u && u <= 1.0f) {
 				point = new Vector2(t * x, t * y);
@@ -244,27 +206,7 @@ public class PolygonMeshActor extends MeshActor {
 		if (point == null)
 			return null;
 
-		point.y = -point.y;
-
-		point.x *= getWidth();
-		point.y *= getHeight();
-
-		// Rotate back.
-		if (rotation != 0.0f) {
-			float cos = (float) Math.cos(rotation);
-			float sin = (float) Math.sin(rotation);
-
-			float rX = cos * point.x - sin * point.y;
-			float rY = sin * point.x + cos * point.y;
-
-			point.x = rX;
-			point.y = rY;
-		}
-
-		point.x += getX();
-		point.y += getY();
-
-		return point;
+		return localToScreenCoordinates(point);
 	}
 
 	@Override
@@ -282,6 +224,58 @@ public class PolygonMeshActor extends MeshActor {
 
 	public boolean intersects(CircleMeshActor actor) {
 		return actor.intersects(this);
+	}
+
+	@Override
+	public Vector2 screenToLocalCoordinates(Vector2 screenCoords) {
+		// Translate coordinates to polygon space.
+		screenCoords.x -= getX();
+		screenCoords.y -= getY();
+
+		float rotation = getRotation() * MathUtils.degreesToRadians;
+		if (rotation != 0.0f) {
+			float cos = (float) Math.cos(rotation);
+			float sin = (float) Math.sin(rotation);
+
+			// Rotated coordinates.
+			float rX =  cos * screenCoords.x + sin * screenCoords.y;
+			float rY = -sin * screenCoords.x + cos * screenCoords.y;
+
+			screenCoords.x = rX;
+			screenCoords.y = rY;
+		}
+
+		screenCoords.x /= getWidth();
+		screenCoords.y /= getHeight();
+
+		screenCoords.y = -screenCoords.y; // Flip over vertically.
+
+		return screenCoords;
+	}
+
+	public Vector2 localToScreenCoordinates(Vector2 localCoords) {
+		localCoords.y = -localCoords.y;
+
+		localCoords.x *= getWidth();
+		localCoords.y *= getHeight();
+
+		// Rotate back.
+		float rotation = getRotation() * MathUtils.degreesToRadians;
+		if (rotation != 0.0f) {
+			float cos = (float) Math.cos(rotation);
+			float sin = (float) Math.sin(rotation);
+
+			float rX = cos * localCoords.x - sin * localCoords.y;
+			float rY = sin * localCoords.x + cos * localCoords.y;
+
+			localCoords.x = rX;
+			localCoords.y = rY;
+		}
+
+		localCoords.x += getX();
+		localCoords.y += getY();
+
+		return localCoords;
 	}
 
 	@Override

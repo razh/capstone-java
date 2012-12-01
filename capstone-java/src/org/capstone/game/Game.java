@@ -523,9 +523,13 @@ public class Game implements ApplicationListener {
 		}
 
 		if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
-			State.getStage().getEntities().getChildren().get(0).rotate(1.0f);
-			State.getStage().getEntities().getChildren().get(1).rotate(1.0f);
-			State.getStage().getEntities().getChildren().get(2).rotate(1.0f);
+			SnapshotArray<Actor> children = State.getStage().getEntities().getChildren();
+			Actor[] actors = children.begin();
+			for (int i = 0, n = children.size; i < n; i++) {
+				actors[i].rotate(1.0f);
+			}
+
+			children.end();
 		}
 	}
 

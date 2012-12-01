@@ -228,47 +228,18 @@ public class CircleMeshActor extends MeshActor {
 		float[] vertices = actor.getVertices();
 		int numVertices  = actor.getNumVertices();
 
-		float rotation = actor.getRotation() * MathUtils.degreesToRadians;
-		float cos = (float) Math.cos(rotation);
-		float sin = (float) Math.sin(rotation);
-
-		float cX = actor.getX();
-		float cY = actor.getY();
-
-		float width  = actor.getWidth();
-		float height = actor.getHeight();
-
-		float xi, yi, xj, yj;
-		float rXi, rYi, rXj, rYj;
+		Vector2 vi = new Vector2();
+		Vector2 vj = new Vector2();
 		for (int i = 0; i < numVertices; i++) {
-			xi =  vertices[2 * i];
-			yi = -vertices[2 * i + 1];
-			xj =  vertices[(2 * (i + 1)) % vertices.length];
-			yj = -vertices[(2 * (i + 1) + 1) % vertices.length];
+			vi.x = vertices[2 * i];
+			vi.y = vertices[2 * i + 1];
+			vj.x = vertices[(2 * (i + 1)) % vertices.length];
+			vj.y = vertices[(2 * (i + 1) + 1) % vertices.length];
 
-			xi *= width;
-			yi *= height;
-			xj *= width;
-			yj *= height;
+			vi = actor.localToScreenCoordinates(vi);
+			vj = actor.localToScreenCoordinates(vj);
 
-			if (rotation != 0.0f) {
-				rXi = cos * xi - sin * yi;
-				rYi = sin * xi + cos * yi;
-				rXj = cos * xj - sin * yj;
-				rYj = sin * xj + cos * yj;
-
-				xi = rXi;
-				yi = rYi;
-				xj = rXj;
-				yj = rYj;
-			}
-
-			xi += cX;
-			yi += cY;
-			xj += cX;
-			yj += cY;
-
-			if (intersectsLine(xi, yi, xj, yj))
+			if (intersectsLine(vi.x, vi.y, vj.x, vj.y))
 				return true;
 		}
 
