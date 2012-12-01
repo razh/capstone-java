@@ -85,7 +85,7 @@ public class Entity {
 		oriented = entity.oriented;
 
 		for (int i = 0; i < entity.getWeapons().size(); i++) {
-			weapons.add(WeaponFactory.weapon(entity.getWeapons().get(i)));
+			weapons.add(WeaponFactory.createWeapon(entity.getWeapons().get(i)));
 			weapons.get(i).setActor(actor);
 		}
 	}
