@@ -40,6 +40,15 @@ public class BulletGun extends Gun {
             Color color, float radius) {
 		this(entity.getActor(), damage, rate, range, speed, color, radius, -1.0f);
 	}
+	
+	public BulletGun(BulletGun gun) {
+		super(gun);
+		
+		setSpeed(gun.getSpeed());
+		setColor(gun.getColor());
+		setRadius(gun.getRadius());
+		setBulletRange(gun.getBulletRange());
+	}
 
 	public void fire() {
 		Vector2 point = ((MeshActor) actor).getIntersection(getTargetX(), getTargetY()); 

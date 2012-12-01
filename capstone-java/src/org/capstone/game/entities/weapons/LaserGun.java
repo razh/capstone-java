@@ -17,6 +17,7 @@ public class LaserGun extends Gun {
 	private Actor targetActor;
 	private boolean drawingBeam = false;
 	protected LaserBeam laserBeam;
+	protected float laserWidth;
 
 	public LaserGun(Actor actor, float damage, float rate, float range,
 	                Color color, float width) {
@@ -24,11 +25,20 @@ public class LaserGun extends Gun {
 
 		setColor(color);
 		laserBeam = new LaserBeam(actor, getTargetX(), getTargetY(), getColor(), width);
+		setLaserWidth(width);
 	}
 
 	public LaserGun(Entity entity, float damage, float rate, float range,
 	                Color color, float width) {
 		this(entity.getActor(), damage, rate, range, color, width);
+	}
+	
+	public LaserGun(LaserGun gun) {
+		super(gun);
+		
+		setColor(gun.getColor());
+		laserBeam = new LaserBeam(actor, getTargetX(), getTargetY(), getColor(), 0);
+		setLaserWidth(gun.getLaserWidth());
 	}
 
 	public Color getColor() {
@@ -58,6 +68,15 @@ public class LaserGun extends Gun {
 		this.drawingBeam = drawingBeam;
 	}
 
+	public float getLaserWidth() {
+		return laserWidth;
+	}
+
+	public void setLaserWidth(float laserWidth) {
+		this.laserWidth = laserWidth;
+		laserBeam.setWidth(laserWidth);
+	}
+
 	public void act(float delta) {
 		super.act(delta);
 
@@ -69,6 +88,9 @@ public class LaserGun extends Gun {
 
 	public void fire() {
 		super.fire();
+		
+		if (actor != laserBeam.getActor())
+			laserBeam.setActor((MeshActor) actor);
 
 		if (targetActor == null)
 			return;

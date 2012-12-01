@@ -21,10 +21,6 @@ public class RectMeshActor extends MeshActor {
 			createMesh();
 		}
 	}
-	
-	public RectMeshActor(RectMeshActor actor) {
-		super(actor);
-	}
 
 	private void createMesh() {
 		createMesh(1, 1);

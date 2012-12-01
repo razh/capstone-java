@@ -4,12 +4,12 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 
 public class State {
-	private static float width = Gdx.graphics.getWidth();
-	private static float height = Gdx.graphics.getHeight();
+	private static float width;
+	private static float height;
 	private static Color color;
 
 	private static Level level;
-	private static MeshStage stage = new MeshStage(width, height, true);
+	private static MeshStage stage;
 
 	public static float EPSILON = 1E-10f;
 	public static boolean debug = true;

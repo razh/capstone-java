@@ -42,6 +42,11 @@ public class Level {
 						stage.addEntity(entity);
 						addedEntities.add(entity);
 						System.out.println("Adding entity.");
+						
+
+						for (int j = 0; j < addedEntities.size(); j++) {
+							System.out.println(j + ": " + addedEntities.get(j).getX() + ", " + addedEntities.get(j).getY() + ", " + State.getStage().getEntities().getChildren().size);
+						}
 					}
 
 					// Reset timer.
@@ -51,10 +56,6 @@ public class Level {
 					spawnCounts.set(i, spawnCounts.get(i) - 1);
 				}
 			}
-		}
-
-		for (int i = 0; i < addedEntities.size(); i++) {
-//			System.out.println(i + ": " + addedEntities.get(i).getX() + ", " + addedEntities.get(i).getY());
 		}
 	}
 

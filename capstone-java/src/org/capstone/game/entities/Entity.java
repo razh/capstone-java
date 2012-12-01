@@ -8,10 +8,12 @@ import org.capstone.game.CircleMeshActor;
 import org.capstone.game.MeshActor;
 import org.capstone.game.MeshGroup;
 import org.capstone.game.MeshType;
+import org.capstone.game.PhysicsActor;
 import org.capstone.game.PolygonMeshActor;
 import org.capstone.game.RectMeshActor;
 import org.capstone.game.State;
 import org.capstone.game.entities.weapons.Weapon;
+import org.capstone.game.entities.weapons.WeaponFactory;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Interpolation;
@@ -29,7 +31,7 @@ public class Entity {
 	protected MeshType meshType;
 	protected int team = 0;
 	protected boolean takingFire = false;
-	protected ArrayList<Weapon> weapons;
+	protected ArrayList<Weapon> weapons = new ArrayList<Weapon>();
 	protected int health = -1;
 
 	private boolean oriented = false;
@@ -53,30 +55,39 @@ public class Entity {
 		setColor(color);
 		setWidth(width);
 		setHeight(height);
-
-		weapons = new ArrayList<Weapon>();
 	}
 
 	public Entity(Entity entity) {
-		System.out.println("HELLO!");
-		if (entity.actor instanceof CircleMeshActor)
-			actor = new CircleMeshActor((CircleMeshActor) entity.actor);
-		else if (entity.actor instanceof RectMeshActor)
-			actor = new RectMeshActor((RectMeshActor) entity.actor);
-		else if (entity.actor instanceof PolygonMeshActor)
-			actor = new PolygonMeshActor((PolygonMeshActor) entity.actor);
-		else
-			actor = new MeshActor((MeshActor) entity.actor);
+		if (entity.actor instanceof CircleMeshActor) {
+			actor = new CircleMeshActor();
+		} else if (entity.actor instanceof RectMeshActor) {
+			actor = new RectMeshActor();
+		} else if (entity.actor instanceof PolygonMeshActor) {
+			actor = new PolygonMeshActor();
+			((PolygonMeshActor) actor).setVertices(((PolygonMeshActor) entity.actor).getVertices());
+		} else {
+			actor = new MeshActor();
+		}
 
 		((MeshActor) actor).setEntity(this);
+		setPosition(entity.getX(), entity.getY());
 
-		meshType   = entity.meshType;
-		team       = entity.team;
+		setVelocity(entity.getVelocityX(), entity.getVelocityY());
+		setWidth(entity.getWidth());
+		setHeight(entity.getHeight());
+		setRotation(entity.getRotation());
+		setColor(entity.getColor());
+
+		meshType = entity.meshType;
+		team = entity.team;
 		takingFire = entity.takingFire;
-		weapons    = entity.weapons;
-		health     = entity.health;
+		health = entity.health;
+		oriented = entity.oriented;
 
-		oriented   = entity.oriented;
+		for (int i = 0; i < entity.getWeapons().size(); i++) {
+			weapons.add(WeaponFactory.weapon(entity.getWeapons().get(i)));
+			weapons.get(i).setActor(actor);
+		}
 	}
 
 	public void act(float delta) {

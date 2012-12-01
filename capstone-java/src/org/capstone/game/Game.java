@@ -260,8 +260,9 @@ public class Game implements ApplicationListener {
 		redCircle.setTeam(1);
 //		redCircle.setRotation(25);
 		
+		new State(width, height, new Color(0.572f, 0.686f, 0.624f, 1.0f));
 		State.setLevel(level);
-		level.addEntitySpawner(redCircle, 0.01f, 100, 0.5f);
+		level.addEntitySpawner(redCircle, 0.01f, 100, 1.5f);
 
 		Entity blueCircle = new CircleEntity(200, 200, new Color(0.173f, 0.204f, 0.220f, 1.0f), 30);
 		blueCircle.setVelocity(100.0f, 100.0f);
@@ -282,7 +283,6 @@ public class Game implements ApplicationListener {
 		Entity group2 = new EntityGroup(MeshType.CircleMeshActor, 600, 400, new Color(0.173f, 0.204f, 0.220f, 1.0f), 20, 20, 10, 80);
 		group2.setVelocity(-200.0f, 100.0f);
 
-		new State(width, height, new Color(0.572f, 0.686f, 0.624f, 1.0f));
 		State.getStage().setShaderProgram(shaderProgram);
 
 		State.getStage().addEntity(redCircle);
