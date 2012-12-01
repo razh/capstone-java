@@ -26,6 +26,16 @@ public class MeshStage extends Stage {
 
 		root = new MeshGroup();
 		root.setStage(this);
+		
+		entities = new MeshGroup();
+		projectiles = new MeshGroup();
+		text = new MeshGroup();
+		tests = new MeshGroup();
+		
+		root.addActor(entities);
+		root.addActor(projectiles);
+		root.addActor(text);
+		root.addActor(tests);
 	}
 
 	public void setShaderProgram(ShaderProgram shaderProgram) {
@@ -81,15 +91,7 @@ public class MeshStage extends Stage {
 	//----------------------------------------------------------------------------
 	//  ENTITIES
 	//----------------------------------------------------------------------------
-	private void initEntities() {
-		entities = new MeshGroup();
-		root.addActor(entities);
-	}
-
 	public void addEntity(Actor actor) {
-		if (entities == null)
-			initEntities();
-
 		entities.addActor(actor);
 	}
 
@@ -98,24 +100,13 @@ public class MeshStage extends Stage {
 	}
 
 	public MeshGroup getEntities() {
-		if (entities == null)
-			initEntities();
-
 		return entities;
 	}
 
 	//----------------------------------------------------------------------------
 	//  PROJECTILES
 	//----------------------------------------------------------------------------
-	private void initProjectiles() {
-		projectiles = new MeshGroup();
-		root.addActor(projectiles);
-	}
-
 	public void addProjectile(Actor actor) {
-		if (projectiles == null)
-			initProjectiles();
-
 		projectiles.addActor(actor);
 	}
 
@@ -124,24 +115,13 @@ public class MeshStage extends Stage {
 	}
 
 	public MeshGroup getProjectiles() {
-		if (projectiles == null)
-			initProjectiles();
-
 		return projectiles;
 	}
 
 	//----------------------------------------------------------------------------
 	//  TEXT
 	//----------------------------------------------------------------------------
-	private void initText() {
-		text = new MeshGroup();
-		root.addActor(text);
-	}
-
 	public void addText(Actor actor) {
-		if (text == null)
-			initText();
-
 		text.addActor(actor);
 	}
 
@@ -150,24 +130,13 @@ public class MeshStage extends Stage {
 	}
 
 	public MeshGroup getText() {
-		if (text == null)
-			initText();
-
 		return text;
 	}
 
 	//----------------------------------------------------------------------------
 	//  TESTING
 	//----------------------------------------------------------------------------
-	private void initTests() {
-		tests = new MeshGroup();
-		root.addActor(tests);
-	}
-
 	public void addTest(Actor actor) {
-		if (tests == null)
-			initTests();
-
 		tests.addActor(actor);
 	}
 
@@ -176,9 +145,6 @@ public class MeshStage extends Stage {
 	}
 
 	public MeshGroup getTests() {
-		if (tests == null)
-			initTests();
-
 		return tests;
 	}
 }

@@ -376,22 +376,24 @@ public class Game implements ApplicationListener {
 			return;
 
 		// Intersection testing code.
-		SnapshotArray<Actor> children = State.getStage().getTests().getChildren();
-		Actor[] actors = children.begin();
-		for (int i = 0, n = children.size; i < n; i++) {
-			Actor child = actors[i];
+		if (State.debugRendering) {
+			SnapshotArray<Actor> children = State.getStage().getTests().getChildren();
+			Actor[] actors = children.begin();
+			for (int i = 0, n = children.size; i < n; i++) {
+				Actor child = actors[i];
+	
+				if (State.getStage().getEntities().hit(child.getX(), child.getY(), false) != null) {
+					child.setColor(Color.GREEN);
+				} else if (State.getStage().getText().hit(child.getX(), child.getY(), false) != null) {
+					child.setColor(Color.BLUE);
+				}
+				else {
+					child.setColor(Color.BLACK);
+				}
+			}	
 
-			if (State.getStage().getEntities().hit(child.getX(), child.getY(), false) != null) {
-				child.setColor(Color.GREEN);
-			} else if (State.getStage().getText().hit(child.getX(), child.getY(), false) != null) {
-				child.setColor(Color.BLUE);
-			}
-			else {
-				child.setColor(Color.BLACK);
-			}
+			children.end();
 		}
-
-		children.end();
 
 		handleInput();
 		State.update();
