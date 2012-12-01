@@ -198,16 +198,18 @@ public class RectMeshActor extends MeshActor {
 		return point;
 	}
 
+	@Override
 	public boolean intersects(Actor actor) {
 		if (actor instanceof CircleMeshActor) {
 			return intersects((CircleMeshActor) actor);
 		} else if (actor instanceof RectMeshActor) {
 			return intersects((RectMeshActor) actor);
+		} else if (actor instanceof PolygonMeshActor) {
+			return intersects((PolygonMeshActor) actor);
 		} else {
 			return false;
 		}
 	}
-
 
 	public boolean intersects(CircleMeshActor actor) {
 		return actor.intersects(this);

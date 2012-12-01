@@ -132,11 +132,14 @@ public class CircleMeshActor extends MeshActor {
 		return new Vector2(x0 + dx * r0, y0 + dy * r0);
 	}
 
+	@Override
 	public boolean intersects(Actor actor) {
 		if (actor instanceof CircleMeshActor) {
 			return intersects((CircleMeshActor) actor);
 		} else if (actor instanceof RectMeshActor) {
 			return intersects((RectMeshActor) actor);
+		} else if (actor instanceof PolygonMeshActor) {
+			return intersects((PolygonMeshActor) actor);
 		} else {
 			return false;
 		}
@@ -216,6 +219,60 @@ public class CircleMeshActor extends MeshActor {
 		       intersectsLine(x1, y1, x2, y2) ||
 		       intersectsLine(x2, y2, x3, y3) ||
 		       intersectsLine(x3, y3, x0, y0);
+	}
+
+	public boolean intersects(PolygonMeshActor actor) {
+		if (actor.contains(getX(), getY()))
+			return true;
+
+		float[] vertices = actor.getVertices();
+		int numVertices  = actor.getNumVertices();
+
+		float rotation = actor.getRotation() * MathUtils.degreesToRadians;
+		float cos = (float) Math.cos(rotation);
+		float sin = (float) Math.sin(rotation);
+
+		float cX = actor.getX();
+		float cY = actor.getY();
+
+		float width  = actor.getWidth();
+		float height = actor.getHeight();
+
+		float xi, yi, xj, yj;
+		float rXi, rYi, rXj, rYj;
+		for (int i = 0; i < numVertices; i++) {
+			xi =  vertices[2 * i];
+			yi = -vertices[2 * i + 1];
+			xj =  vertices[(2 * (i + 1)) % vertices.length];
+			yj = -vertices[(2 * (i + 1) + 1) % vertices.length];
+
+			xi *= width;
+			yi *= height;
+			xj *= width;
+			yj *= height;
+
+			if (rotation != 0.0f) {
+				rXi = cos * xi - sin * yi;
+				rYi = sin * xi + cos * yi;
+				rXj = cos * xj - sin * yj;
+				rYj = sin * xj + cos * yj;
+
+				xi = rXi;
+				yi = rYi;
+				xj = rXj;
+				yj = rYj;
+			}
+
+			xi += cX;
+			yi += cY;
+			xj += cX;
+			yj += cY;
+
+			if (intersectsLine(xi, yi, xj, yj))
+				return true;
+		}
+
+		return false;
 	}
 
 	public boolean intersectsLine(float x0, float y0, float x1, float y1) {

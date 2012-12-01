@@ -15,7 +15,7 @@ public class MeshActor extends PhysicsActor {
 	public MeshActor() {
 		super();
 	}
-	
+
 	public void act(float delta) {
 		super.act(delta);
 		if (entity != null)
@@ -46,10 +46,10 @@ public class MeshActor extends PhysicsActor {
 	public Actor hit(float x, float y, boolean touchable) {
 		if (touchable && this.getTouchable() != Touchable.enabled)
 			return null;
-		
+
 		if (x == getX() && y == getY())
 			return this;
-		
+
 		return null;
 	}
 
@@ -61,7 +61,7 @@ public class MeshActor extends PhysicsActor {
 	public Vector2 getIntersection(float x, float y) {
 		return new Vector2(getX(), getY());
 	}
-	
+
 	public boolean intersects(Actor actor) {
 		return false;
 	}

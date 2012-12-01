@@ -38,6 +38,10 @@ public class PolygonMeshActor extends MeshActor {
 		return boundingVertices.length / 2;
 	}
 
+	public float[] getVertices() {
+		return boundingVertices;
+	}
+
 	public void setVertices(float[] vertices) {
 		this.boundingVertices = vertices;
 
@@ -261,6 +265,23 @@ public class PolygonMeshActor extends MeshActor {
 		point.y += getY();
 
 		return point;
+	}
+
+	@Override
+	public boolean intersects(Actor actor) {
+		if (actor instanceof CircleMeshActor) {
+			return intersects((CircleMeshActor) actor);
+		} else if (actor instanceof RectMeshActor) {
+			return intersects((RectMeshActor) actor);
+		} else if (actor instanceof PolygonMeshActor) {
+			return intersects((PolygonMeshActor) actor);
+		} else {
+			return false;
+		}
+	}
+
+	public boolean intersects(CircleMeshActor actor) {
+		return actor.intersects(this);
 	}
 
 	@Override

@@ -284,11 +284,11 @@ public class Game implements ApplicationListener {
 		State.getStage().setShaderProgram(shaderProgram);
 
 		State.getStage().addEntity(redCircle);
-//		State.getStage().addEntity(blueCircle);
-//		State.getStage().addEntity(whiteRect);
-//		State.getStage().addEntity(group);
-//		State.getStage().addEntity(group2);
-//		State.getStage().addEntity(redRect);
+		State.getStage().addEntity(blueCircle);
+		State.getStage().addEntity(whiteRect);
+		State.getStage().addEntity(group);
+		State.getStage().addEntity(group2);
+		State.getStage().addEntity(redRect);
 		State.getStage().addText(new TextMeshActor('0',  40, 100, new Color(1.0f, 1.0f, 1.0f, 1.0f), 30, 30));
 		State.getStage().addText(new TextMeshActor('1',  80, 100, new Color(1.0f, 1.0f, 1.0f, 1.0f), 30, 30));
 		State.getStage().addText(new TextMeshActor('2',  40, 200, new Color(1.0f, 1.0f, 1.0f, 1.0f), 30, 30));
