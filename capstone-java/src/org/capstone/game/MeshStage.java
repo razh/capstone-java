@@ -63,6 +63,21 @@ public class MeshStage extends Stage {
 		root.addActor(actor);
 	}
 
+	public void act(float delta) {
+		root.act(delta);
+	}
+
+	public MeshGroup getRoot() {
+		return root;
+	}
+
+	@Override
+	public Actor hit(float stageX, float stageY, boolean touchable) {
+		Vector2 actorCoords = Vector2.tmp;
+		getRoot().parentToLocalCoordinates(actorCoords.set(stageX, stageY));
+		return getRoot().hit(actorCoords.x, actorCoords.y, touchable);
+	}
+
 	//----------------------------------------------------------------------------
 	//  ENTITIES
 	//----------------------------------------------------------------------------
@@ -165,20 +180,5 @@ public class MeshStage extends Stage {
 			initTests();
 
 		return tests;
-	}
-
-	public void act(float delta) {
-		root.act(delta);
-	}
-
-	public MeshGroup getRoot() {
-		return root;
-	}
-
-	@Override
-	public Actor hit(float stageX, float stageY, boolean touchable) {
-		Vector2 actorCoords = Vector2.tmp;
-		getRoot().parentToLocalCoordinates(actorCoords.set(stageX, stageY));
-		return getRoot().hit(actorCoords.x, actorCoords.y, touchable);
 	}
 }
