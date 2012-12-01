@@ -74,7 +74,12 @@ public class MeshStage extends Stage {
 	}
 
 	public void act(float delta) {
-		root.act(delta);
+		entities.act(delta);
+		projectiles.act(delta);
+		text.act(delta);
+
+		if (State.debugRendering)
+			tests.act(delta);
 	}
 
 	public MeshGroup getRoot() {
