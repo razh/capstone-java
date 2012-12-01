@@ -15,7 +15,7 @@ public class MeshStage extends Stage {
 	private MeshGroup entities;
 	private MeshGroup projectiles;
 	private MeshGroup text;
-	private MeshGroup test;
+	private MeshGroup tests;
 
 	public MeshStage() {
 		this(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
@@ -53,7 +53,7 @@ public class MeshStage extends Stage {
 		text.draw(shaderProgram, 1.0f);
 
 		if (State.debugRendering)
-			test.draw(shaderProgram, 1.0f);
+			tests.draw(shaderProgram, 1.0f);
 
 		shaderProgram.end();
 	}
@@ -144,27 +144,27 @@ public class MeshStage extends Stage {
 	//----------------------------------------------------------------------------
 	//  TESTING
 	//----------------------------------------------------------------------------
-	private void initTest() {
-		test = new MeshGroup();
-		root.addActor(test);
+	private void initTests() {
+		tests = new MeshGroup();
+		root.addActor(tests);
 	}
 
 	public void addTest(Actor actor) {
-		if (test == null)
-			initTest();
+		if (tests == null)
+			initTests();
 
-		test.addActor(actor);
+		tests.addActor(actor);
 	}
 
 	public void addTest(Entity test) {
 		addTest(test.getActor());
 	}
 
-	public MeshGroup getTest() {
-		if (test == null)
-			initTest();
+	public MeshGroup getTests() {
+		if (tests == null)
+			initTests();
 
-		return test;
+		return tests;
 	}
 
 	public void act(float delta) {

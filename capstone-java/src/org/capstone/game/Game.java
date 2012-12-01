@@ -378,7 +378,7 @@ public class Game implements ApplicationListener {
 			return;
 
 		// Intersection testing code.
-		SnapshotArray<Actor> children = State.getStage().getTest().getChildren();
+		SnapshotArray<Actor> children = State.getStage().getTests().getChildren();
 		Actor[] actors = children.begin();
 		for (int i = 0, n = children.size; i < n; i++) {
 			Actor child = actors[i];
