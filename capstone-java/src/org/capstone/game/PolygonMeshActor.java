@@ -178,12 +178,88 @@ public class PolygonMeshActor extends MeshActor {
 		y /= getHeight();
 
 		y = -y; // Flip over vertically.
+		// if (true)
+		// 	return new Vector2(getX(), getY());
 
 		if (Math.abs(x) < State.EPSILON && Math.abs(y) < State.EPSILON)
 			return new Vector2(getX(), getY());
+
+		/*
+		             (x, y)
+		               ^
+		               |
+		  (xi, yi) ----o----> (xj, yj)
+		               |
+		             (0, 0)
+
+		  Line segment (p, p + r) is from (0, 0) to (x, y).
+		  Line segment (q, q + s) is from (xi, yi) to (xj, yj).
+		*/
 		// http://stackoverflow.com/questions/563198/how-do-you-detect-where-two-line-segments-intersect
+		int numVertices = getNumVertices();
+		float xi, yi, xj, yj;
+		// Edge.
+		float ex, ey;
+		// Parameter along line segment (0, 0) to (x, y).
+		float t = 0.0f;
+		// Parameter along line segment (xi, yi) to (xj, yj).
+		float u = 0.0f;
+		// Magnitude of cross product of (x, y) and (xj - xi, yj - yi).
+		float cross;
 
+		Vector2 point = null;
+		// System.out.println(x + ", " +  y);
+		int numVerticesChecked = 0;
+		for (int i = 0; i < numVertices; i++) {
+			xi = boundingVertices[2 * i];
+			yi = boundingVertices[2 * i + 1];
+			xj = boundingVertices[(2 * (i + 1)) % boundingVertices.length];
+			yj = boundingVertices[(2 * (i + 1) + 1) % boundingVertices.length];
 
+			// s
+			ex = xj - xi;
+			ey = yj - yi;
+
+			// (r x s).
+			cross = Geometry.cross(x, y, ex, ey);
+			// Lines are parallel if (r x s) == 0.
+			if (Math.abs(cross) < State.EPSILON)
+				continue;
+
+			// Compute reciprocal.
+			cross = 1.0f / cross;
+
+			// (q - p) x s / (r x s).
+			t = Geometry.cross(xi, yi, ex, ey) * cross;
+			// (q − p) × r / (r × s)
+			u = Geometry.cross(xi, yi, x, y) * cross;
+			if (0.0f <= t && t <= 1.0f && 0.0f <= u && u <= 1.0f) {
+				System.out.println(xi + ", " + yi + ", " + xj + ", " + yj);
+				// System.out.println((2 * i) + ", " + (2 * i + 1) + ", " + ((2 * (i + 1)) % numVertices) + ", " + ((2 * (i + 1) + 1) % numVertices));
+				// System.out.println(t * x + ", " + t * y + ", " + (xi + u * ex) + ", " + (yi + u * ey));
+				point = new Vector2(t * x, t * y);
+				break;
+			}
+
+			numVerticesChecked++;
+		}
+
+		if (point == null) {
+			// System.out.println("NULL " + x + ", " + y);
+			System.out.println("NULL " + x + ", " + y + ", " + t + ", " + u + ", " + numVerticesChecked);
+
+			return null;
+		}
+
+		point.y = -point.y;
+
+		point.x *= getWidth();
+		point.y *= getHeight();
+
+		point.x += getX();
+		point.y += getY();
+
+		return point;
     // http://www.softsurfer.com/Archive/algorithm_0111/algorithm_0111.htm
     // Segment parameters.
 		// float tEnter = 0.0f;

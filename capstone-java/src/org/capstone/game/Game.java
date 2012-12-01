@@ -335,7 +335,9 @@ public class Game implements ApplicationListener {
 			testVertices[vtxIndex++] = (float) Math.cos(i * subdivAngle);
 		}
 		// Clockwise order.
-		State.getStage().addEntity(new PolygonEntity(new float[] {-1.0f, -1.0f, 1.0f, -1.0f, 1.0f, 1.0f, -1.0f, 0.0f}, 400, 500, new Color(0.0f, 0.5f, 0.0f, 0.5f), 50, 60));
+		State.getStage().addEntity(new PolygonEntity(new float[] {-1.0f, -1.0f, 1.0f, -1.0f, 1.0f, 1.0f, -1.0f, 0.0f}, 800, 500, new Color(0.0f, 0.5f, 0.0f, 0.5f), 50, 60));
+
+		// State.getStage().addEntity(new PolygonEntity(new float[] {-1.0f, -1.0f, 1.0f, -1.0f, 1.0f, 1.0f, -1.0f, 0.0f}, 800, 500, new Color(0.0f, 0.5f, 0.0f, 0.5f), 50, 60));
 		// Counterclockwise order.
 		State.getStage().addEntity(new PolygonEntity(new float[] {-1.0f, 0.0f, 1.0f, 1.0f, 1.0f, -1.0f, -1.0f, -1.0f}, 300, 600, new Color(0.0f, 0.0f, 0.5f, 0.5f), 50, 60));
 		State.getStage().addEntity(new PolygonEntity(testVertices, 200, 500, new Color(0.0f, 0.25f, 0.0f, 1.0f), 20, 30));
@@ -348,8 +350,6 @@ public class Game implements ApplicationListener {
 		// 		State.getStage().addProjectile(rectEnt);
 		// 	}
 		// }
-
-
 
 //		for (int i = 0; i < 500; i++) {
 //			Character ctest = new Character(i, i, new Color(i / 500.0f, i / 10000.0f, 0.24f, 1.0f), 10);
