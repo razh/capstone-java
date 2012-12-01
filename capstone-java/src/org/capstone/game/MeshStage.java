@@ -15,7 +15,7 @@ public class MeshStage extends Stage {
 	private MeshGroup entities;
 	private MeshGroup projectiles;
 	private MeshGroup text;
-
+	private MeshGroup test;
 
 	public MeshStage() {
 		this(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
@@ -48,7 +48,13 @@ public class MeshStage extends Stage {
 
 		shaderProgram.begin();
 		shaderProgram.setUniformMatrix("projection", getCamera().combined);
-		root.draw(shaderProgram, 1.0f);
+		entities.draw(shaderProgram, 1.0f);
+		projectiles.draw(shaderProgram, 1.0f);
+		text.draw(shaderProgram, 1.0f);
+
+		if (State.debugRendering)
+			test.draw(shaderProgram, 1.0f);
+
 		shaderProgram.end();
 	}
 
@@ -57,6 +63,9 @@ public class MeshStage extends Stage {
 		root.addActor(actor);
 	}
 
+	//----------------------------------------------------------------------------
+	//  ENTITIES
+	//----------------------------------------------------------------------------
 	private void initEntities() {
 		entities = new MeshGroup();
 		root.addActor(entities);
@@ -80,6 +89,9 @@ public class MeshStage extends Stage {
 		return entities;
 	}
 
+	//----------------------------------------------------------------------------
+	//  PROJECTILES
+	//----------------------------------------------------------------------------
 	private void initProjectiles() {
 		projectiles = new MeshGroup();
 		root.addActor(projectiles);
@@ -103,6 +115,9 @@ public class MeshStage extends Stage {
 		return projectiles;
 	}
 
+	//----------------------------------------------------------------------------
+	//  TEXT
+	//----------------------------------------------------------------------------
 	private void initText() {
 		text = new MeshGroup();
 		root.addActor(text);
@@ -124,6 +139,32 @@ public class MeshStage extends Stage {
 			initText();
 
 		return text;
+	}
+
+	//----------------------------------------------------------------------------
+	//  TESTING
+	//----------------------------------------------------------------------------
+	private void initTest() {
+		test = new MeshGroup();
+		root.addActor(test);
+	}
+
+	public void addTest(Actor actor) {
+		if (test == null)
+			initTest();
+
+		test.addActor(actor);
+	}
+
+	public void addTest(Entity test) {
+		addTest(test.getActor());
+	}
+
+	public MeshGroup getTest() {
+		if (test == null)
+			initTest();
+
+		return test;
 	}
 
 	public void act(float delta) {

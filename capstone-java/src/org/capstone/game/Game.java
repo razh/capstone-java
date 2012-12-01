@@ -343,13 +343,13 @@ public class Game implements ApplicationListener {
 		State.getStage().addEntity(new PolygonEntity(testVertices, 200, 500, new Color(0.0f, 0.25f, 0.0f, 1.0f), 20, 30));
 
 		// Test intersection grid.
-		// RectEntity rectEnt;
-		// for (int i = 0; i < 50; i++) {
-		// 	for (int j = 0; j < 50; j++) {
-		// 		rectEnt = new RectEntity(350 + i * 4, 430 + j * 4, new Color(Color.BLACK), 1, 1);
-		// 		State.getStage().addProjectile(rectEnt);
-		// 	}
-		// }
+		RectEntity rectEnt;
+		for (int i = 0; i < 50; i++) {
+			for (int j = 0; j < 50; j++) {
+				rectEnt = new RectEntity(350 + i * 4, 430 + j * 4, new Color(Color.BLACK), 1, 1);
+				State.getStage().addTest(rectEnt);
+			}
+		}
 
 //		for (int i = 0; i < 500; i++) {
 //			Character ctest = new Character(i, i, new Color(i / 500.0f, i / 10000.0f, 0.24f, 1.0f), 10);
@@ -378,22 +378,22 @@ public class Game implements ApplicationListener {
 			return;
 
 		// Intersection testing code.
-		// SnapshotArray<Actor> children = State.getStage().getProjectiles().getChildren();
-		// Actor[] actors = children.begin();
-		// for (int i = 0, n = children.size; i < n; i++) {
-		// 	Actor child = actors[i];
+		SnapshotArray<Actor> children = State.getStage().getTest().getChildren();
+		Actor[] actors = children.begin();
+		for (int i = 0, n = children.size; i < n; i++) {
+			Actor child = actors[i];
 
-		// 	if (State.getStage().getEntities().hit(child.getX(), child.getY(), false) != null) {
-		// 		child.setColor(Color.GREEN);
-		// 	} else if (State.getStage().getText().hit(child.getX(), child.getY(), false) != null) {
-		// 		child.setColor(Color.BLUE);
-		// 	}
-		// 	else {
-		// 		child.setColor(Color.BLACK);
-		// 	}
-		// }
+			if (State.getStage().getEntities().hit(child.getX(), child.getY(), false) != null) {
+				child.setColor(Color.GREEN);
+			} else if (State.getStage().getText().hit(child.getX(), child.getY(), false) != null) {
+				child.setColor(Color.BLUE);
+			}
+			else {
+				child.setColor(Color.BLACK);
+			}
+		}
 
-		// children.end();
+		children.end();
 
 		handleInput();
 		State.update();
