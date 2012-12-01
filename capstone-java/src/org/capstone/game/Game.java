@@ -1,7 +1,5 @@
 package org.capstone.game;
 
-import java.util.ArrayList;
-
 import org.capstone.game.entities.CircleEntity;
 import org.capstone.game.entities.Entity;
 import org.capstone.game.entities.EntityGroup;

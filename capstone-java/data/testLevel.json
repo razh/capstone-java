@@ -1,2 +1,19 @@
 {
-}
+  {
+    "group": "test",
+    "type": "RectMeshActor",
+    "x": 300,
+    "y": 300,
+    "red": 0.5,
+    "green": 0.7,
+    "blue": 0.2,
+    "alpha": 0.5,
+    "width": 400,
+    "height": 300,
+    "team": 1,
+    "health": -1,
+    "weapons": [
+      "type": "BulletGun",
+    ]
+  }
+ }

@@ -1,14 +1,11 @@
 package org.capstone.game.entities;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 
 import org.capstone.game.CircleMeshActor;
 import org.capstone.game.MeshActor;
 import org.capstone.game.MeshGroup;
 import org.capstone.game.MeshType;
-import org.capstone.game.PhysicsActor;
 import org.capstone.game.PolygonMeshActor;
 import org.capstone.game.RectMeshActor;
 import org.capstone.game.State;

@@ -1,13 +1,11 @@
 package org.capstone.game;
 
-import org.capstone.game.entities.Entity;
-
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
 public class Player {
-	private int score = 0;
-	private int level = 0;
-	private Actor selected = null;
+	private int score;
+	private int level;
+	private Actor selected;
 
 	public int getScore() {
 		return score;
@@ -21,6 +19,14 @@ public class Player {
 		this.score += score;
 	}
 	
+	public int getLevel() {
+		return level;
+	}
+
+	public void setLevel(int level) {
+		this.level = level;
+	}
+
 	public Actor getSelected() {
 		return this.selected;
 	}
@@ -34,6 +40,7 @@ public class Player {
 	}
 	
 	public Player() {
-		
+		setScore(0);
+		setLevel(0);
 	}
 }
