@@ -4,11 +4,12 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 
 public class State {
-	private static float width;
-	private static float height;
+	private static float width = Gdx.graphics.getWidth();
+	private static float height = Gdx.graphics.getHeight();
 	private static Color color;
 
-	private static MeshStage stage;
+	private static Level level;
+	private static MeshStage stage = new MeshStage(width, height, true);
 
 	public static float EPSILON = 1E-10f;
 	public static boolean debug = true;
@@ -23,7 +24,11 @@ public class State {
 	}
 
 	public static void update() {
-		stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30.0f));
+		float delta = Math.min(Gdx.graphics.getDeltaTime(), 1 / 30.0f);
+		if (level != null)
+			level.act(delta);
+
+		stage.act(delta);
 	}
 
 	// Do not use these. Use Gdx.graphics.getWidth() and Gdx.graphics.getHeight() instead!
@@ -53,5 +58,10 @@ public class State {
 
 	public static MeshStage getStage() {
 		return stage;
+	}
+	
+	public static void setLevel(Level level) {
+		State.level = level;
+		level.setStage(getStage());
 	}
 }

@@ -15,6 +15,18 @@ public class MeshActor extends PhysicsActor {
 	public MeshActor() {
 		super();
 	}
+	
+	public MeshActor(MeshActor actor) {
+		shaderProgram = actor.shaderProgram;
+		entity = actor.entity;
+		
+		setPosition(actor.getX(), actor.getY());
+		setVelocity(actor.getVelocityX(), actor.getVelocityY());
+		setWidth(actor.getWidth());
+		setHeight(actor.getHeight());
+		setRotation(actor.getRotation());
+		setColor(actor.getColor());
+	}
 
 	public void act(float delta) {
 		super.act(delta);

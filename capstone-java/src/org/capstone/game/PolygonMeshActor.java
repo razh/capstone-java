@@ -21,6 +21,17 @@ public class PolygonMeshActor extends MeshActor {
 	public PolygonMeshActor() {
 		super();
 	}
+	
+	public PolygonMeshActor(PolygonMeshActor actor) {
+		super(actor);
+		mesh = actor.mesh;
+		boundingVertices = actor.boundingVertices;
+
+		xmin = actor.xmin;
+		ymin = actor.ymin;
+		xmax = actor.xmax;
+		ymax = actor.ymax;
+	}
 
 	public Mesh getMesh() {
 		return mesh;

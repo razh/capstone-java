@@ -1,5 +1,7 @@
 package org.capstone.game.entities;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 
 import org.capstone.game.CircleMeshActor;
@@ -28,6 +30,7 @@ public class Entity {
 	protected int team = 0;
 	protected boolean takingFire = false;
 	protected ArrayList<Weapon> weapons;
+	protected int health = -1;
 
 	private boolean oriented = false;
 
@@ -52,6 +55,28 @@ public class Entity {
 		setHeight(height);
 
 		weapons = new ArrayList<Weapon>();
+	}
+
+	public Entity(Entity entity) {
+		System.out.println("HELLO!");
+		if (entity.actor instanceof CircleMeshActor)
+			actor = new CircleMeshActor((CircleMeshActor) entity.actor);
+		else if (entity.actor instanceof RectMeshActor)
+			actor = new RectMeshActor((RectMeshActor) entity.actor);
+		else if (entity.actor instanceof PolygonMeshActor)
+			actor = new PolygonMeshActor((PolygonMeshActor) entity.actor);
+		else
+			actor = new MeshActor((MeshActor) entity.actor);
+
+		((MeshActor) actor).setEntity(this);
+
+		meshType   = entity.meshType;
+		team       = entity.team;
+		takingFire = entity.takingFire;
+		weapons    = entity.weapons;
+		health     = entity.health;
+
+		oriented   = entity.oriented;
 	}
 
 	public void act(float delta) {
@@ -267,5 +292,17 @@ public class Entity {
 
 	public ArrayList<Weapon> getWeapons() {
 		return weapons;
+	}
+
+	public int getHealth() {
+		return health;
+	}
+
+	public void setHealth(int health) {
+		this.health = health;
+	}
+
+	public void addToHealth(int difference) {
+		health += difference;
 	}
 }

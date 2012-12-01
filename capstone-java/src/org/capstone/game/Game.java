@@ -37,8 +37,7 @@ public class Game implements ApplicationListener {
 	private FPSLogger fpsLogger = new FPSLogger();
 	private boolean running = true;
 
-	private ArrayList<Entity> testEntities = new ArrayList<Entity>();
-
+	private Level level = new Level();
 
 	private String vertexShader =
 		"uniform mat4 projection;\n" +
@@ -260,6 +259,9 @@ public class Game implements ApplicationListener {
 		redCircle.setVelocity(200.0f, 100.0f);
 		redCircle.setTeam(1);
 //		redCircle.setRotation(25);
+		
+		State.setLevel(level);
+		level.addEntitySpawner(redCircle, 0.01f, 100, 0.5f);
 
 		Entity blueCircle = new CircleEntity(200, 200, new Color(0.173f, 0.204f, 0.220f, 1.0f), 30);
 		blueCircle.setVelocity(100.0f, 100.0f);
@@ -357,11 +359,6 @@ public class Game implements ApplicationListener {
 //			State.getStage().addCharacter(ctest);
 //		}
 
-
-		// Invisible cursor.
-		// Gdx.input.setCursorCatched(true);
-
-//		Gdx.gl.glEnable(GL20.GL_TEXTURE_2D);
 		Gdx.gl.glEnable(GL20.GL_BLEND);
 		Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 	}

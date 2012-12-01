@@ -21,6 +21,10 @@ public class CircleMeshActor extends MeshActor {
 			createMesh();
 		}
 	}
+	
+	public CircleMeshActor(CircleMeshActor actor) {
+		super(actor);
+	}
 
 	private void createMesh() {
 		createMesh(32);
