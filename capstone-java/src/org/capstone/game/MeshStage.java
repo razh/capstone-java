@@ -32,10 +32,10 @@ public class MeshStage extends Stage {
 		text = new MeshGroup();
 		tests = new MeshGroup();
 		
-		root.addActor(entities);
-		root.addActor(projectiles);
-		root.addActor(text);
-		root.addActor(tests);
+		addActor(entities);
+		addActor(projectiles);
+		addActor(text);
+		addActor(tests);
 	}
 
 	public void setShaderProgram(ShaderProgram shaderProgram) {
