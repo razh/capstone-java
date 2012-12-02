@@ -1,5 +1,6 @@
 package org.capstone.game.entities;
 
+import org.capstone.game.MeshActor;
 import org.capstone.game.entities.weapons.Weapon;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -13,12 +14,16 @@ public class EntityExclusionStrategy implements ExclusionStrategy {
 
 	@Override
 	public boolean shouldSkipClass(Class<?> c) {
-		return (c == Actor.class);
+		return false;
+//		return (c == Actor.class);
 	}
 
 	@Override
 	public boolean shouldSkipField(FieldAttributes f) {
-		return (f.getDeclaringClass() == Entity.class && f.getName().equals("weapons"));
+		return (
+			f.getDeclaringClass() == Entity.class && f.getName().equals("weapons") ||
+			f.getDeclaringClass() == MeshActor.class && f.getName().equals("entity")
+		);
 	}
 	
 }
