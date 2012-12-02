@@ -2,6 +2,7 @@ package org.capstone.game;
 
 import org.capstone.game.entities.CircleEntity;
 import org.capstone.game.entities.Entity;
+import org.capstone.game.entities.EntityExclusionStrategy;
 import org.capstone.game.entities.EntityGroup;
 import org.capstone.game.entities.PolygonEntity;
 import org.capstone.game.entities.RectEntity;
@@ -260,7 +261,12 @@ public class Game implements ApplicationListener {
 		redCircle.setTeam(1);
 //		redCircle.setRotation(25);
 		
-		Gson gson = new GsonBuilder().create();
+		Gson gson = new GsonBuilder()
+			.setExclusionStrategies(new EntityExclusionStrategy())
+			.serializeSpecialFloatingPointValues()
+			.create();
+		String json = gson.toJson(redCircle);
+		System.out.println(json);
 		
 		new State(width, height, new Color(0.572f, 0.686f, 0.624f, 1.0f));
 		level = new Level();
