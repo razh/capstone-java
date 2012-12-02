@@ -5,6 +5,6 @@
 	<classpathentry exported="true" kind="lib" path="libs/gdx.jar" sourcepath="libs/gdx-sources.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/google-gson-2.2.2/gson-2.2.2-javadoc.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/google-gson-2.2.2/gson-2.2.2-sources.jar"/>
-	<classpathentry exported="true" kind="lib" path="libs/google-gson-2.2.2/gson-2.2.2.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/google-gson-2.2.2/gson-2.2.2.jar" sourcepath="libs/google-gson-2.2.2/gson-2.2.2-sources.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

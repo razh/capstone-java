@@ -8,6 +8,7 @@ import org.capstone.game.entities.PolygonEntity;
 import org.capstone.game.entities.RectEntity;
 import org.capstone.game.entities.weapons.BulletGun;
 import org.capstone.game.entities.weapons.LaserGun;
+import org.capstone.game.utils.SnapshotArrayDeserializer;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
@@ -261,13 +262,6 @@ public class Game implements ApplicationListener {
 		redCircle.setTeam(1);
 //		redCircle.setRotation(25);
 		
-		Gson gson = new GsonBuilder()
-			.setExclusionStrategies(new EntityExclusionStrategy())
-			.serializeSpecialFloatingPointValues()
-			.create();
-		String json = gson.toJson(redCircle);
-		System.out.println(json);
-		
 		new State(width, height, new Color(0.572f, 0.686f, 0.624f, 1.0f));
 		level = new Level();
 		level.addEntitySpawner(redCircle, 0.0f, 100, 1.5f);
@@ -367,6 +361,22 @@ public class Game implements ApplicationListener {
 //			ctest.setVelocity((float) Math.random() * 200.0f, (float) Math.random() * 200.0f);
 //			State.getStage().addCharacter(ctest);
 //		}
+		
+		Gson gson = new GsonBuilder()
+			.setExclusionStrategies(new EntityExclusionStrategy())
+			.registerTypeAdapter(SnapshotArray.class, new SnapshotArrayDeserializer())
+			.serializeNulls()
+			.create();
+
+		System.out.println("GROUP2-----");
+		String json = gson.toJson(group2.getActor());
+		System.out.println(json);
+		System.out.println("REDCIRCLE-----");
+		json = gson.toJson(redCircle.getActor());
+		System.out.println(json);
+		System.out.println("STAGE-----");
+		json = gson.toJson(State.getStage());
+		System.out.println(json);
 
 		Gdx.gl.glEnable(GL20.GL_BLEND);
 		Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);

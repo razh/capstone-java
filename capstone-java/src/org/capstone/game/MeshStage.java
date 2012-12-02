@@ -26,12 +26,12 @@ public class MeshStage extends Stage {
 
 		root = new MeshGroup();
 		root.setStage(this);
-		
+
 		entities = new MeshGroup();
 		projectiles = new MeshGroup();
 		text = new MeshGroup();
 		tests = new MeshGroup();
-		
+
 		addActor(entities);
 		addActor(projectiles);
 		addActor(text);
