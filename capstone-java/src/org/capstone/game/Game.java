@@ -23,6 +23,8 @@ import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.utils.SnapshotArray;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 
 public class Game implements ApplicationListener {
@@ -257,6 +259,8 @@ public class Game implements ApplicationListener {
 		redCircle.setVelocity(200.0f, 100.0f);
 		redCircle.setTeam(1);
 //		redCircle.setRotation(25);
+		
+		Gson gson = new GsonBuilder().create();
 		
 		new State(width, height, new Color(0.572f, 0.686f, 0.624f, 1.0f));
 		level = new Level();
