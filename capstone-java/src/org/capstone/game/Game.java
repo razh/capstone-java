@@ -2,13 +2,14 @@ package org.capstone.game;
 
 import org.capstone.game.entities.CircleEntity;
 import org.capstone.game.entities.Entity;
-import org.capstone.game.entities.EntityExclusionStrategy;
 import org.capstone.game.entities.EntityGroup;
 import org.capstone.game.entities.PolygonEntity;
 import org.capstone.game.entities.RectEntity;
 import org.capstone.game.entities.weapons.BulletGun;
 import org.capstone.game.entities.weapons.LaserGun;
-import org.capstone.game.utils.SnapshotArrayDeserializer;
+import org.capstone.game.json.MeshStageExclusionStrategy;
+import org.capstone.game.json.MeshGroupDeserializer;
+import org.capstone.game.json.SnapshotArrayDeserializer;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
@@ -261,7 +262,7 @@ public class Game implements ApplicationListener {
 		redCircle.setVelocity(200.0f, 100.0f);
 		redCircle.setTeam(1);
 //		redCircle.setRotation(25);
-		
+
 		new State(width, height, new Color(0.572f, 0.686f, 0.624f, 1.0f));
 		level = new Level();
 		level.addEntitySpawner(redCircle, 0.0f, 100, 1.5f);
@@ -361,10 +362,11 @@ public class Game implements ApplicationListener {
 //			ctest.setVelocity((float) Math.random() * 200.0f, (float) Math.random() * 200.0f);
 //			State.getStage().addCharacter(ctest);
 //		}
-		
+
 		Gson gson = new GsonBuilder()
-			.setExclusionStrategies(new EntityExclusionStrategy())
+			.setExclusionStrategies(new MeshStageExclusionStrategy())
 			.registerTypeAdapter(SnapshotArray.class, new SnapshotArrayDeserializer())
+			.registerTypeAdapter(MeshGroup.class, new MeshGroupDeserializer())
 			.serializeNulls()
 			.create();
 
@@ -373,6 +375,9 @@ public class Game implements ApplicationListener {
 		System.out.println(json);
 		System.out.println("REDCIRCLE-----");
 		json = gson.toJson(redCircle.getActor());
+		System.out.println(json);
+		System.out.println("ENTITIES-----");
+		json = gson.toJson(State.getStage().getEntities());
 		System.out.println(json);
 		System.out.println("STAGE-----");
 		json = gson.toJson(State.getStage());
@@ -399,7 +404,7 @@ public class Game implements ApplicationListener {
 			Actor[] actors = children.begin();
 			for (int i = 0, n = children.size; i < n; i++) {
 				Actor child = actors[i];
-	
+
 				if (State.getStage().getEntities().hit(child.getX(), child.getY(), false) != null) {
 					child.setColor(Color.GREEN);
 				} else if (State.getStage().getText().hit(child.getX(), child.getY(), false) != null) {
@@ -408,7 +413,7 @@ public class Game implements ApplicationListener {
 				else {
 					child.setColor(Color.BLACK);
 				}
-			}	
+			}
 
 			children.end();
 		}
