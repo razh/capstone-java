@@ -23,6 +23,18 @@ public class ActionAdapter implements JsonSerializer<Action>, JsonDeserializer<A
 			MoveToAction action = (MoveToAction) src;
 			object.add("x", context.serialize(action.getX()));
 			object.add("y", context.serialize(action.getY()));
+		} else if (src instanceof MoveByAction) {
+			MoveByAction action = (MoveByAction) src;
+			object.add("amountX", context.serialize(action.getAmountX()));
+			object.add("amountY", context.serialize(action.getAmountY()));
+		} else if (src instanceof SizeToAction) {
+			SizeToAction action = (SizeToAction) src;
+			object.add("width", context.serialize(action.getWidth()));
+			object.add("height", context.serialize(action.getHeight()));
+		} else if (src instanceof SizeByAction) {
+			SizeByAction action = (SizeByAction) src;
+			object.add("amountWidth", context.serialize(action.getAmountWidth()));
+			object.add("amountHeight", context.serialize(action.getAmountHeight()));
 		}
 		
 		if (src instanceof TemporalAction) {
