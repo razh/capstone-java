@@ -15,14 +15,14 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 
-public class MeshGroupDeserializer implements JsonSerializer<MeshGroup> {
+public class MeshGroupSerializer implements JsonSerializer<MeshGroup> {
 
 	@Override
 	public JsonElement serialize(MeshGroup src, Type typeOfSrc,
 			JsonSerializationContext context) {
 		Gson gson = new GsonBuilder()
 			.setExclusionStrategies(new MeshStageExclusionStrategy())
-			.registerTypeAdapter(SnapshotArray.class, new SnapshotArrayDeserializer())
+			.registerTypeAdapter(SnapshotArray.class, new SnapshotArraySerializer())
 			.serializeNulls()
 			.create();
 //		JsonArray array = new JsonArray();

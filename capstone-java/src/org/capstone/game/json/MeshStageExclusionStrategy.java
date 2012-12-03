@@ -58,27 +58,11 @@ public class MeshStageExclusionStrategy implements ExclusionStrategy {
 		if (
 		        // true ||
 			f.getDeclaringClass() == Stage.class ||
-			f.getDeclaringClass() == Mesh.class ||
 			f.getDeclaringClass() == MeshStage.class ||
 			f.getDeclaringClass() == Group.class ||
 			f.getDeclaringClass() == Array.class ||
 			// f.getDeclaringClass() == MeshGroup.class ||
-
-			(f.getDeclaringClass() == Stage.class && (
-			// 	!f.getName().equals("entities")    &&
-			// 	!f.getName().equals("projectiles") &&
-			// 	!f.getName().equals("text")        &&
-			// 	!f.getName().equals("tests")       &&
-			// 	!f.getName().equals("shaderProgram")
-				f.getName().equals("root")
-			// // 	f.getName().equals("pointerOverActors")
-			)) ||
-			(f.getDeclaringClass() == TextMeshActor.class && (
-				f.getName().equals("indices")
-			)) ||
-			(f.getDeclaringClass() == PolygonMeshActor.class && (
-				f.getName().equals("mesh")
-			)) ||
+			f.getDeclaringClass() == Mesh.class ||
 
 			(f.getDeclaringClass() == Actor.class && (
 				// f.getDeclaredClass() == Actor.class ||
@@ -89,6 +73,14 @@ public class MeshStageExclusionStrategy implements ExclusionStrategy {
 				f.getName().equals("scaleX")  ||
 				f.getName().equals("scaleY")
 			)) ||
+			(f.getDeclaringClass() == PolygonMeshActor.class && (
+				f.getName().equals("mesh")
+			)) ||
+			(f.getDeclaringClass() == TextMeshActor.class && (
+				f.getName().equals("mesh") ||
+				f.getName().equals("indices")
+			)) ||
+
 			(f.getDeclaringClass() == Weapon.class && (
 				f.getName().equals("actor")   ||
 				f.getName().equals("targetX") ||

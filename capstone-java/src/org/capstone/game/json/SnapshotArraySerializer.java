@@ -15,7 +15,7 @@ import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 import com.google.gson.reflect.TypeToken;
 
-public class SnapshotArrayDeserializer implements JsonSerializer<SnapshotArray> {
+public class SnapshotArraySerializer implements JsonSerializer<SnapshotArray> {
 
 	@Override
 	public JsonElement serialize(SnapshotArray src, Type typeOfSrc,
