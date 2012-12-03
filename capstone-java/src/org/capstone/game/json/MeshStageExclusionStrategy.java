@@ -15,7 +15,6 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.SnapshotArray;
 import com.google.gson.ExclusionStrategy;
 import com.google.gson.FieldAttributes;
 
@@ -34,38 +33,25 @@ public class MeshStageExclusionStrategy implements ExclusionStrategy {
 		// White-list.
 		if (
 			(f.getDeclaringClass() == MeshStage.class && (
-//				// f.getName().equals("meshRoot")
 				f.getName().equals("entities")    ||
 				f.getName().equals("projectiles") ||
 				f.getName().equals("text")
-//				f.getName().equals("text")        ||
-//				f.getName().equals("tests")
-				// f.getName().equals("shaderProgram")
 			)) ||
 			(f.getDeclaringClass() == Group.class && (
 				f.getName().equals("children")
 			))
-			// (f.getDeclaringClass() == MeshGroup.class && (
-			// 	f.getName().equals("children")
-			// ))
-			// (f.getDeclaringClass() == SnapshotArray.class && (
-			// 	f.getName().equals("items")
-			// ))
 		)
 			return false;
 
 		// Black-list.
-		if (
-		        // true ||
+		return (
 			f.getDeclaringClass() == Stage.class ||
 			f.getDeclaringClass() == MeshStage.class ||
 			f.getDeclaringClass() == Group.class ||
 			f.getDeclaringClass() == Array.class ||
-			// f.getDeclaringClass() == MeshGroup.class ||
 			f.getDeclaringClass() == Mesh.class ||
 
 			(f.getDeclaringClass() == Actor.class && (
-				// f.getDeclaredClass() == Actor.class ||
 				f.getName().equals("stage")   ||
 				f.getName().equals("parent")  ||
 				f.getName().equals("originX") ||
@@ -80,7 +66,6 @@ public class MeshStageExclusionStrategy implements ExclusionStrategy {
 				f.getName().equals("mesh") ||
 				f.getName().equals("indices")
 			)) ||
-
 			(f.getDeclaringClass() == Weapon.class && (
 				f.getName().equals("actor")   ||
 				f.getName().equals("targetX") ||
@@ -90,13 +75,10 @@ public class MeshStageExclusionStrategy implements ExclusionStrategy {
 				f.getName().equals("laserBeam")
 			)) ||
 			(f.getDeclaringClass() == MeshActor.class && (
-				// f.getName().equals("entity") ||
 				f.getName().equals("shaderProgram")
 			)) ||
 			(f.getDeclaringClass() == MeshGroup.class && (
 				f.getName().equals("stage")  ||
-				// f.getName().equals("meshStage")  ||
-				// f.getName().equals("entity") ||
 				f.getName().equals("shaderProgram")
 			)) ||
 			(f.getDeclaringClass() == Entity.class && (
@@ -107,16 +89,6 @@ public class MeshStageExclusionStrategy implements ExclusionStrategy {
 				f.getName().equals("segments") ||
 				f.getName().equals("segmentGroup")
 			))
-			// (f.getDeclaringClass() == SnapshotArray.class && (
-			// 	f.getName().equals("snapshot") ||
-			// 	f.getName().equals("recycled") ||
-			// 	f.getName().equals("snapshots")
-			// ))
-		) {
-			return true;
-		} else {
-//			System.out.println("------" + f.getName());
-			return false;
-		}
+		);
 	}
 }

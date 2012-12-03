@@ -7,7 +7,6 @@ import org.capstone.game.entities.PolygonEntity;
 import org.capstone.game.entities.RectEntity;
 import org.capstone.game.entities.weapons.BulletGun;
 import org.capstone.game.entities.weapons.LaserGun;
-import org.capstone.game.json.ActorSerializer;
 import org.capstone.game.json.MeshStageExclusionStrategy;
 import org.capstone.game.json.MeshGroupSerializer;
 import org.capstone.game.json.SnapshotArraySerializer;
@@ -366,25 +365,25 @@ public class Game implements ApplicationListener {
 
 		Gson gson = new GsonBuilder()
 			.setExclusionStrategies(new MeshStageExclusionStrategy())
-			.registerTypeAdapter(Actor.class, new ActorSerializer())
+//			.registerTypeAdapter(Actor.class, new ActorSerializer())
 			.registerTypeAdapter(SnapshotArray.class, new SnapshotArraySerializer())
 			.registerTypeAdapter(MeshGroup.class, new MeshGroupSerializer())
 			.serializeNulls()
 			.create();
 
 		String json;
-//		System.out.println("GROUP2-----");
-//		json = gson.toJson(group2.getActor());
-//		System.out.println(json);
+		System.out.println("GROUP2-----");
+		json = gson.toJson(group2.getActor());
+		System.out.println(json);
 		System.out.println("REDCIRCLE-----");
 		json = gson.toJson(redCircle.getActor());
 		System.out.println(json);
-//		System.out.println("ENTITIES-----");
-//		json = gson.toJson(State.getStage().getEntities());
-//		System.out.println(json);
-//		System.out.println("STAGE-----");
-//		json = gson.toJson(State.getStage());
-//		System.out.println(json);
+		System.out.println("ENTITIES-----");
+		json = gson.toJson(State.getStage().getEntities());
+		System.out.println(json);
+		System.out.println("STAGE-----");
+		json = gson.toJson(State.getStage());
+		System.out.println(json);
 
 		Gdx.gl.glEnable(GL20.GL_BLEND);
 		Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);

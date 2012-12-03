@@ -25,32 +25,16 @@ public class SnapshotArraySerializer implements JsonSerializer<SnapshotArray> {
 			.serializeNulls()
 			.create();
 
-//		ArrayList<Object> array = new ArrayList<Object>();
-//		src.begin();
-//		for (int i = 0, n = src.size; i < n; i++) {
-//			array.add(src.get(i));
-//		}
-//		src.end();
-		// JsonArray array = new JsonArray();
 		 ArrayList<Object> array = new ArrayList<Object>();
+		 Object object;
+
 		 src.begin();
 		 for (int i = 0, n = src.size; i < n; i++) {
-		 	// array.add(gson.toJsonTree(src.get(i)));
-		 	if (src.get(i) != null)
-		 		array.add(src.get(i));
+		 	object = src.get(i);
+		 	if (object != null)
+		 		array.add(object);
 		 }
 
-
-		// System.out.println("-----");
-		// for (int i = 0; i <array.size(); i++) {
-		// System.out.println(array.get(i));
-		// }
-		// System.out.println("-----");
-
-		// return new JsonPrimitive(gson.toJson(array));
 		return gson.toJsonTree(array);
-
-//		return new JsonPrimitive(gson.toJson(array));
 	}
-
 }

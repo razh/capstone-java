@@ -5,23 +5,16 @@ import org.capstone.game.entities.Entity;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.Matrix4;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.SnapshotArray;
-import com.google.gson.annotations.SerializedName;
 
 public class MeshGroup extends Group {
-	// protected final Matrix4 currTransform = new Matrix4();
-	// protected final Matrix4 prevTransform = new Matrix4();
-	// protected boolean transform = true;
-	// protected Rectangle cullingArea;
 	protected ShaderProgram shaderProgram;
 
-	// @SerializedName("meshStage")
 	private MeshStage stage;
 	protected Entity entity;
 
@@ -63,12 +56,9 @@ public class MeshGroup extends Group {
 		// }
 	}
 
-	protected void applyTransform(Matrix4 transform) {
+	protected void applyTransform(Matrix4 transform) {}
 
-	}
-
-	protected void resetTransform() {
-	}
+	protected void resetTransform() {}
 
 	protected void drawChildren(float parentAlpha) {
 		parentAlpha *= getColor().a;
@@ -90,24 +80,6 @@ public class MeshGroup extends Group {
 		}
 
 		children.end();
-
-//		if (cullingArea != null) {
-//			// Draw only children inside culling area.
-//			if (transform) {
-////				for (int i = 0;)
-//
-//			} else {
-//				// No transform for this group, offset children.
-//
-//			}
-//		} else {
-//			// No culling, draw all children.
-//			if (transform) {
-//
-//			} else {
-//				// No transform for this group, offset children.
-//			}
-//		}
 	}
 
 	@Override
