@@ -16,11 +16,6 @@ public class ArraySerializer implements JsonSerializer<Array> {
 	@Override
 	public JsonElement serialize(Array src, Type typeOfSrc,
 			JsonSerializationContext context) {
-		Gson gson = new GsonBuilder()
-			.setExclusionStrategies(new MeshStageExclusionStrategy())
-			.registerTypeHierarchyAdapter(Action.class, new ActionAdapter())
-			.serializeNulls()
-			.create();
 
 		ArrayList<Object> array = new ArrayList<Object>();
 		Object object;

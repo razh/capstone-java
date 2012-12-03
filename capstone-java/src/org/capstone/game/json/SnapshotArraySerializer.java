@@ -15,10 +15,6 @@ public class SnapshotArraySerializer implements JsonSerializer<SnapshotArray<?>>
 	@Override
 	public JsonElement serialize(SnapshotArray<?> src, Type typeOfSrc,
 			JsonSerializationContext context) {
-		Gson gson = new GsonBuilder()
-			.setExclusionStrategies(new MeshStageExclusionStrategy())
-			.serializeNulls()
-			.create();
 
 		 ArrayList<Object> array = new ArrayList<Object>();
 		 Object object;
@@ -31,6 +27,6 @@ public class SnapshotArraySerializer implements JsonSerializer<SnapshotArray<?>>
 		 }
 		 src.end();
 
-		return gson.toJsonTree(array);
+		return context.serialize(array);
 	}
 }

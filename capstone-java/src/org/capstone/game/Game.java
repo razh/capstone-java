@@ -8,6 +8,7 @@ import org.capstone.game.entities.RectEntity;
 import org.capstone.game.entities.weapons.BulletGun;
 import org.capstone.game.entities.weapons.LaserGun;
 import org.capstone.game.json.ActionAdapter;
+import org.capstone.game.json.ActionExclusionStrategy;
 import org.capstone.game.json.ArraySerializer;
 import org.capstone.game.json.InterpolationAdapter;
 import org.capstone.game.json.MeshActorDeserializer;
@@ -373,8 +374,9 @@ public class Game implements ApplicationListener {
 
 		Gson gson = new GsonBuilder()
 			.setExclusionStrategies(new MeshStageExclusionStrategy())
+			.setExclusionStrategies(new ActionExclusionStrategy())
 			.registerTypeHierarchyAdapter(Interpolation.class, new InterpolationAdapter())
-			.registerTypeHierarchyAdapter(Action.class, new ActionAdapter())
+//			.registerTypeHierarchyAdapter(Action.class, new ActionAdapter())
 			.registerTypeAdapter(MeshActor.class, new MeshActorDeserializer())
 			.registerTypeAdapter(Array.class, new ArraySerializer())
 			.registerTypeAdapter(SnapshotArray.class, new SnapshotArraySerializer())
