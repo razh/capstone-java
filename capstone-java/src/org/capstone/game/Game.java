@@ -7,7 +7,10 @@ import org.capstone.game.entities.PolygonEntity;
 import org.capstone.game.entities.RectEntity;
 import org.capstone.game.entities.weapons.BulletGun;
 import org.capstone.game.entities.weapons.LaserGun;
-import org.capstone.game.json.MeshActorAdapter;
+import org.capstone.game.json.ActionAdapter;
+import org.capstone.game.json.ArraySerializer;
+import org.capstone.game.json.InterpolationAdapter;
+import org.capstone.game.json.MeshActorDeserializer;
 import org.capstone.game.json.MeshStageExclusionStrategy;
 import org.capstone.game.json.MeshGroupSerializer;
 import org.capstone.game.json.SnapshotArraySerializer;
@@ -24,12 +27,16 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
+import com.badlogic.gdx.math.Interpolation;
+import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.SnapshotArray;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 
 public class Game implements ApplicationListener {
 	private FrameBuffer frameBuffer;
@@ -266,7 +273,7 @@ public class Game implements ApplicationListener {
 
 		new State(width, height, new Color(0.572f, 0.686f, 0.624f, 1.0f));
 		level = new Level();
-		level.addEntitySpawner(redCircle, 0.0f, 100, 1.5f);
+		level.addEntitySpawner(redCircle, 1.5f, 100, 1.5f);
 		State.setLevel(level);
 
 		Entity blueCircle = new CircleEntity(200, 200, new Color(0.173f, 0.204f, 0.220f, 1.0f), 30);
@@ -366,14 +373,18 @@ public class Game implements ApplicationListener {
 
 		Gson gson = new GsonBuilder()
 			.setExclusionStrategies(new MeshStageExclusionStrategy())
-			.registerTypeHierarchyAdapter(MeshActor.class, new MeshActorAdapter())
-			.registerTypeHierarchyAdapter(CircleMeshActor.class, new MeshActorAdapter())
-//			.registerTypeAdapter(Object.class, new ObjectSerializer())
+			.registerTypeHierarchyAdapter(Interpolation.class, new InterpolationAdapter())
+			.registerTypeHierarchyAdapter(Action.class, new ActionAdapter())
+			.registerTypeAdapter(MeshActor.class, new MeshActorDeserializer())
+			.registerTypeAdapter(Array.class, new ArraySerializer())
 			.registerTypeAdapter(SnapshotArray.class, new SnapshotArraySerializer())
 			.registerTypeAdapter(MeshGroup.class, new MeshGroupSerializer())
 			.serializeNulls()
 			.create();
 
+		redCircle.addAction(
+			sizeBy(20.0f, 20.0f, 2.0f, Interpolation.bounceOut)
+		);
 		String json;
 		System.out.println("GROUP2-----");
 		json = gson.toJson(group2.getActor());

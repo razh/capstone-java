@@ -17,17 +17,8 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
-import com.google.gson.TypeAdapter;
 
-public class MeshActorAdapter implements TypeAdapter<MeshActor> {
-
-	@Override
-	public JsonElement serialize(Actor src, Type typeOfSrc,
-			JsonSerializationContext context) {
-			System.out.println("HELLO");
-		JsonObject object = gson.toJsonTree(src).getAsJsonObject();
-		return object;		
-	}	
+public class MeshActorDeserializer implements JsonDeserializer<MeshActor> {
 	
 	@Override
 	public MeshActor deserialize(JsonElement json, Type typeOfT,

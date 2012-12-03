@@ -12,6 +12,7 @@ import org.capstone.game.entities.weapons.LaserGun;
 import org.capstone.game.entities.weapons.Weapon;
 
 import com.badlogic.gdx.graphics.Mesh;
+import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -45,11 +46,11 @@ public class MeshStageExclusionStrategy implements ExclusionStrategy {
 			return false;
 
 		// Black-list.
-		return (
+		if (
 			f.getDeclaringClass() == Stage.class ||
 			f.getDeclaringClass() == MeshStage.class ||
 			f.getDeclaringClass() == Group.class ||
-			f.getDeclaringClass() == Array.class ||
+//			f.getDeclaringClass() == Array.class ||
 			f.getDeclaringClass() == Mesh.class ||
 
 			(f.getDeclaringClass() == Actor.class && (
@@ -60,6 +61,9 @@ public class MeshStageExclusionStrategy implements ExclusionStrategy {
 				f.getName().equals("scaleX")  ||
 				f.getName().equals("scaleY")
 			)) ||
+			(f.getDeclaringClass() == MeshActor.class && (
+					f.getName().equals("shaderProgram")
+				)) ||
 			(f.getDeclaringClass() == PolygonMeshActor.class && (
 				f.getName().equals("mesh")
 			)) ||
@@ -78,9 +82,6 @@ public class MeshStageExclusionStrategy implements ExclusionStrategy {
 			(f.getDeclaringClass() == LaserGun.class && (
 				f.getName().equals("laserBeam")
 			)) ||
-			(f.getDeclaringClass() == MeshActor.class && (
-				f.getName().equals("shaderProgram")
-			)) ||
 			(f.getDeclaringClass() == MeshGroup.class && (
 				f.getName().equals("stage")  ||
 				f.getName().equals("shaderProgram")
@@ -92,7 +93,16 @@ public class MeshStageExclusionStrategy implements ExclusionStrategy {
 				f.getName().equals("actor") ||
 				f.getName().equals("segments") ||
 				f.getName().equals("segmentGroup")
+			)) ||
+			(f.getDeclaringClass() == Action.class && (
+				f.getName().equals("actor") ||
+				f.getName().equals("pool")
 			))
-		);
+		) {
+			return true;
+		} else {
+//			System.out.println("------" + f.getName());
+			return false;
+		}
 	}
 }

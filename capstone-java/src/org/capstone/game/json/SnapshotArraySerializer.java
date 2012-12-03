@@ -29,6 +29,7 @@ public class SnapshotArraySerializer implements JsonSerializer<SnapshotArray<?>>
 		 	if (object != null)
 		 		array.add(object);
 		 }
+		 src.end();
 
 		return gson.toJsonTree(array);
 	}
