@@ -365,7 +365,7 @@ public class Game implements ApplicationListener {
 
 		Gson gson = new GsonBuilder()
 			.setExclusionStrategies(new MeshStageExclusionStrategy())
-//			.registerTypeAdapter(Actor.class, new ActorSerializer())
+//			.registerTypeAdapter(Object.class, new ObjectSerializer())
 			.registerTypeAdapter(SnapshotArray.class, new SnapshotArraySerializer())
 			.registerTypeAdapter(MeshGroup.class, new MeshGroupSerializer())
 			.serializeNulls()
@@ -555,6 +555,9 @@ public class Game implements ApplicationListener {
 			}
 
 			children.end();
+		}
+		if (Gdx.input.isKeyPressed(Input.Keys.X)) {
+			State.getStage().clearActors();
 		}
 	}
 

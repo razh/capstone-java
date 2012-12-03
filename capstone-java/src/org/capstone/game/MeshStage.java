@@ -92,6 +92,13 @@ public class MeshStage extends Stage {
 		getRoot().parentToLocalCoordinates(actorCoords.set(stageX, stageY));
 		return getRoot().hit(actorCoords.x, actorCoords.y, touchable);
 	}
+	
+	public void clearActors() {
+		entities.clear();
+		projectiles.clear();
+		text.clear();
+		tests.clear();
+	}
 
 	//----------------------------------------------------------------------------
 	//  ENTITIES
