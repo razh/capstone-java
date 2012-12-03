@@ -9,8 +9,10 @@ public class ActionExclusionStrategy implements ExclusionStrategy {
 
 	@Override
 	public boolean shouldSkipField(FieldAttributes f) {
+//		if (Action.class.isAssignableFrom(f.getDeclaringClass()) && f.getDeclaringClass().isAssignableFrom(TemporalAction.class))
+//				System.out.println("YEEEEEEP");
 		if (
-			!f.getDeclaringClass().isInstance(Action.class) ||
+			!Action.class.isAssignableFrom(f.getDeclaringClass()) ||
 			(f.getDeclaringClass() == MoveByAction.class && (
 				f.getName().equals("x") ||
 				f.getName().equals("y")
@@ -24,12 +26,12 @@ public class ActionExclusionStrategy implements ExclusionStrategy {
 				f.getName().equals("interpolation")
 			))
 		) {
-			System.out.println("------" + f.getName());
+//			System.out.println("------" + f.getName());
 
-
-		return f.getDeclaringClass().isInstance(Action.class);
+			return false;
+//		return Action.class.isAssignableFrom(f.getDeclaringClass());
 		}
-		return false;
+		return Action.class.isAssignableFrom(f.getDeclaringClass());
 	}
 
 	@Override
