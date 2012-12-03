@@ -7,14 +7,28 @@ import org.capstone.game.MeshType;
 import org.capstone.game.entities.Entity;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
+import com.google.gson.JsonSerializationContext;
+import com.google.gson.JsonSerializer;
+import com.google.gson.TypeAdapter;
 
-public class MeshActorDeserializer implements JsonDeserializer<MeshActor> {
+public class MeshActorAdapter implements TypeAdapter<MeshActor> {
 
+	@Override
+	public JsonElement serialize(Actor src, Type typeOfSrc,
+			JsonSerializationContext context) {
+			System.out.println("HELLO");
+		JsonObject object = gson.toJsonTree(src).getAsJsonObject();
+		return object;		
+	}	
+	
 	@Override
 	public MeshActor deserialize(JsonElement json, Type typeOfT,
 			JsonDeserializationContext context) throws JsonParseException {
@@ -54,5 +68,4 @@ public class MeshActorDeserializer implements JsonDeserializer<MeshActor> {
 
 		return actor;
 	}
-
 }

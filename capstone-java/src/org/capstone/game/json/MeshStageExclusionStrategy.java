@@ -5,6 +5,7 @@ import org.capstone.game.MeshGroup;
 import org.capstone.game.MeshStage;
 import org.capstone.game.PolygonMeshActor;
 import org.capstone.game.TextMeshActor;
+import org.capstone.game.TextMeshGroup;
 import org.capstone.game.entities.Entity;
 import org.capstone.game.entities.EntityGroup;
 import org.capstone.game.entities.weapons.LaserGun;
@@ -65,6 +66,9 @@ public class MeshStageExclusionStrategy implements ExclusionStrategy {
 			(f.getDeclaringClass() == TextMeshActor.class && (
 				f.getName().equals("mesh") ||
 				f.getName().equals("indices")
+			)) ||
+			(f.getDeclaringClass() == TextMeshGroup.class && (
+				f.getName().equals("textActors")
 			)) ||
 			(f.getDeclaringClass() == Weapon.class && (
 				f.getName().equals("actor")   ||
