@@ -74,6 +74,10 @@ public class ActionAdapter implements JsonSerializer<Action>, JsonDeserializer<A
 			object = addSerializedTouchableAction(object, (TouchableAction) src, context);
 		}
 
+		else if (src instanceof AddAction) {
+			object.addProperty("type", "add");
+		}
+
 		else if (src instanceof RemoveActorAction) {
 			object.addProperty("type", "remove");
 		}
