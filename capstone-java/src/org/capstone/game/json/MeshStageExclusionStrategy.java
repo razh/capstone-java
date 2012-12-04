@@ -1,5 +1,7 @@
 package org.capstone.game.json;
 
+import java.text.NumberFormat.Field;
+
 import org.capstone.game.MeshActor;
 import org.capstone.game.MeshGroup;
 import org.capstone.game.MeshStage;
@@ -32,6 +34,13 @@ public class MeshStageExclusionStrategy implements ExclusionStrategy {
 
 	@Override
 	public boolean shouldSkipField(FieldAttributes f) {
+//		if (f.getDeclaringClass() == Actor.class) {
+			if (f.getName().equals("actions")) {
+				for (java.lang.reflect.Field field: f.getClass().getFields()) {
+					System.out.println("-----" + field.getName());
+				}
+			}
+//		}
 		// White-list.
 		if (
 			(f.getDeclaringClass() == MeshStage.class && (

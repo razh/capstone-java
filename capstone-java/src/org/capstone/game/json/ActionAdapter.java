@@ -22,48 +22,67 @@ public class ActionAdapter implements JsonSerializer<Action>, JsonDeserializer<A
 			JsonSerializationContext context) {
 		JsonObject object = new JsonObject();
 
-		// Temporal Actions.
-		if (src instanceof MoveToAction) {
-			object = addSerializedMoveToAction(object, (MoveToAction) src, context);
-		} else if (src instanceof MoveByAction) {
-			object = addSerializedMoveByAction(object, (MoveByAction) src, context);
-		} else if (src instanceof SizeToAction) {
-			object = addSerializedSizeToAction(object, (SizeToAction) src, context);
-		} else if (src instanceof SizeByAction) {
-			object = addSerializedSizeByAction(object, (SizeByAction) src, context);
-		} else if (src instanceof RotateToAction) {
-			object = addSerializedRotateToAction(object, (RotateToAction) src, context);
-		} else if (src instanceof RotateByAction) {
-			object = addSerializedRotateByAction(object, (RotateByAction) src, context);
-		} else if (src instanceof ColorAction) {
-			object = addSerializedColorAction(object, (ColorAction) src, context);
-		} else if (src instanceof AlphaAction) {
-			object = addSerializedAlphaAction(object, (AlphaAction) src, context);
+		// Temporal actions.
+		if (src instanceof TemporalAction) {
+			if (src instanceof MoveToAction) {
+				object = addSerializedMoveToAction(object, (MoveToAction) src, context);
+			} else if (src instanceof MoveByAction) {
+				object = addSerializedMoveByAction(object, (MoveByAction) src, context);
+			} else if (src instanceof SizeToAction) {
+				object = addSerializedSizeToAction(object, (SizeToAction) src, context);
+			} else if (src instanceof SizeByAction) {
+				object = addSerializedSizeByAction(object, (SizeByAction) src, context);
+			} else if (src instanceof RotateToAction) {
+				object = addSerializedRotateToAction(object, (RotateToAction) src, context);
+			} else if (src instanceof RotateByAction) {
+				object = addSerializedRotateByAction(object, (RotateByAction) src, context);
+			} else if (src instanceof ColorAction) {
+				object = addSerializedColorAction(object, (ColorAction) src, context);
+			} else if (src instanceof AlphaAction) {
+				object = addSerializedAlphaAction(object, (AlphaAction) src, context);
+			}
+			object = addSerializedTemporalAction(object, (TemporalAction) src, context);
 		}
 
-		if (src instanceof DelegateAction) {
+		// Delegate actions.
+		else if (src instanceof DelegateAction) {
 			if (src instanceof DelayAction) {
-				DelayAction action = (DelayAction) src;
-				object.add("duration", context.serialize(action.getDuration()));
+				object = addSerializedDelayAction(object, (DelayAction) src, context);
+			} else if (src instanceof RepeatAction) {
+				object = addSerializedRepeatAction(object, (RepeatAction) src, context);
+			} else if (src instanceof AfterAction) {
+				object.addProperty("type", "after");
 			}
 			object = addSerializedDelegateAction(object, (DelegateAction) src, context);
 		}
 
-		if (src instanceof ParallelAction) {
+		// Parallel actions.
+		else if (src instanceof ParallelAction) {
 			if (src instanceof SequenceAction) {
-				object.add("type", context.serialize("sequence"));
+				object.addProperty("type", "sequence");
 			} else {
-				object.add("type", context.serialize("parallel"));
+				object.addProperty("type", "parallel");
 			}
-			ParallelAction action = (ParallelAction) src;
-			object.add("actions", context.serialize(action.getActions()));
+			object = addSerializedParallelAction(object, (ParallelAction) src, context);
 		}
 
-		if (src instanceof TemporalAction) {
-			TemporalAction action = (TemporalAction) src;
-			object.add("duration", context.serialize(action.getDuration()));
-			object.add("interpolation", context.serialize(action.getInterpolation()));
+		else if (src instanceof VisibleAction) {
+			object = addSerializedVisibleAction(object, (VisibleAction) src, context);
 		}
+
+		else if (src instanceof TouchableAction) {
+			object = addSerializedTouchableAction(object, (TouchableAction) src, context);
+		}
+
+		else if (src instanceof RemoveActorAction) {
+			object.addProperty("type", "remove");
+		}
+
+		else if (src instanceof RunnableAction) {
+			object = addSerializedRunnableAction(object, (RunnableAction) src, context);
+		}
+
+
 
 		return object;
 	}
@@ -115,7 +134,17 @@ public class ActionAdapter implements JsonSerializer<Action>, JsonDeserializer<A
 	}
 
 	private JsonObject addSerializedAlphaAction(JsonObject object, AlphaAction action, JsonSerializationContext context) {
-		object.add("alpha", context.serialize(action.getAlpha()));
+		object.addProperty("alpha", action.getAlpha());
+		return object;
+	}
+
+	private JsonObject addSerializedVisibleAction(JsonObject object, VisibleAction action, JsonSerializationContext context) {
+		object.addProperty("visible", action.isVisible());
+		return object;
+	}
+
+	private JsonObject addSerializedTouchableAction(JsonObject object, TouchableAction action, JsonSerializationContext context) {
+		object.add("touchable", context.serialize(action.getTouchable()));
 		return object;
 	}
 
@@ -124,6 +153,33 @@ public class ActionAdapter implements JsonSerializer<Action>, JsonDeserializer<A
 		if (delegatedAction != null)
 			object.add("action",context.serialize(delegatedAction));
 
+		return object;
+	}
+
+	private JsonObject addSerializedDelayAction(JsonObject object, DelayAction action, JsonSerializationContext context) {
+		object.addProperty("delay", action.getDuration());
+		return object;
+	}
+
+	private JsonObject addSerializedRepeatAction(JsonObject object, RepeatAction action, JsonSerializationContext context) {
+		object.addProperty("count", action.getCount());
+		return object;
+	}
+
+	private JsonObject addSerializedParallelAction(JsonObject object, ParallelAction action, JsonSerializationContext context) {
+		object.add("actions", context.serialize(action.getActions()));
+		return object;
+	}
+
+	private JsonObject addSerializedTemporalAction(JsonObject object, TemporalAction action, JsonSerializationContext context) {
+		object.addProperty("duration", action.getDuration());
+		object.add("interpolation", context.serialize(action.getInterpolation()));
+		return object;
+	}
+
+	// TODO: Serializing a Runnable may not work.
+	private JsonObject addSerializedRunnableAction(JsonObject object, RunnableAction action, JsonSerializationContext context) {
+		object.add("runnable", context.serialize(action.getRunnable()));
 		return object;
 	}
 }
