@@ -374,9 +374,9 @@ public class Game implements ApplicationListener {
 
 		Gson gson = new GsonBuilder()
 			.setExclusionStrategies(new MeshStageExclusionStrategy())
-			.setExclusionStrategies(new ActionExclusionStrategy())
+//			.setExclusionStrategies(new ActionExclusionStrategy())
 			.registerTypeHierarchyAdapter(Interpolation.class, new InterpolationAdapter())
-//			.registerTypeHierarchyAdapter(Action.class, new ActionAdapter())
+			.registerTypeHierarchyAdapter(Action.class, new ActionAdapter())
 			.registerTypeAdapter(MeshActor.class, new MeshActorDeserializer())
 			.registerTypeAdapter(Array.class, new ArraySerializer())
 			.registerTypeAdapter(SnapshotArray.class, new SnapshotArraySerializer())
@@ -385,7 +385,14 @@ public class Game implements ApplicationListener {
 			.create();
 
 		redCircle.addAction(
-			sizeBy(20.0f, 20.0f, 2.0f, Interpolation.bounceOut)
+			sequence(
+				sizeBy(20.0f, 20.0f, 2.0f, Interpolation.bounceOut),
+				parallel(
+					color(new Color(0.5f, 0.2f, 0.3f, 1.0f), 2.0f, Interpolation.circle),
+					sizeBy(-20.0f, -20.0f, 2.0f, Interpolation.bounceOut),
+					rotateTo(20.0f)
+				)
+			)
 		);
 		String json;
 		System.out.println("GROUP2-----");

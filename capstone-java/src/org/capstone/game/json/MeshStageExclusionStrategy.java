@@ -50,7 +50,6 @@ public class MeshStageExclusionStrategy implements ExclusionStrategy {
 			f.getDeclaringClass() == Stage.class ||
 			f.getDeclaringClass() == MeshStage.class ||
 			f.getDeclaringClass() == Group.class ||
-//			f.getDeclaringClass() == Array.class ||
 			f.getDeclaringClass() == Mesh.class ||
 
 			(f.getDeclaringClass() == Actor.class && (
@@ -101,7 +100,6 @@ public class MeshStageExclusionStrategy implements ExclusionStrategy {
 		) {
 			return true;
 		} else {
-//			System.out.println("------" + f.getName());
 			return false;
 		}
 	}

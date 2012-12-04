@@ -9,13 +9,16 @@ import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 
 public class InterpolationAdapter implements JsonSerializer<Interpolation> {
+	private static Field[] fields;
 
 	@Override
 	public JsonElement serialize(Interpolation src, Type typeOfSrc,
 			JsonSerializationContext context) {
-		
+
 		// Interpolation methods are declared as static variables.
-		Field[] fields = src.getClass().getFields();
+		if (fields == null)
+			fields = src.getClass().getFields();
+
 		Field field = null;
 
 		try {
