@@ -387,6 +387,7 @@ public class Game implements ApplicationListener {
 		redCircle.addAction(
 			sequence(
 				sizeBy(20.0f, 20.0f, 2.0f, Interpolation.bounceOut),
+				delay(1.0f),
 				parallel(
 					color(new Color(0.5f, 0.2f, 0.3f, 1.0f), 2.0f, Interpolation.circle),
 					sizeBy(-20.0f, -20.0f, 2.0f, Interpolation.bounceOut),
