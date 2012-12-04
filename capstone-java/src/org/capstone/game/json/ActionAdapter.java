@@ -22,6 +22,7 @@ public class ActionAdapter implements JsonSerializer<Action>, JsonDeserializer<A
 			JsonSerializationContext context) {
 		JsonObject object = new JsonObject();
 
+		// Temporal Actions.
 		if (src instanceof MoveToAction) {
 			object = addSerializedMoveToAction(object, (MoveToAction) src, context);
 		} else if (src instanceof MoveByAction) {
@@ -34,6 +35,10 @@ public class ActionAdapter implements JsonSerializer<Action>, JsonDeserializer<A
 			object = addSerializedRotateToAction(object, (RotateToAction) src, context);
 		} else if (src instanceof RotateByAction) {
 			object = addSerializedRotateByAction(object, (RotateByAction) src, context);
+		} else if (src instanceof ColorAction) {
+			object = addSerializedColorAction(object, (ColorAction) src, context);
+		} else if (src instanceof AlphaAction) {
+			object = addSerializedAlphaAction(object, (AlphaAction) src, context);
 		}
 
 		if (src instanceof DelegateAction) {
@@ -101,6 +106,16 @@ public class ActionAdapter implements JsonSerializer<Action>, JsonDeserializer<A
 
 	private JsonObject addSerializedRotateByAction(JsonObject object, RotateByAction action, JsonSerializationContext context) {
 		object.addProperty("rotation", action.getAmount());
+		return object;
+	}
+
+	private JsonObject addSerializedColorAction(JsonObject object, ColorAction action, JsonSerializationContext context) {
+		object.add("color", context.serialize(action.getEndColor()));
+		return object;
+	}
+
+	private JsonObject addSerializedAlphaAction(JsonObject object, AlphaAction action, JsonSerializationContext context) {
+		object.add("alpha", context.serialize(action.getAlpha()));
 		return object;
 	}
 
