@@ -186,6 +186,11 @@ public class TextMeshActor extends MeshActor {
 		createMesh();
 	}
 
+	public TextMeshActor(char character, float x, float y, Color color, float width, float height, float lineWidth) {
+		this(character, x, y, color, width, height);
+		setLineWidth(lineWidth);
+	}
+
 	public char getChar() {
 		return character;
 	}

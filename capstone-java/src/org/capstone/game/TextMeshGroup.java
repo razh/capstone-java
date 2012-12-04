@@ -36,8 +36,7 @@ public class TextMeshGroup extends MeshGroup {
 		float y = getY();
 		for (int i = 0; i < text.length(); i++) {
 			if (Character.isLetterOrDigit(text.charAt(i))) {
-				TextMeshActor textActor = new TextMeshActor(text.charAt(i), x, y, getColor(), getWidth(), getHeight());
-				textActor.setLineWidth(lineWidth);
+				TextMeshActor textActor = new TextMeshActor(text.charAt(i), x, y, getColor(), getWidth(), getHeight(), getLineWidth());
 				textActors.add(textActor);
 				addActor(textActor);
 			}
