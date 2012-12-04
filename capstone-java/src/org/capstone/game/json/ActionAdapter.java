@@ -71,36 +71,36 @@ public class ActionAdapter implements JsonSerializer<Action>, JsonDeserializer<A
 	}
 
 	private JsonObject addSerializedMoveToAction(JsonObject object, MoveToAction action, JsonSerializationContext context) {
-		object.add("x", context.serialize(action.getX()));
-		object.add("y", context.serialize(action.getY()));
+		object.addProperty("x", action.getX());
+		object.addProperty("y", action.getY());
 		return object;
 	}
 
 	private JsonObject addSerializedMoveByAction(JsonObject object, MoveByAction action, JsonSerializationContext context) {
-		object.add("amountX", context.serialize(action.getAmountX()));
-		object.add("amountY", context.serialize(action.getAmountY()));
+		object.addProperty("amountX", action.getAmountX());
+		object.addProperty("amountY", action.getAmountY());
 		return object;
 	}
 
 	private JsonObject addSerializedSizeToAction(JsonObject object, SizeToAction action, JsonSerializationContext context) {
-		object.add("width", context.serialize(action.getWidth()));
-		object.add("height", context.serialize(action.getHeight()));
+		object.addProperty("width", action.getWidth());
+		object.addProperty("height", action.getHeight());
 		return object;
 	}
 
 	private JsonObject addSerializedSizeByAction(JsonObject object, SizeByAction action, JsonSerializationContext context) {
-		object.add("amountWidth", context.serialize(action.getAmountWidth()));
-		object.add("amountHeight", context.serialize(action.getAmountHeight()));
+		object.addProperty("amountWidth", action.getAmountWidth());
+		object.addProperty("amountHeight", action.getAmountHeight());
 		return object;
 	}
 
 	private JsonObject addSerializedRotateToAction(JsonObject object, RotateToAction action, JsonSerializationContext context) {
-		object.add("angle", context.serialize(action.getRotation()));
+		object.addProperty("angle", action.getRotation());
 		return object;
 	}
 
 	private JsonObject addSerializedRotateByAction(JsonObject object, RotateByAction action, JsonSerializationContext context) {
-		object.add("rotation", context.serialize(action.getAmount()));
+		object.addProperty("rotation", action.getAmount());
 		return object;
 	}
 
