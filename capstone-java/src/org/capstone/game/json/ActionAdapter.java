@@ -70,41 +70,41 @@ public class ActionAdapter implements JsonSerializer<Action>, JsonDeserializer<A
 		return null;
 	}
 
-	public JsonObject addSerializedMoveToAction(JsonObject object, MoveToAction action, JsonSerializationContext context) {
+	private JsonObject addSerializedMoveToAction(JsonObject object, MoveToAction action, JsonSerializationContext context) {
 		object.add("x", context.serialize(action.getX()));
 		object.add("y", context.serialize(action.getY()));
 		return object;
 	}
 
-	public JsonObject addSerializedMoveByAction(JsonObject object, MoveByAction action, JsonSerializationContext context) {
+	private JsonObject addSerializedMoveByAction(JsonObject object, MoveByAction action, JsonSerializationContext context) {
 		object.add("amountX", context.serialize(action.getAmountX()));
 		object.add("amountY", context.serialize(action.getAmountY()));
 		return object;
 	}
 
-	public JsonObject addSerializedSizeToAction(JsonObject object, SizeToAction action, JsonSerializationContext context) {
+	private JsonObject addSerializedSizeToAction(JsonObject object, SizeToAction action, JsonSerializationContext context) {
 		object.add("width", context.serialize(action.getWidth()));
 		object.add("height", context.serialize(action.getHeight()));
 		return object;
 	}
 
-	public JsonObject addSerializedSizeByAction(JsonObject object, SizeByAction action, JsonSerializationContext context) {
+	private JsonObject addSerializedSizeByAction(JsonObject object, SizeByAction action, JsonSerializationContext context) {
 		object.add("amountWidth", context.serialize(action.getAmountWidth()));
 		object.add("amountHeight", context.serialize(action.getAmountHeight()));
 		return object;
 	}
 
-	public JsonObject addSerializedRotateToAction(JsonObject object, RotateToAction action, JsonSerializationContext context) {
+	private JsonObject addSerializedRotateToAction(JsonObject object, RotateToAction action, JsonSerializationContext context) {
 		object.add("angle", context.serialize(action.getRotation()));
 		return object;
 	}
 
-	public JsonObject addSerializedRotateByAction(JsonObject object, RotateByAction action, JsonSerializationContext context) {
+	private JsonObject addSerializedRotateByAction(JsonObject object, RotateByAction action, JsonSerializationContext context) {
 		object.add("rotation", context.serialize(action.getAmount()));
 		return object;
 	}
 
-	public JsonObject addSerializedDelegateAction(JsonObject object, DelegateAction action, JsonSerializationContext context) {
+	private JsonObject addSerializedDelegateAction(JsonObject object, DelegateAction action, JsonSerializationContext context) {
 		Action delegatedAction = action.getAction();
 		if (delegatedAction != null)
 			object.add("action",context.serialize(delegatedAction));
