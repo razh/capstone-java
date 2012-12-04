@@ -17,14 +17,8 @@ public class MeshGroupSerializer implements JsonSerializer<MeshGroup> {
 	@Override
 	public JsonElement serialize(MeshGroup src, Type typeOfSrc,
 			JsonSerializationContext context) {
-		Gson gson = new GsonBuilder()
-			.setExclusionStrategies(new MeshStageExclusionStrategy())
-			.registerTypeAdapter(SnapshotArray.class, new SnapshotArraySerializer())
-			.serializeNulls()
-			.create();
-
 		JsonObject object = new JsonObject();
-		object.add("children", gson.toJsonTree(src.getChildren()));
+		object.add("children", context.serialize((src.getChildren())));
 		return object;
 	}
 

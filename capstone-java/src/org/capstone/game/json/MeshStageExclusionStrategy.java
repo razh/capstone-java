@@ -34,13 +34,6 @@ public class MeshStageExclusionStrategy implements ExclusionStrategy {
 
 	@Override
 	public boolean shouldSkipField(FieldAttributes f) {
-//		if (f.getDeclaringClass() == Actor.class) {
-			if (f.getName().equals("actions")) {
-				for (java.lang.reflect.Field field: f.getClass().getFields()) {
-					System.out.println("-----" + field.getName());
-				}
-			}
-//		}
 		// White-list.
 		if (
 			(f.getDeclaringClass() == MeshStage.class && (

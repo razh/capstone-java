@@ -16,7 +16,7 @@ public class ArraySerializer implements JsonSerializer<Array<?>> {
 	@Override
 	public JsonElement serialize(Array<?> src, Type typeOfSrc,
 			JsonSerializationContext context) {
-		System.out.println("ARRAY");
+
 		ArrayList<Object> array = new ArrayList<Object>();
 		Object object;
 
