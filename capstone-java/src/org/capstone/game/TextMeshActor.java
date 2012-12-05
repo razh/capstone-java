@@ -132,7 +132,9 @@ public class TextMeshActor extends MeshActor {
 
 	// Segment states.
 	// We use ints instead of booleans for readability.
+	@SuppressWarnings("unused")
 	private static final int[] ON  = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
+	@SuppressWarnings("unused")
 	private static final int[] OFF = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
 	// We use Segmental as a guide (slight change to 5), with segments in the order noted above:

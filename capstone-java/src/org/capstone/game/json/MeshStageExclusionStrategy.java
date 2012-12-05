@@ -1,7 +1,5 @@
 package org.capstone.game.json;
 
-import java.text.NumberFormat.Field;
-
 import org.capstone.game.MeshActor;
 import org.capstone.game.MeshGroup;
 import org.capstone.game.MeshStage;
@@ -18,14 +16,10 @@ import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.utils.Array;
 import com.google.gson.ExclusionStrategy;
 import com.google.gson.FieldAttributes;
 
 public class MeshStageExclusionStrategy implements ExclusionStrategy {
-
-	public MeshStageExclusionStrategy() {
-	}
 
 	@Override
 	public boolean shouldSkipClass(Class<?> c) {
