@@ -10,6 +10,7 @@ import org.capstone.game.entities.Entity;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Action;
+import com.badlogic.gdx.scenes.scene2d.actions.ParallelAction;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
@@ -76,8 +77,15 @@ public class MeshActorDeserializer implements JsonDeserializer<MeshActor> {
 			actor.setRotation(rotation);
 			actor.setVelocity(velocityX, velocityY);
 
+			Action action;
 			for (int i = 0, n = jsonActions.size(); i < n; i++) {
-				actor.addAction((Action) context.deserialize(jsonActions.get(i), Action.class));
+				action = (Action) context.deserialize(jsonActions.get(i), Action.class);
+				if (action != null) {
+//					System.out.println((actor != null) + "----" + (action != null));
+//					ParallelAction pact = ((ParallelAction) action);
+//					System.out.println(pact.getActions().size + "----");
+//					actor.addAction(action);
+				}
 			}
 		}
 

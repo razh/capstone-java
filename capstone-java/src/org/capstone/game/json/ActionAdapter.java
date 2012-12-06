@@ -2,8 +2,10 @@ package org.capstone.game.json;
 
 import java.lang.reflect.Type;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.scenes.scene2d.Action;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
@@ -98,27 +100,45 @@ public class ActionAdapter implements JsonSerializer<Action>, JsonDeserializer<A
 		if (object.get("type") != null) {
 			String type = object.get("type").getAsString();
 			if (type.equals("after")) {
-					action = new AfterAction();
+				action = Actions.action(AfterAction.class);
 			} else if (type.equals("sequence")) {
-					action = new SequenceAction();
+				action = Actions.action(SequenceAction.class);
+				action = addDeserializedParallelAction(object, (ParallelAction) action, context);
 			} else if (type.equals("parallel")) {
-					action = new ParallelAction();
+				action = Actions.action(ParallelAction.class);
+				action = addDeserializedParallelAction(object, (ParallelAction) action, context);
 			} else if (type.equals("add")) {
-					action = new AddAction();
+				action = Actions.action(AddAction.class);
 			} else if (type.equals("remove")) {
-					action = new RemoveActorAction();
+				action = Actions.action(RemoveActorAction.class);
 			}
 		}
 
 		// MoveToAction.
 		if (object.get("x") != null) {
-			action = new MoveToAction();
-			action = this.addDeserializedMoveToAction(object, (MoveToAction) action, context);
+			action = Actions.action(MoveToAction.class);
+			action = addDeserializedMoveToAction(object, (MoveToAction) action, context);
 		}
 		// MoveByAction.
 		else if (object.get("amountX") != null) {
-			action = new MoveByAction();
-			action = this.addDeserializedMoveByAction(object, (MoveByAction) action, context);
+			action = Actions.action(MoveByAction.class);
+			action = addDeserializedMoveByAction(object, (MoveByAction) action, context);
+		}
+
+		// SizeToAction.
+		else if (object.get("width") != null) {
+			action = Actions.action(SizeToAction.class);
+			action = addDeserializedSizeToAction(object, (SizeToAction) action, context);
+		}
+
+		else if (object.get("amountWidth") != null) {
+			action = Actions.action(SizeByAction.class);
+			action = addDeserializedSizeByAction(object, (SizeByAction) action, context);
+		}
+
+		else if (object.get("color") != null) {
+			action = Actions.action(ColorAction.class);
+			action = addDeserializedColorAction(object, (ColorAction) action, context);
 		}
 
 		return action;
@@ -166,10 +186,34 @@ public class ActionAdapter implements JsonSerializer<Action>, JsonDeserializer<A
 		return object;
 	}
 
+	private SizeToAction addDeserializedSizeToAction(JsonObject object, SizeToAction action, JsonDeserializationContext context) {
+		float width = object.get("width").getAsFloat();
+		float height = object.get("height").getAsFloat();
+
+		action.setWidth(width);
+		action.setHeight(height);
+
+		action = (SizeToAction) addDeserializedTemporalAction(object, action, context);
+
+		return action;
+	}
+
 	private JsonObject addSerializedSizeByAction(JsonObject object, SizeByAction action, JsonSerializationContext context) {
 		object.addProperty("amountWidth", action.getAmountWidth());
 		object.addProperty("amountHeight", action.getAmountHeight());
 		return object;
+	}
+
+	private SizeByAction addDeserializedSizeByAction(JsonObject object, SizeByAction action, JsonDeserializationContext context) {
+		float amountWidth = object.get("amountWidth").getAsFloat();
+		float amountHeight = object.get("amountHeight").getAsFloat();
+
+		action.setAmountWidth(amountWidth);
+		action.setAmountHeight(amountHeight);
+
+		action = (SizeByAction) addDeserializedTemporalAction(object, action, context);
+
+		return action;
 	}
 
 	private JsonObject addSerializedRotateToAction(JsonObject object, RotateToAction action, JsonSerializationContext context) {
@@ -185,6 +229,21 @@ public class ActionAdapter implements JsonSerializer<Action>, JsonDeserializer<A
 	private JsonObject addSerializedColorAction(JsonObject object, ColorAction action, JsonSerializationContext context) {
 		object.add("color", context.serialize(action.getEndColor()));
 		return object;
+	}
+
+	private ColorAction addDeserializedColorAction(JsonObject object, ColorAction action, JsonDeserializationContext context) {
+		JsonObject colorObject = object.get("color").getAsJsonObject();
+
+		float r = colorObject.get("r").getAsFloat();
+		float g = colorObject.get("g").getAsFloat();
+		float b = colorObject.get("b").getAsFloat();
+		float a = colorObject.get("a").getAsFloat();
+
+		action.setColor(new Color(r, g, b, a));
+
+		action = (ColorAction) addDeserializedTemporalAction(object, action, context);
+
+		return action;
 	}
 
 	private JsonObject addSerializedAlphaAction(JsonObject object, AlphaAction action, JsonSerializationContext context) {
@@ -223,6 +282,16 @@ public class ActionAdapter implements JsonSerializer<Action>, JsonDeserializer<A
 	private JsonObject addSerializedParallelAction(JsonObject object, ParallelAction action, JsonSerializationContext context) {
 		object.add("actions", context.serialize(action.getActions()));
 		return object;
+	}
+
+	private ParallelAction addDeserializedParallelAction(JsonObject object, ParallelAction action, JsonDeserializationContext context) {
+		JsonArray jsonActions = object.get("actions").getAsJsonArray();
+
+		for (int i = 0, n = jsonActions.size(); i < n; i++) {
+			action.addAction((Action) context.deserialize(jsonActions.get(i), Action.class));
+		}
+
+		return action;
 	}
 
 	private JsonObject addSerializedTemporalAction(JsonObject object, TemporalAction action, JsonSerializationContext context) {
