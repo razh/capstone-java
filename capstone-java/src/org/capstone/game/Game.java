@@ -404,12 +404,16 @@ public class Game implements ApplicationListener {
 		System.out.println(json);
 		System.out.println("REDCIRCLE-----");
 		json = gson.toJson(redCircle.getActor());
+		MeshActor testActor = gson.fromJson(json, MeshActor.class);
 		System.out.println(json);
 		System.out.println("ENTITIES-----");
 		json = gson.toJson(State.getStage().getEntities());
 		System.out.println(json);
 		System.out.println("STAGE-----");
 		json = gson.toJson(State.getStage());
+		System.out.println(json);
+		System.out.println("REJSON-----");
+		json = gson.toJson(testActor);
 		System.out.println(json);
 
 		Gdx.gl.glEnable(GL20.GL_BLEND);

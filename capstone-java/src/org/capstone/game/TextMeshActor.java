@@ -134,7 +134,6 @@ public class TextMeshActor extends MeshActor {
 	// We use ints instead of booleans for readability.
 	@SuppressWarnings("unused")
 	private static final int[] ON  = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
-	@SuppressWarnings("unused")
 	private static final int[] OFF = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
 	// We use Segmental as a guide (slight change to 5), with segments in the order noted above:
@@ -191,6 +190,10 @@ public class TextMeshActor extends MeshActor {
 	public TextMeshActor(char character, float x, float y, Color color, float width, float height, float lineWidth) {
 		this(character, x, y, color, width, height);
 		setLineWidth(lineWidth);
+	}
+
+	public TextMeshActor() {
+		this(' ', 0.0f, 0.0f, Color.tmp, 0.0f, 0.0f);
 	}
 
 	public char getChar() {
@@ -357,6 +360,10 @@ public class TextMeshActor extends MeshActor {
 
 			case 'Z':
 				setIndices(generateIndices(Z));
+				break;
+
+			default:
+				setIndices(generateIndices(OFF));
 				break;
 		}
 

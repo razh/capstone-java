@@ -2,6 +2,7 @@ package org.capstone.game.json;
 
 import java.lang.reflect.Type;
 
+import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
@@ -84,16 +85,43 @@ public class ActionAdapter implements JsonSerializer<Action>, JsonDeserializer<A
 			object = addSerializedRunnableAction(object, (RunnableAction) src, context);
 		}
 
-
-
 		return object;
 	}
 
 	@Override
 	public Action deserialize(JsonElement json, Type typeOfT,
 			JsonDeserializationContext context) throws JsonParseException {
-		// TODO Auto-generated method stub
-		return null;
+
+		JsonObject object = json.getAsJsonObject();
+
+		Action action = null;
+		if (object.get("type") != null) {
+			String type = object.get("type").getAsString();
+			if (type.equals("after")) {
+					action = new AfterAction();
+			} else if (type.equals("sequence")) {
+					action = new SequenceAction();
+			} else if (type.equals("parallel")) {
+					action = new ParallelAction();
+			} else if (type.equals("add")) {
+					action = new AddAction();
+			} else if (type.equals("remove")) {
+					action = new RemoveActorAction();
+			}
+		}
+
+		// MoveToAction.
+		if (object.get("x") != null) {
+			action = new MoveToAction();
+			action = this.addDeserializedMoveToAction(object, (MoveToAction) action, context);
+		}
+		// MoveByAction.
+		else if (object.get("amountX") != null) {
+			action = new MoveByAction();
+			action = this.addDeserializedMoveByAction(object, (MoveByAction) action, context);
+		}
+
+		return action;
 	}
 
 	private JsonObject addSerializedMoveToAction(JsonObject object, MoveToAction action, JsonSerializationContext context) {
@@ -102,10 +130,34 @@ public class ActionAdapter implements JsonSerializer<Action>, JsonDeserializer<A
 		return object;
 	}
 
+	private MoveToAction addDeserializedMoveToAction(JsonObject object, MoveToAction action, JsonDeserializationContext context) {
+		float x = object.get("x").getAsFloat();
+		float y = object.get("y").getAsFloat();
+
+		action.setX(x);
+		action.setX(y);
+
+		action = (MoveToAction) addDeserializedTemporalAction(object, action, context);
+
+		return action;
+	}
+
 	private JsonObject addSerializedMoveByAction(JsonObject object, MoveByAction action, JsonSerializationContext context) {
 		object.addProperty("amountX", action.getAmountX());
 		object.addProperty("amountY", action.getAmountY());
 		return object;
+	}
+
+	private MoveByAction addDeserializedMoveByAction(JsonObject object, MoveByAction action, JsonDeserializationContext context) {
+		float amountX = object.get("x").getAsFloat();
+		float amountY = object.get("y").getAsFloat();
+
+		action.setAmountX(amountX);
+		action.setAmountY(amountY);
+
+		action = (MoveByAction) addDeserializedTemporalAction(object, action, context);
+
+		return action;
 	}
 
 	private JsonObject addSerializedSizeToAction(JsonObject object, SizeToAction action, JsonSerializationContext context) {
@@ -177,6 +229,16 @@ public class ActionAdapter implements JsonSerializer<Action>, JsonDeserializer<A
 		object.addProperty("duration", action.getDuration());
 		object.add("interpolation", context.serialize(action.getInterpolation()));
 		return object;
+	}
+
+	private TemporalAction addDeserializedTemporalAction(JsonObject object, TemporalAction action, JsonDeserializationContext context) {
+		float duration = object.get("duration").getAsFloat();
+		Interpolation interpolation = context.deserialize(object.get("interpolation"), Interpolation.class);
+
+		action.setDuration(duration);
+		action.setInterpolation(interpolation);
+
+		return action;
 	}
 
 	// TODO: Serializing a Runnable may not work.

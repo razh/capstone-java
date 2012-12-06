@@ -4,11 +4,14 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Type;
 
 import com.badlogic.gdx.math.Interpolation;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonParseException;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 
-public class InterpolationAdapter implements JsonSerializer<Interpolation> {
+public class InterpolationAdapter implements JsonSerializer<Interpolation>, JsonDeserializer<Interpolation> {
 	private static Field[] fields;
 
 	@Override
@@ -39,5 +42,26 @@ public class InterpolationAdapter implements JsonSerializer<Interpolation> {
 			return context.serialize(field.getName());
 
 		return null;
+	}
+
+	@Override
+	public Interpolation deserialize(JsonElement json, Type typeOfT,
+			JsonDeserializationContext context) throws JsonParseException {
+
+		Interpolation interpolation = Interpolation.linear;
+
+		try {
+			interpolation = (Interpolation) Interpolation.class.getDeclaredField((json.getAsString())).get(null);
+		} catch (SecurityException e) {
+			e.printStackTrace();
+		} catch (NoSuchFieldException e) {
+			e.printStackTrace();
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		}
+		
+		return interpolation;
 	}
 }
