@@ -141,6 +141,11 @@ public class ActionAdapter implements JsonSerializer<Action>, JsonDeserializer<A
 			action = addDeserializedColorAction(object, (ColorAction) action, context);
 		}
 
+		else if (object.get("delay") != null) {
+			action = Actions.action(DelayAction.class);
+			action = addDeserializedDelayAction(object, (DelayAction) action, context);
+		}
+
 		return action;
 	}
 
@@ -264,7 +269,7 @@ public class ActionAdapter implements JsonSerializer<Action>, JsonDeserializer<A
 	private JsonObject addSerializedDelegateAction(JsonObject object, DelegateAction action, JsonSerializationContext context) {
 		Action delegatedAction = action.getAction();
 		if (delegatedAction != null)
-			object.add("action",context.serialize(delegatedAction));
+			object.add("action", context.serialize(delegatedAction));
 
 		return object;
 	}
@@ -272,6 +277,14 @@ public class ActionAdapter implements JsonSerializer<Action>, JsonDeserializer<A
 	private JsonObject addSerializedDelayAction(JsonObject object, DelayAction action, JsonSerializationContext context) {
 		object.addProperty("delay", action.getDuration());
 		return object;
+	}
+
+	private DelayAction addDeserializedDelayAction(JsonObject object, DelayAction action, JsonDeserializationContext context) {
+		float delay = object.get("delay").getAsFloat();
+
+		action.setTime(delay);
+
+		return action;
 	}
 
 	private JsonObject addSerializedRepeatAction(JsonObject object, RepeatAction action, JsonSerializationContext context) {
@@ -287,8 +300,13 @@ public class ActionAdapter implements JsonSerializer<Action>, JsonDeserializer<A
 	private ParallelAction addDeserializedParallelAction(JsonObject object, ParallelAction action, JsonDeserializationContext context) {
 		JsonArray jsonActions = object.get("actions").getAsJsonArray();
 
+		Action tempAction;
 		for (int i = 0, n = jsonActions.size(); i < n; i++) {
-			action.addAction((Action) context.deserialize(jsonActions.get(i), Action.class));
+			tempAction = (Action) context.deserialize(jsonActions.get(i), Action.class);
+			if (tempAction != null)
+				action.addAction(tempAction);
+			else
+				System.out.println(jsonActions.get(i));
 		}
 
 		return action;

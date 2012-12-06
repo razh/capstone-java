@@ -81,10 +81,7 @@ public class MeshActorDeserializer implements JsonDeserializer<MeshActor> {
 			for (int i = 0, n = jsonActions.size(); i < n; i++) {
 				action = (Action) context.deserialize(jsonActions.get(i), Action.class);
 				if (action != null) {
-//					System.out.println((actor != null) + "----" + (action != null));
-//					ParallelAction pact = ((ParallelAction) action);
-//					System.out.println(pact.getActions().size + "----");
-//					actor.addAction(action);
+					actor.addAction(action);
 				}
 			}
 		}
