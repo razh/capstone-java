@@ -41,6 +41,11 @@ public class BulletGun extends Gun {
 		this(entity.getActor(), damage, rate, range, speed, color, radius, -1.0f);
 	}
 	
+	public BulletGun(float damage, float rate, float range, float speed,
+	                 Color color, float radius, float bulletRange) {
+		this((Actor) null, damage, rate, range, speed, color, radius, bulletRange);
+	}
+	
 	public BulletGun(BulletGun gun) {
 		super(gun);
 		

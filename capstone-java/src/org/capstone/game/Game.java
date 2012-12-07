@@ -7,6 +7,7 @@ import org.capstone.game.entities.PolygonEntity;
 import org.capstone.game.entities.RectEntity;
 import org.capstone.game.entities.weapons.BulletGun;
 import org.capstone.game.entities.weapons.LaserGun;
+import org.capstone.game.entities.weapons.Weapon;
 import org.capstone.game.json.ActionAdapter;
 import org.capstone.game.json.ArraySerializer;
 import org.capstone.game.json.InterpolationAdapter;
@@ -14,6 +15,7 @@ import org.capstone.game.json.MeshActorDeserializer;
 import org.capstone.game.json.MeshStageExclusionStrategy;
 import org.capstone.game.json.MeshGroupSerializer;
 import org.capstone.game.json.SnapshotArraySerializer;
+import org.capstone.game.json.WeaponAdapter;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
@@ -379,6 +381,7 @@ public class Game implements ApplicationListener {
 			.setExclusionStrategies(new MeshStageExclusionStrategy())
 //			.setExclusionStrategies(new ActionExclusionStrategy())
 			.registerTypeHierarchyAdapter(Action.class, new ActionAdapter())
+			.registerTypeHierarchyAdapter(Weapon.class, new WeaponAdapter())
 			.registerTypeHierarchyAdapter(Interpolation.class, new InterpolationAdapter())
 			.registerTypeHierarchyAdapter(Array.class, new ArraySerializer())
 			.registerTypeAdapter(SnapshotArray.class, new SnapshotArraySerializer())

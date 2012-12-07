@@ -291,6 +291,7 @@ public class Entity {
 	}
 
 	public void addWeapon(Weapon weapon) {
+		weapon.setActor(getActor());
 		weapons.add(weapon);
 	}
 

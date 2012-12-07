@@ -115,7 +115,7 @@ public class ActionAdapter implements JsonSerializer<Action>, JsonDeserializer<A
 		}
 
 		// MoveToAction.
-		if (object.get("x") != null) {
+		else if (object.get("x") != null) {
 			action = Actions.action(MoveToAction.class);
 			action = addDeserializedMoveToAction(object, (MoveToAction) action, context);
 		}
@@ -131,6 +131,7 @@ public class ActionAdapter implements JsonSerializer<Action>, JsonDeserializer<A
 			action = addDeserializedSizeToAction(object, (SizeToAction) action, context);
 		}
 
+		// SizeByAction.
 		else if (object.get("amountWidth") != null) {
 			action = Actions.action(SizeByAction.class);
 			action = addDeserializedSizeByAction(object, (SizeByAction) action, context);
@@ -154,6 +155,11 @@ public class ActionAdapter implements JsonSerializer<Action>, JsonDeserializer<A
 		else if (object.get("delay") != null) {
 			action = Actions.action(DelayAction.class);
 			action = addDeserializedDelayAction(object, (DelayAction) action, context);
+		}
+
+		else if (object.get("count") != null) {
+			action = Actions.action(RepeatAction.class);
+			action = addDeserializedRepeatAction(object, (RepeatAction) action, context);
 		}
 
 		return action;
@@ -327,6 +333,14 @@ public class ActionAdapter implements JsonSerializer<Action>, JsonDeserializer<A
 	private JsonObject addSerializedRepeatAction(JsonObject object, RepeatAction action, JsonSerializationContext context) {
 		object.addProperty("count", action.getCount());
 		return object;
+	}
+
+	private RepeatAction addDeserializedRepeatAction(JsonObject object, RepeatAction action, JsonDeserializationContext context) {
+		int count = object.get("count").getAsInt();
+
+		action.setCount(count);
+
+		return action;
 	}
 
 	private JsonObject addSerializedParallelAction(JsonObject object, ParallelAction action, JsonSerializationContext context) {

@@ -34,6 +34,11 @@ public class LaserGun extends Gun {
 		this(entity.getActor(), damage, rate, range, color, width);
 	}
 	
+	public LaserGun(float damage, float rate, float range,
+	                Color color, float width) {
+		this((Actor) null, damage, rate, range, color, width);
+	}
+	
 	public LaserGun(LaserGun gun) {
 		super(gun);
 		
@@ -102,7 +107,7 @@ public class LaserGun extends Gun {
 	public void fire() {
 		super.fire();
 
-		if (targetActor == null)
+		if (actor == null || targetActor == null)
 			return;
 
 		Vector2 point = null;

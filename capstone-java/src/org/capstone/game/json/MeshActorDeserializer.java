@@ -7,6 +7,7 @@ import org.capstone.game.MeshActor;
 import org.capstone.game.MeshType;
 import org.capstone.game.TextMeshActor;
 import org.capstone.game.entities.Entity;
+import org.capstone.game.entities.weapons.Weapon;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Action;
@@ -69,6 +70,15 @@ public class MeshActorDeserializer implements JsonDeserializer<MeshActor> {
 			entity.setTeam(team);
 			entity.setHealth(health);
 			entity.setOriented(oriented);
+			
+			// Add weapons.
+			JsonArray jsonWeapons = jsonEntity.get("weapons").getAsJsonArray();
+			Weapon weapon;
+			for (int i = 0, n = jsonWeapons.size(); i < n; i++) {
+				weapon = context.deserialize(jsonWeapons.get(i), Weapon.class);
+				if (weapon != null)
+					entity.addWeapon(weapon);
+			}
 
 			actor = entity.getMeshActor();
 		}
