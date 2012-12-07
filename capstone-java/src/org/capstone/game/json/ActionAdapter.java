@@ -141,6 +141,16 @@ public class ActionAdapter implements JsonSerializer<Action>, JsonDeserializer<A
 			action = addDeserializedColorAction(object, (ColorAction) action, context);
 		}
 
+		else if (object.get("angle") != null) {
+			action = Actions.action(RotateToAction.class);
+			action = addDeserializedRotateToAction(object, (RotateToAction) action, context);
+		}
+
+		else if (object.get("rotation") != null) {
+			action = Actions.action(RotateByAction.class);
+			action = addDeserializedRotateByAction(object, (RotateByAction) action, context);
+		}
+
 		else if (object.get("delay") != null) {
 			action = Actions.action(DelayAction.class);
 			action = addDeserializedDelayAction(object, (DelayAction) action, context);
@@ -226,9 +236,27 @@ public class ActionAdapter implements JsonSerializer<Action>, JsonDeserializer<A
 		return object;
 	}
 
+	private RotateToAction addDeserializedRotateToAction(JsonObject object, RotateToAction action, JsonDeserializationContext context) {
+		float angle = object.get("angle").getAsFloat();
+
+		action.setRotation(angle);
+		action = (RotateToAction) addDeserializedTemporalAction(object, action, context);
+
+		return action;
+	}
+
 	private JsonObject addSerializedRotateByAction(JsonObject object, RotateByAction action, JsonSerializationContext context) {
 		object.addProperty("rotation", action.getAmount());
 		return object;
+	}
+
+	private RotateByAction addDeserializedRotateByAction(JsonObject object, RotateByAction action, JsonDeserializationContext context) {
+		float rotation = object.get("rotation").getAsFloat();
+
+		action.setAmount(rotation);
+		action = (RotateByAction) addDeserializedTemporalAction(object, action, context);
+
+		return action;
 	}
 
 	private JsonObject addSerializedColorAction(JsonObject object, ColorAction action, JsonSerializationContext context) {
@@ -254,6 +282,15 @@ public class ActionAdapter implements JsonSerializer<Action>, JsonDeserializer<A
 	private JsonObject addSerializedAlphaAction(JsonObject object, AlphaAction action, JsonSerializationContext context) {
 		object.addProperty("alpha", action.getAlpha());
 		return object;
+	}
+
+	private AlphaAction addDeserializedAlphaAction(JsonObject object, AlphaAction action, JsonDeserializationContext context) {
+		float alpha = object.get("alpha").getAsFloat();
+
+		action.setAlpha(alpha);
+		action = (AlphaAction) addDeserializedTemporalAction(object, action, context);
+
+		return action;
 	}
 
 	private JsonObject addSerializedVisibleAction(JsonObject object, VisibleAction action, JsonSerializationContext context) {
