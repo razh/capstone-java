@@ -5,6 +5,7 @@ import java.lang.reflect.Type;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.scenes.scene2d.Action;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
@@ -16,6 +17,7 @@ import com.google.gson.JsonSerializer;
 
 import com.badlogic.gdx.scenes.scene2d.actions.*;
 
+// This is ugly, ugly code.
 public class ActionAdapter implements JsonSerializer<Action>, JsonDeserializer<Action> {
 
 	@Override
@@ -137,29 +139,55 @@ public class ActionAdapter implements JsonSerializer<Action>, JsonDeserializer<A
 			action = addDeserializedSizeByAction(object, (SizeByAction) action, context);
 		}
 
+		// ColorAction.
 		else if (object.get("color") != null) {
 			action = Actions.action(ColorAction.class);
 			action = addDeserializedColorAction(object, (ColorAction) action, context);
 		}
+		
+		// AlphaAction.
+		else if (object.get("alpha") != null) {
+			action = Actions.action(AlphaAction.class);
+			action = addDeserializedAlphaAction(object, (AlphaAction) action, context);
+		}
 
+		// RotateToAction.
 		else if (object.get("angle") != null) {
 			action = Actions.action(RotateToAction.class);
 			action = addDeserializedRotateToAction(object, (RotateToAction) action, context);
 		}
 
+		// RotateByAction.
 		else if (object.get("rotation") != null) {
 			action = Actions.action(RotateByAction.class);
 			action = addDeserializedRotateByAction(object, (RotateByAction) action, context);
 		}
 
-		else if (object.get("delay") != null) {
-			action = Actions.action(DelayAction.class);
-			action = addDeserializedDelayAction(object, (DelayAction) action, context);
+		// Delegate
+		else if (object.get("delegate") != null) {
+			// DelayAction.
+			if (object.get("delay") != null) {
+				action = Actions.action(DelayAction.class);
+				action = addDeserializedDelayAction(object, (DelayAction) action, context);
+			}
+	
+			// RepeatAction.
+			else if (object.get("count") != null) {
+				action = Actions.action(RepeatAction.class);
+				action = addDeserializedRepeatAction(object, (RepeatAction) action, context);
+			}
 		}
 
-		else if (object.get("count") != null) {
-			action = Actions.action(RepeatAction.class);
-			action = addDeserializedRepeatAction(object, (RepeatAction) action, context);
+		// VisibleAction.
+		else if (object.get("visible") != null) {
+			action = Actions.action(VisibleAction.class);
+			action = addDeserializedVisibleAction(object, (VisibleAction) action, context);
+		}
+
+		// TouchableAction.
+		else if (object.get("touchable") != null) {
+			action = Actions.action(TouchableAction.class);
+			action = addDeserializedTouchableAction(object, (TouchableAction) action, context);
 		}
 
 		return action;
@@ -303,10 +331,26 @@ public class ActionAdapter implements JsonSerializer<Action>, JsonDeserializer<A
 		object.addProperty("visible", action.isVisible());
 		return object;
 	}
+	
+	private VisibleAction addDeserializedVisibleAction(JsonObject object, VisibleAction action, JsonDeserializationContext context) {
+		boolean visible = object.get("visible").getAsBoolean();
+		
+		action.setVisible(visible);
+
+		return action;
+	}
 
 	private JsonObject addSerializedTouchableAction(JsonObject object, TouchableAction action, JsonSerializationContext context) {
 		object.add("touchable", context.serialize(action.getTouchable()));
 		return object;
+	}
+	
+	private TouchableAction addDeserializedTouchableAction(JsonObject object, TouchableAction action, JsonDeserializationContext context) {
+		Touchable touchable = context.deserialize(object.get("touchable"), Touchable.class);
+		
+		action.setTouchable(touchable);
+
+		return action;
 	}
 
 	private JsonObject addSerializedDelegateAction(JsonObject object, DelegateAction action, JsonSerializationContext context) {
@@ -315,6 +359,14 @@ public class ActionAdapter implements JsonSerializer<Action>, JsonDeserializer<A
 			object.add("action", context.serialize(delegatedAction));
 
 		return object;
+	}
+	
+	private DelegateAction addDeserializedDelegateAction(JsonObject object, DelegateAction action, JsonDeserializationContext context) {
+		Action delegatedAction = context.deserialize(object.get("action"), Action.class);
+
+		action.setAction(delegatedAction);
+		
+		return action;
 	}
 
 	private JsonObject addSerializedDelayAction(JsonObject object, DelayAction action, JsonSerializationContext context) {
@@ -326,6 +378,7 @@ public class ActionAdapter implements JsonSerializer<Action>, JsonDeserializer<A
 		float delay = object.get("delay").getAsFloat();
 
 		action.setTime(delay);
+		action = (DelayAction) addDeserializedDelegateAction(object, action, context);
 
 		return action;
 	}
@@ -339,6 +392,7 @@ public class ActionAdapter implements JsonSerializer<Action>, JsonDeserializer<A
 		int count = object.get("count").getAsInt();
 
 		action.setCount(count);
+		action = (RepeatAction) addDeserializedDelegateAction(object, action, context);
 
 		return action;
 	}
