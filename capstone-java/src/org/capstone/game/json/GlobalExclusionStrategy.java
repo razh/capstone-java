@@ -20,6 +20,10 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.google.gson.ExclusionStrategy;
 import com.google.gson.FieldAttributes;
 
+/*
+ * Why yes, this is a monolithic class describing all the members and classes
+ * to ignore.
+ */
 public class GlobalExclusionStrategy implements ExclusionStrategy {
 
 	@Override
