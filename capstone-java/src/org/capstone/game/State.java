@@ -3,11 +3,15 @@ package org.capstone.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 
+/*
+ * Bad design right here. A global state class? What are you thinking?
+ */
 public class State {
 	private static float width;
 	private static float height;
 	private static Color color;
 
+	private static Player player;
 	private static Level level;
 	private static MeshStage stage;
 
@@ -56,10 +60,18 @@ public class State {
 		State.color = color;
 	}
 
+	public static Player getPlayer() {
+		return player;
+	}
+
+	public static void setPlayer(Player player) {
+		State.player = player;
+	}
+
 	public static MeshStage getStage() {
 		return stage;
 	}
-	
+
 	public static void setLevel(Level level) {
 		State.level = level;
 		level.setStage(getStage());

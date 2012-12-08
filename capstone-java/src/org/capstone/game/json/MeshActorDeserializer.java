@@ -1,7 +1,6 @@
 package org.capstone.game.json;
 
 import java.lang.reflect.Type;
-import java.util.ArrayList;
 
 import org.capstone.game.MeshActor;
 import org.capstone.game.MeshType;
@@ -11,7 +10,6 @@ import org.capstone.game.entities.weapons.Weapon;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Action;
-import com.badlogic.gdx.scenes.scene2d.actions.ParallelAction;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;

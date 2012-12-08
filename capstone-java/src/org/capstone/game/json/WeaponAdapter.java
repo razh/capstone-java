@@ -3,7 +3,6 @@ package org.capstone.game.json;
 import java.lang.reflect.Type;
 
 import org.capstone.game.entities.weapons.BulletGun;
-import org.capstone.game.entities.weapons.Gun;
 import org.capstone.game.entities.weapons.LaserGun;
 import org.capstone.game.entities.weapons.Weapon;
 

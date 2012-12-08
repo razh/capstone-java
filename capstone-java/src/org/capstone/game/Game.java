@@ -49,6 +49,7 @@ public class Game implements ApplicationListener {
 	private int frameBufferSize = 512;
 	private FPSLogger fpsLogger = new FPSLogger();
 	private boolean running = true;
+	private boolean gl20 = false;
 
 	private Level level;
 
@@ -237,7 +238,8 @@ public class Game implements ApplicationListener {
 		float height = Gdx.graphics.getHeight();
 		Gdx.graphics.setVSync(true);
 
-		System.out.println("GL20: " + Gdx.graphics.isGL20Available());
+		gl20 = Gdx.graphics.isGL20Available();
+		System.out.println("GL20: " + gl20);
 		System.out.println(vertexShader);
 		System.out.println(fragmentShader);
 		System.out.println("---------");
@@ -401,6 +403,7 @@ public class Game implements ApplicationListener {
 				)
 			)
 		);
+
 		String json;
 		System.out.println("GROUP2-----");
 		json = gson.toJson(group2.getActor());
