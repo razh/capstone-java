@@ -1,7 +1,22 @@
 package org.capstone.game.io;
 
-import com.badlogic.gdx.utils.Json;
+import com.google.gson.Gson;
 
 public class LevelLoader {
-	Json json = new Json();
+	private Gson gson;
+	
+	public LevelLoader(Gson gson) {
+		setGson(gson);
+	}
+	
+	public LevelLoader() {}
+
+	public Gson getGson() {
+		return gson;
+	}
+
+	public void setGson(Gson gson) {
+		this.gson = gson;
+	}
+
 }

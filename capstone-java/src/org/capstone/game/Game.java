@@ -12,7 +12,7 @@ import org.capstone.game.json.ActionAdapter;
 import org.capstone.game.json.ArraySerializer;
 import org.capstone.game.json.InterpolationAdapter;
 import org.capstone.game.json.MeshActorDeserializer;
-import org.capstone.game.json.MeshStageExclusionStrategy;
+import org.capstone.game.json.GlobalExclusionStrategy;
 import org.capstone.game.json.MeshGroupSerializer;
 import org.capstone.game.json.SnapshotArraySerializer;
 import org.capstone.game.json.WeaponAdapter;
@@ -378,7 +378,7 @@ public class Game implements ApplicationListener {
 //		}
 
 		Gson gson = new GsonBuilder()
-			.setExclusionStrategies(new MeshStageExclusionStrategy())
+			.setExclusionStrategies(new GlobalExclusionStrategy())
 //			.setExclusionStrategies(new ActionExclusionStrategy())
 			.registerTypeHierarchyAdapter(Action.class, new ActionAdapter())
 			.registerTypeHierarchyAdapter(Weapon.class, new WeaponAdapter())
@@ -417,6 +417,9 @@ public class Game implements ApplicationListener {
 		System.out.println(json);
 		System.out.println("REJSON-----");
 		json = gson.toJson(testActor);
+		System.out.println(json);
+		System.out.println("LEVEL-----");
+		json = gson.toJson(level);
 		System.out.println(json);
 
 		Gdx.gl.glEnable(GL20.GL_BLEND);

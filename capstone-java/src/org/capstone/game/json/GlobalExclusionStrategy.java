@@ -1,5 +1,6 @@
 package org.capstone.game.json;
 
+import org.capstone.game.Level;
 import org.capstone.game.MeshActor;
 import org.capstone.game.MeshGroup;
 import org.capstone.game.MeshStage;
@@ -19,7 +20,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.google.gson.ExclusionStrategy;
 import com.google.gson.FieldAttributes;
 
-public class MeshStageExclusionStrategy implements ExclusionStrategy {
+public class GlobalExclusionStrategy implements ExclusionStrategy {
 
 	@Override
 	public boolean shouldSkipClass(Class<?> c) {
@@ -66,6 +67,10 @@ public class MeshStageExclusionStrategy implements ExclusionStrategy {
 				f.getName().equals("mesh") ||
 				f.getName().equals("indices")
 			)) ||
+			(f.getDeclaringClass() == MeshGroup.class && (
+				f.getName().equals("stage")  ||
+				f.getName().equals("shaderProgram")
+			)) ||
 			(f.getDeclaringClass() == TextMeshGroup.class && (
 				f.getName().equals("textActors")
 			)) ||
@@ -77,10 +82,6 @@ public class MeshStageExclusionStrategy implements ExclusionStrategy {
 			(f.getDeclaringClass() == LaserGun.class && (
 				f.getName().equals("laserBeam")
 			)) ||
-			(f.getDeclaringClass() == MeshGroup.class && (
-				f.getName().equals("stage")  ||
-				f.getName().equals("shaderProgram")
-			)) ||
 			(f.getDeclaringClass() == Entity.class && (
 				f.getName().equals("actor")
 			)) ||
@@ -89,6 +90,9 @@ public class MeshStageExclusionStrategy implements ExclusionStrategy {
 				f.getName().equals("segments") ||
 				f.getName().equals("segmentGroup")
 			)) ||
+			(f.getDeclaringClass() == Level.class && (
+					f.getName().equals("stage")
+				)) ||
 			(f.getDeclaringClass() == Action.class && (
 				f.getName().equals("actor") ||
 				f.getName().equals("pool")
