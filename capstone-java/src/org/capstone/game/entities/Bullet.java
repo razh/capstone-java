@@ -4,6 +4,7 @@ import org.capstone.game.CircleMeshActor;
 import org.capstone.game.MeshActor;
 import org.capstone.game.MeshGroup;
 import org.capstone.game.MeshType;
+import org.capstone.game.PolygonMeshActor;
 import org.capstone.game.RectMeshActor;
 import org.capstone.game.State;
 
@@ -23,11 +24,11 @@ public class Bullet extends Entity {
 	public Bullet(float x, float y, Color color, float radius) {
 		this(MeshType.CircleMeshActor, x, y, color, radius, radius, -1.0f);
 	}
-	
+
 	public Bullet(float x, float y, Color color, float radius, float range) {
 		this(MeshType.CircleMeshActor, x, y, color, radius, radius, range);
 	}
-	
+
 	public Bullet(MeshType type, float x, float y, Color color, float width, float height) {
 		this(type, x, y, color, width, height, -1.0f);
 	}
@@ -68,7 +69,7 @@ public class Bullet extends Entity {
 			for (int i = 0; i < characters.size; i++) {
 				Actor child = actors[i];
 
-				if (child instanceof CircleMeshActor || child instanceof RectMeshActor) {
+				if (child instanceof CircleMeshActor || child instanceof RectMeshActor || child instanceof PolygonMeshActor) {
 					if (((MeshActor) child).getEntity().getTeam() != getTeam()) {
 						if (intersects(child)) {
 							((MeshActor) child).getEntity().takeFire();

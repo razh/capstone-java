@@ -17,18 +17,36 @@ public class LaserGun extends Gun {
 	private Actor targetActor;
 	private boolean drawingBeam = false;
 	protected LaserBeam laserBeam;
+	protected float laserWidth;
 
 	public LaserGun(Actor actor, float damage, float rate, float range,
 	                Color color, float width) {
 		super(actor, damage, rate, range);
 
 		setColor(color);
+
 		laserBeam = new LaserBeam(actor, getTargetX(), getTargetY(), getColor(), width);
+		setLaserWidth(width);
 	}
 
 	public LaserGun(Entity entity, float damage, float rate, float range,
 	                Color color, float width) {
 		this(entity.getActor(), damage, rate, range, color, width);
+	}
+	
+	public LaserGun(float damage, float rate, float range,
+	                Color color, float width) {
+		this((Actor) null, damage, rate, range, color, width);
+	}
+	
+	public LaserGun(LaserGun gun) {
+		super(gun);
+		
+		setColor(gun.getColor());
+
+		laserBeam = new LaserBeam(actor, getTargetX(), getTargetY(), getColor(), 0.0f);
+		setLaserWidth(gun.getLaserWidth());
+		setActorAsTarget(gun.getTargetActor());
 	}
 
 	public Color getColor() {
@@ -38,9 +56,18 @@ public class LaserGun extends Gun {
 	public void setColor(Color color) {
 		this.color = color;
 	}
-
+	
 	public Actor getTargetActor() {
 		return targetActor;
+	}
+	
+	@Override
+	public void setActor(Actor actor) {
+		super.setActor(actor);
+		
+		if (laserBeam != null) {
+			laserBeam.setActor((MeshActor) actor);
+		}
 	}
 
 	@Override
@@ -58,6 +85,16 @@ public class LaserGun extends Gun {
 		this.drawingBeam = drawingBeam;
 	}
 
+	public float getLaserWidth() {
+		return laserWidth;
+	}
+
+	public void setLaserWidth(float laserWidth) {
+		this.laserWidth = laserWidth;
+		if (laserBeam != null)
+			laserBeam.setWidth(laserWidth);
+	}
+
 	public void act(float delta) {
 		super.act(delta);
 
@@ -70,7 +107,7 @@ public class LaserGun extends Gun {
 	public void fire() {
 		super.fire();
 
-		if (targetActor == null)
+		if (actor == null || targetActor == null)
 			return;
 
 		Vector2 point = null;

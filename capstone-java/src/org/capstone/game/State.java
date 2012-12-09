@@ -3,16 +3,30 @@ package org.capstone.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 
+/*
+ * Bad design right here. A global state class? What are you thinking?
+ */
 public class State {
 	private static float width;
 	private static float height;
-	private static Color color;
 
+	private static Player player;
+	private static Level level;
 	private static MeshStage stage;
 
 	public static float EPSILON = 1E-10f;
 	public static boolean debug = true;
 	public static boolean debugRendering = false;
+	
+	private static boolean gl20 = true;
+	
+	public State() {
+		setWidth(Gdx.graphics.getWidth());
+		setHeight(Gdx.graphics.getHeight());
+		setColor(Color.BLACK);
+		
+		stage = new MeshStage(width, height, true);
+	}
 
 	public State(float width, float height, Color color) {
 		stage = new MeshStage(width, height, true);
@@ -23,7 +37,12 @@ public class State {
 	}
 
 	public static void update() {
-		stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30.0f));
+		float delta = Math.min(Gdx.graphics.getDeltaTime(), 1 / 30.0f);
+		if (level != null)
+			level.act(delta);
+
+		stage.act(delta);
+		setColor(stage.getColor());
 	}
 
 	// Do not use these. Use Gdx.graphics.getWidth() and Gdx.graphics.getHeight() instead!
@@ -44,14 +63,27 @@ public class State {
 	}
 
 	public static Color getColor() {
-		return color;
+		return stage.getColor();
 	}
 
 	public static void setColor(Color color) {
-		State.color = color;
+		stage.setColor(color);
+	}
+
+	public static Player getPlayer() {
+		return player;
+	}
+
+	public static void setPlayer(Player player) {
+		State.player = player;
 	}
 
 	public static MeshStage getStage() {
 		return stage;
+	}
+
+	public static void setLevel(Level level) {
+		State.level = level;
+		level.setStage(getStage());
 	}
 }

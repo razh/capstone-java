@@ -15,16 +15,18 @@ public class CircleMeshActor extends MeshActor {
 	protected static Mesh mesh;
 
 	public CircleMeshActor() {
+		super();
+
 		if (mesh == null) {
-			initMesh();
+			createMesh();
 		}
 	}
 
-	private void initMesh() {
-		initMesh(32);
+	private void createMesh() {
+		createMesh(32);
 	}
 
-	private void initMesh(int subdivisions) {
+	private void createMesh(int subdivisions) {
 		int numVertices = (subdivisions + 1) * 2;
 		int numIndices  = subdivisions + 2; // Include center and one rotation.
 		mesh = new Mesh(Mesh.VertexDataType.VertexBufferObject,
@@ -124,17 +126,20 @@ public class CircleMeshActor extends MeshActor {
 		float dy = y - y0;
 
 		float length = (float) Math.sqrt(dx * dx + dy * dy);
-		dx = dx / length;
-		dy = dy / length;
+		dx /= length;
+		dy /= length;
 
 		return new Vector2(x0 + dx * r0, y0 + dy * r0);
 	}
 
+	@Override
 	public boolean intersects(Actor actor) {
 		if (actor instanceof CircleMeshActor) {
 			return intersects((CircleMeshActor) actor);
 		} else if (actor instanceof RectMeshActor) {
 			return intersects((RectMeshActor) actor);
+		} else if (actor instanceof PolygonMeshActor) {
+			return intersects((PolygonMeshActor) actor);
 		} else {
 			return false;
 		}
@@ -214,6 +219,31 @@ public class CircleMeshActor extends MeshActor {
 		       intersectsLine(x1, y1, x2, y2) ||
 		       intersectsLine(x2, y2, x3, y3) ||
 		       intersectsLine(x3, y3, x0, y0);
+	}
+
+	public boolean intersects(PolygonMeshActor actor) {
+		if (actor.contains(getX(), getY()))
+			return true;
+
+		float[] vertices = actor.getVertices();
+		int numVertices  = actor.getNumVertices();
+
+		Vector2 vi = new Vector2();
+		Vector2 vj = new Vector2();
+		for (int i = 0; i < numVertices; i++) {
+			vi.x = vertices[2 * i];
+			vi.y = vertices[2 * i + 1];
+			vj.x = vertices[(2 * (i + 1)) % vertices.length];
+			vj.y = vertices[(2 * (i + 1) + 1) % vertices.length];
+
+			vi = actor.localToScreenCoordinates(vi);
+			vj = actor.localToScreenCoordinates(vj);
+
+			if (intersectsLine(vi.x, vi.y, vj.x, vj.y))
+				return true;
+		}
+
+		return false;
 	}
 
 	public boolean intersectsLine(float x0, float y0, float x1, float y1) {

@@ -8,6 +8,10 @@ public abstract class Gun extends Weapon {
 		super(actor, damage, rate, range);
 	}
 	
+	public Gun(Gun gun) {
+		super(gun);
+	}
+	
 	public void act(float delta) {
 		super.act(delta);
 		

@@ -6,12 +6,15 @@ import org.capstone.game.CircleMeshActor;
 import org.capstone.game.MeshActor;
 import org.capstone.game.MeshGroup;
 import org.capstone.game.MeshType;
+import org.capstone.game.PolygonMeshActor;
 import org.capstone.game.RectMeshActor;
 import org.capstone.game.State;
 import org.capstone.game.entities.weapons.Weapon;
+import org.capstone.game.entities.weapons.WeaponFactory;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Interpolation;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -25,7 +28,10 @@ public class Entity {
 	protected MeshType meshType;
 	protected int team = 0;
 	protected boolean takingFire = false;
-	protected ArrayList<Weapon> weapons;
+	protected ArrayList<Weapon> weapons = new ArrayList<Weapon>();
+	protected int health = -1;
+
+	private boolean oriented = false;
 
 	public Entity(MeshType type, float x, float y, Color color, float width, float height) {
 		setMeshType(type);
@@ -33,6 +39,8 @@ public class Entity {
 			actor = new CircleMeshActor();
 		else if (type == MeshType.RectMeshActor)
 			actor = new RectMeshActor();
+		else if (type == MeshType.PolygonMeshActor)
+			actor = new PolygonMeshActor();
 		else if (type == MeshType.Group)
 			actor = new MeshGroup();
 		else
@@ -44,11 +52,47 @@ public class Entity {
 		setColor(color);
 		setWidth(width);
 		setHeight(height);
+	}
 
-		weapons = new ArrayList<Weapon>();
+	public Entity(Entity entity) {
+		if (entity.actor instanceof CircleMeshActor) {
+			actor = new CircleMeshActor();
+		} else if (entity.actor instanceof RectMeshActor) {
+			actor = new RectMeshActor();
+		} else if (entity.actor instanceof PolygonMeshActor) {
+			actor = new PolygonMeshActor();
+			((PolygonMeshActor) actor).setVertices(((PolygonMeshActor) entity.actor).getVertices());
+		} else {
+			actor = new MeshActor();
+		}
+
+		((MeshActor) actor).setEntity(this);
+		setPosition(entity.getX(), entity.getY());
+
+		setVelocity(entity.getVelocityX(), entity.getVelocityY());
+		setWidth(entity.getWidth());
+		setHeight(entity.getHeight());
+		setRotation(entity.getRotation());
+		setColor(entity.getColor());
+
+		meshType = entity.meshType;
+		team = entity.team;
+		takingFire = entity.takingFire;
+		health = entity.health;
+		oriented = entity.oriented;
+
+		for (int i = 0; i < entity.getWeapons().size(); i++) {
+			weapons.add(WeaponFactory.createWeapon(entity.getWeapons().get(i)));
+			weapons.get(i).setActor(actor);
+		}
 	}
 
 	public void act(float delta) {
+		if (isOriented()) {
+			actor.setRotation((float) Math.atan2(((MeshActor) actor).getVelocityY(),
+			                                     ((MeshActor) actor).getVelocityX()) * MathUtils.radiansToDegrees);
+		}
+
 		Actor enemy = this.getNearestActor(State.getStage().getEntities().getChildren());
 		if (enemy == null)
 			return;
@@ -166,6 +210,14 @@ public class Entity {
 		actor.rotate(amountInDegrees);
 	}
 
+	public boolean isOriented() {
+		return oriented;
+	}
+
+	public void setOriented(boolean oriented) {
+		this.oriented = oriented;
+	}
+
 	public Color getColor() {
 		return actor.getColor();
 	}
@@ -239,6 +291,7 @@ public class Entity {
 	}
 
 	public void addWeapon(Weapon weapon) {
+		weapon.setActor(getActor());
 		weapons.add(weapon);
 	}
 
@@ -248,5 +301,17 @@ public class Entity {
 
 	public ArrayList<Weapon> getWeapons() {
 		return weapons;
+	}
+
+	public int getHealth() {
+		return health;
+	}
+
+	public void setHealth(int health) {
+		this.health = health;
+	}
+
+	public void addToHealth(int difference) {
+		health += difference;
 	}
 }

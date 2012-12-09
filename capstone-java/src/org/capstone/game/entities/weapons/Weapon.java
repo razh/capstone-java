@@ -30,6 +30,13 @@ public abstract class Weapon {
 		setRange(range);		
 	}
 	
+	public Weapon(Weapon weapon) {
+		setActor(weapon.getActor());
+		setDamage(weapon.getDamage());
+		setRate(weapon.getRate());
+		setRange(weapon.getRange());
+	}
+	
 	public void act(float delta) {
 		time += delta;
 		if (time > rate) {

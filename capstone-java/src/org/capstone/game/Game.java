@@ -3,9 +3,19 @@ package org.capstone.game;
 import org.capstone.game.entities.CircleEntity;
 import org.capstone.game.entities.Entity;
 import org.capstone.game.entities.EntityGroup;
+import org.capstone.game.entities.PolygonEntity;
 import org.capstone.game.entities.RectEntity;
 import org.capstone.game.entities.weapons.BulletGun;
 import org.capstone.game.entities.weapons.LaserGun;
+import org.capstone.game.entities.weapons.Weapon;
+import org.capstone.game.json.ActionAdapter;
+import org.capstone.game.json.ArraySerializer;
+import org.capstone.game.json.InterpolationAdapter;
+import org.capstone.game.json.MeshActorDeserializer;
+import org.capstone.game.json.GlobalExclusionStrategy;
+import org.capstone.game.json.MeshGroupSerializer;
+import org.capstone.game.json.SnapshotArraySerializer;
+import org.capstone.game.json.WeaponAdapter;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
@@ -19,9 +29,16 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
+import com.badlogic.gdx.math.Interpolation;
+import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
+import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.SnapshotArray;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 
 public class Game implements ApplicationListener {
 	private FrameBuffer frameBuffer;
@@ -32,6 +49,10 @@ public class Game implements ApplicationListener {
 	private int frameBufferSize = 512;
 	private FPSLogger fpsLogger = new FPSLogger();
 	private boolean running = true;
+	private boolean gl20 = false;
+
+	private Level level;
+	private Player player;
 
 	private String vertexShader =
 		"uniform mat4 projection;\n" +
@@ -218,7 +239,8 @@ public class Game implements ApplicationListener {
 		float height = Gdx.graphics.getHeight();
 		Gdx.graphics.setVSync(true);
 
-		System.out.println("GL20: " + Gdx.graphics.isGL20Available());
+		gl20 = Gdx.graphics.isGL20Available();
+		System.out.println("GL20: " + gl20);
 		System.out.println(vertexShader);
 		System.out.println(fragmentShader);
 		System.out.println("---------");
@@ -254,6 +276,13 @@ public class Game implements ApplicationListener {
 		redCircle.setTeam(1);
 //		redCircle.setRotation(25);
 
+		new State(width, height, new Color(0.572f, 0.686f, 0.624f, 1.0f));
+		player = new Player();
+		level = new Level();
+		level.addEntitySpawner(redCircle, 1.5f, 100, 1.5f);
+		State.setLevel(level);
+		State.setPlayer(player);
+
 		Entity blueCircle = new CircleEntity(200, 200, new Color(0.173f, 0.204f, 0.220f, 1.0f), 30);
 		blueCircle.setVelocity(100.0f, 100.0f);
 
@@ -262,16 +291,17 @@ public class Game implements ApplicationListener {
 		Entity redRect = new RectEntity(200, 40, new Color(0.941f, 0.247f, 0.208f, 1.0f), 100.0f, 20.0f);
 		redRect.setTeam(1);
 		redRect.setRotation(35.0f);
+		redRect.setOriented(true);
 		redRect.getActor().setTouchable(Touchable.disabled);
+		redRect.setVelocity(-50.0f, 100.0f);
 
 		Entity group = new EntityGroup(MeshType.RectMeshActor, 400, 400, new Color(0.941f, 0.247f, 0.208f, 1.0f), 20, 10, 10, 60);
 		group.setVelocity(200.0f, 100.0f);
 		((EntityGroup) group).setOriented(true);
-		
+
 		Entity group2 = new EntityGroup(MeshType.CircleMeshActor, 600, 400, new Color(0.173f, 0.204f, 0.220f, 1.0f), 20, 20, 10, 80);
 		group2.setVelocity(-200.0f, 100.0f);
 
-		new State(width, height, new Color(0.572f, 0.686f, 0.624f, 1.0f));
 		State.getStage().setShaderProgram(shaderProgram);
 
 		State.getStage().addEntity(redCircle);
@@ -280,6 +310,71 @@ public class Game implements ApplicationListener {
 		State.getStage().addEntity(group);
 		State.getStage().addEntity(group2);
 		State.getStage().addEntity(redRect);
+		float textWidth = 32;
+		float textHeight = 32;
+		float textLineWidth = 2.0f;
+		Color textColor = new Color(0.941f, 0.941f, 0.827f, 0.75f);
+		State.getStage().addText(new TextMeshActor('0',  40, 100, textColor, textWidth, textHeight, textLineWidth));
+		State.getStage().addText(new TextMeshActor('1',  80, 100, textColor, textWidth, textHeight, textLineWidth));
+		State.getStage().addText(new TextMeshActor('2',  40, 200, textColor, textWidth, textHeight, textLineWidth));
+		State.getStage().addText(new TextMeshActor('3',  80, 200, textColor, textWidth, textHeight, textLineWidth));
+		State.getStage().addText(new TextMeshActor('4', 120, 200, textColor, textWidth, textHeight, textLineWidth));
+		State.getStage().addText(new TextMeshActor('5', 160, 200, textColor, textWidth, textHeight, textLineWidth));
+		State.getStage().addText(new TextMeshActor('6', 200, 200, textColor, textWidth, textHeight, textLineWidth));
+		State.getStage().addText(new TextMeshActor('7', 240, 200, textColor, textWidth, textHeight, textLineWidth));
+		State.getStage().addText(new TextMeshActor('8', 280, 200, textColor, textWidth, textHeight, textLineWidth));
+		State.getStage().addText(new TextMeshActor('9', 320, 200, textColor, textWidth, textHeight, textLineWidth));
+		State.getStage().addText(new TextMeshActor('A', 360, 200, textColor, textWidth, textHeight, textLineWidth));
+		State.getStage().addText(new TextMeshActor('B', 400, 200, textColor, textWidth, textHeight, textLineWidth));
+		State.getStage().addText(new TextMeshActor('C', 440, 200, textColor, textWidth, textHeight, textLineWidth));
+		State.getStage().addText(new TextMeshActor('D', 480, 200, textColor, textWidth, textHeight, textLineWidth));
+		State.getStage().addText(new TextMeshActor('E', 520, 200, textColor, textWidth, textHeight, textLineWidth));
+		State.getStage().addText(new TextMeshActor('F', 560, 200, textColor, textWidth, textHeight, textLineWidth));
+		State.getStage().addText(new TextMeshActor('G', 600, 200, textColor, textWidth, textHeight, textLineWidth));
+		State.getStage().addText(new TextMeshActor('H', 640, 200, textColor, textWidth, textHeight, textLineWidth));
+		State.getStage().addText(new TextMeshActor('I', 680, 200, textColor, textWidth, textHeight, textLineWidth));
+		State.getStage().addText(new TextMeshActor('J', 720, 200, textColor, textWidth, textHeight, textLineWidth));
+		State.getStage().addText(new TextMeshActor('K', 760, 200, textColor, textWidth, textHeight, textLineWidth));
+		State.getStage().addText(new TextMeshActor('L', 800, 200, textColor, textWidth, textHeight, textLineWidth));
+		State.getStage().addText(new TextMeshActor('M', 840, 200, textColor, textWidth, textHeight, textLineWidth));
+		State.getStage().addText(new TextMeshActor('N', 880, 200, textColor, textWidth, textHeight, textLineWidth));
+		State.getStage().addText(new TextMeshActor('O', 920, 200, textColor, textWidth, textHeight, textLineWidth));
+		State.getStage().addText(new TextMeshActor('P', 960, 200, textColor, textWidth, textHeight, textLineWidth));
+		State.getStage().addText(new TextMeshActor('Q',  40, 300, textColor, textWidth, textHeight, textLineWidth));
+		State.getStage().addText(new TextMeshActor('R',  80, 300, textColor, textWidth, textHeight, textLineWidth));
+		State.getStage().addText(new TextMeshActor('S', 120, 300, textColor, textWidth, textHeight, textLineWidth));
+		State.getStage().addText(new TextMeshActor('T', 160, 300, textColor, textWidth, textHeight, textLineWidth));
+		State.getStage().addText(new TextMeshActor('U', 200, 300, textColor, textWidth, textHeight, textLineWidth));
+		State.getStage().addText(new TextMeshActor('V', 240, 300, textColor, textWidth, textHeight, textLineWidth));
+		State.getStage().addText(new TextMeshActor('W', 280, 300, textColor, textWidth, textHeight, textLineWidth));
+		State.getStage().addText(new TextMeshActor('X', 320, 300, textColor, textWidth, textHeight, textLineWidth));
+		State.getStage().addText(new TextMeshActor('Y', 360, 300, textColor, textWidth, textHeight, textLineWidth));
+		State.getStage().addText(new TextMeshActor('Z', 400, 300, textColor, textWidth, textHeight, textLineWidth));
+		State.getStage().addText(new TextMeshGroup("THE QUICK BROWN FOX", 200, 100, new Color(0.2f, 0.4f, 0.3f, 1.0f), 30, 50, 10, 4.0f));
+
+		float[] testVertices = new float[8 * 2];
+		float subdivAngle = (float) (Math.PI * 2 / 8);
+		int vtxIndex = 0;
+		for (int i = 0; i < 8; i++) {
+			testVertices[vtxIndex++] = (float) Math.sin(i * subdivAngle);
+			testVertices[vtxIndex++] = (float) Math.cos(i * subdivAngle);
+		}
+		// Clockwise order.
+		State.getStage().addEntity(new PolygonEntity(new float[] {-1.0f, -1.0f, 1.0f, -1.0f, 1.0f, 1.0f, -1.0f, 0.0f}, 800, 500, new Color(0.149f, 0.266f, 0.380f, 0.5f), 50, 60));
+
+		// State.getStage().addEntity(new PolygonEntity(new float[] {-1.0f, -1.0f, 1.0f, -1.0f, 1.0f, 1.0f, -1.0f, 0.0f}, 800, 500, new Color(0.0f, 0.5f, 0.0f, 0.5f), 50, 60));
+		// Counterclockwise order.
+		State.getStage().addEntity(new PolygonEntity(new float[] {-1.0f, 0.0f, 1.0f, 1.0f, 1.0f, -1.0f, -1.0f, -1.0f}, 300, 600, new Color(0.420f, 0.384f, 0.388f, 0.5f), 50, 60));
+		State.getStage().addEntity(new PolygonEntity(testVertices, 200, 500, new Color(0.0f, 0.25f, 0.0f, 1.0f), 20, 30));
+
+		// Test intersection grid.
+		RectEntity rectEnt;
+		for (int i = 0; i < 50; i++) {
+			for (int j = 0; j < 50; j++) {
+				rectEnt = new RectEntity(350 + i * 4, 430 + j * 4, new Color(Color.BLACK), 1, 1);
+				State.getStage().addTest(rectEnt);
+			}
+		}
 
 //		for (int i = 0; i < 500; i++) {
 //			Character ctest = new Character(i, i, new Color(i / 500.0f, i / 10000.0f, 0.24f, 1.0f), 10);
@@ -287,11 +382,61 @@ public class Game implements ApplicationListener {
 //			State.getStage().addCharacter(ctest);
 //		}
 
+		Gson gson = new GsonBuilder()
+			.setExclusionStrategies(new GlobalExclusionStrategy())
+//			.setExclusionStrategies(new ActionExclusionStrategy())
+			.registerTypeHierarchyAdapter(Action.class, new ActionAdapter())
+			.registerTypeHierarchyAdapter(Weapon.class, new WeaponAdapter())
+			.registerTypeHierarchyAdapter(Interpolation.class, new InterpolationAdapter())
+			.registerTypeHierarchyAdapter(Array.class, new ArraySerializer())
+			.registerTypeAdapter(SnapshotArray.class, new SnapshotArraySerializer())
+			.registerTypeHierarchyAdapter(MeshActor.class, new MeshActorDeserializer())
+			.registerTypeAdapter(MeshGroup.class, new MeshGroupSerializer())
+			.serializeNulls()
+			.create();
 
-		// Invisible cursor.
-		// Gdx.input.setCursorCatched(true);
+		redCircle.addAction(
+			sequence(
+				sizeBy(20.0f, 20.0f, 2.0f, Interpolation.bounceOut),
+				delay(1.0f),
+				parallel(
+					color(new Color(0.5f, 0.2f, 0.3f, 1.0f), 2.0f, Interpolation.circle),
+					sizeBy(-20.0f, -20.0f, 2.0f, Interpolation.bounceOut),
+					rotateTo(20.0f)
+				)
+			)
+		);
 
-//		Gdx.gl.glEnable(GL20.GL_TEXTURE_2D);
+		String json;
+		System.out.println("GROUP2-----");
+		json = gson.toJson(group2.getActor());
+		System.out.println(json);
+		System.out.println("REDCIRCLE-----");
+		json = gson.toJson(redCircle.getActor());
+		MeshActor testActor = gson.fromJson(json, MeshActor.class);
+		System.out.println(json);
+		System.out.println("ENTITIES-----");
+		json = gson.toJson(State.getStage().getEntities());
+		System.out.println(json);
+		System.out.println("STAGE-----");
+		json = gson.toJson(State.getStage());
+		System.out.println(json);
+		System.out.println("REJSON-----");
+		json = gson.toJson(testActor);
+		System.out.println(json);
+		System.out.println("LEVEL-----");
+		json = gson.toJson(level);
+		System.out.println(json);
+		System.out.println("DESERLEVEL-----");
+		Level deserializedLevel = gson.fromJson(json, Level.class);
+		json = gson.toJson(deserializedLevel);
+		System.out.println(json);
+		System.out.println("PLAYER-----");
+		json = gson.toJson(State.getPlayer());
+		System.out.println(json);
+		
+		State.getStage().addAction(color(new Color(0.5f, 0.5f, 0.5f, 1.0f), 10.0f, Interpolation.pow3));
+
 		Gdx.gl.glEnable(GL20.GL_BLEND);
 		Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 	}
@@ -306,6 +451,26 @@ public class Game implements ApplicationListener {
 	public void render() {
 		if (!running)
 			return;
+
+		// Intersection testing code.
+		if (State.debugRendering) {
+			SnapshotArray<Actor> children = State.getStage().getTests().getChildren();
+			Actor[] actors = children.begin();
+			for (int i = 0, n = children.size; i < n; i++) {
+				Actor child = actors[i];
+
+				if (State.getStage().getEntities().hit(child.getX(), child.getY(), false) != null) {
+					child.setColor(Color.GREEN);
+				} else if (State.getStage().getText().hit(child.getX(), child.getY(), false) != null) {
+					child.setColor(Color.BLUE);
+				}
+				else {
+					child.setColor(Color.BLACK);
+				}
+			}
+
+			children.end();
+		}
 
 		handleInput();
 		State.update();
@@ -393,6 +558,11 @@ public class Game implements ApplicationListener {
 				Actor hit = State.getStage().getEntities().hit(Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY(), true);
 				if (hit != null)
 					hit.setPosition(Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY());
+				else {
+					hit = State.getStage().getText().hit(Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY(), true);
+					if (hit != null)
+						hit.setPosition(Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY());
+				}
 			} else {
 				State.getStage().getEntities().getChildren().get(0).setPosition(Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY());
 			}
@@ -430,7 +600,16 @@ public class Game implements ApplicationListener {
 		}
 
 		if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
-			State.getStage().getEntities().getChildren().get(2).rotate(1.0f);
+			SnapshotArray<Actor> children = State.getStage().getEntities().getChildren();
+			Actor[] actors = children.begin();
+			for (int i = 0, n = children.size; i < n; i++) {
+				actors[i].rotate(1.0f);
+			}
+
+			children.end();
+		}
+		if (Gdx.input.isKeyPressed(Input.Keys.X)) {
+			State.getStage().clearActors();
 		}
 	}
 
