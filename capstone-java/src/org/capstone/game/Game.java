@@ -428,6 +428,8 @@ public class Game implements ApplicationListener {
 		Level deserializedLevel = gson.fromJson(json, Level.class);
 		json = gson.toJson(deserializedLevel);
 		System.out.println(json);
+		
+		State.getStage().addAction(color(new Color(0.5f, 0.5f, 0.5f, 1.0f), 10.0f, Interpolation.pow3));
 
 		Gdx.gl.glEnable(GL20.GL_BLEND);
 		Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);

@@ -3,8 +3,10 @@ package org.capstone.game;
 import org.capstone.game.entities.Entity;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
@@ -16,6 +18,9 @@ public class MeshStage extends Stage {
 	private MeshGroup projectiles;
 	private MeshGroup text;
 	private MeshGroup tests;
+	
+	// Allows us to set colors and stuff with actions.
+	private Actor colorActor;
 
 	public MeshStage() {
 		this(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
@@ -36,6 +41,8 @@ public class MeshStage extends Stage {
 		addActor(projectiles);
 		addActor(text);
 		addActor(tests);
+		
+		colorActor = new Actor();
 	}
 
 	public void setShaderProgram(ShaderProgram shaderProgram) {
@@ -77,6 +84,8 @@ public class MeshStage extends Stage {
 		entities.act(delta);
 		projectiles.act(delta);
 		text.act(delta);
+		
+		colorActor.act(delta);
 
 		if (State.debugRendering)
 			tests.act(delta);
@@ -84,6 +93,18 @@ public class MeshStage extends Stage {
 
 	public MeshGroup getRoot() {
 		return root;
+	}
+	
+	public Color getColor() {
+		return colorActor.getColor();
+	}
+	
+	public void setColor(Color color) {
+		colorActor.setColor(color);
+	}
+	
+	public void addAction(Action action) {
+		colorActor.addAction(action);
 	}
 
 	@Override

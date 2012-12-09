@@ -9,7 +9,6 @@ import com.badlogic.gdx.graphics.Color;
 public class State {
 	private static float width;
 	private static float height;
-	private static Color color;
 
 	private static Player player;
 	private static Level level;
@@ -33,6 +32,7 @@ public class State {
 			level.act(delta);
 
 		stage.act(delta);
+		setColor(stage.getColor());
 	}
 
 	// Do not use these. Use Gdx.graphics.getWidth() and Gdx.graphics.getHeight() instead!
@@ -53,11 +53,11 @@ public class State {
 	}
 
 	public static Color getColor() {
-		return color;
+		return stage.getColor();
 	}
 
 	public static void setColor(Color color) {
-		State.color = color;
+		stage.setColor(color);
 	}
 
 	public static Player getPlayer() {

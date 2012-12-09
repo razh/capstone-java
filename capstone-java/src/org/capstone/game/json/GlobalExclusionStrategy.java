@@ -38,7 +38,8 @@ public class GlobalExclusionStrategy implements ExclusionStrategy {
 			(f.getDeclaringClass() == MeshStage.class && (
 				f.getName().equals("entities")    ||
 				f.getName().equals("projectiles") ||
-				f.getName().equals("text")
+				f.getName().equals("text")        ||
+				f.getName().equals("colorActor")
 			)) ||
 			(f.getDeclaringClass() == Group.class && (
 				f.getName().equals("children")
