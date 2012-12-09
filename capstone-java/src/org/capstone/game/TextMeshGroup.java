@@ -5,10 +5,17 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.Array;
 
 public class TextMeshGroup extends MeshGroup {
+	public static enum Alignment {
+		LEFT,
+		CENTER,
+		RIGHT
+	};
+
 	private String text;
 	private float spacing;
 	private Array<TextMeshActor> textActors = new Array<TextMeshActor>();
 	private float lineWidth = 1.0f;
+	private Alignment alignment = Alignment.RIGHT;
 
 	public TextMeshGroup(String text, float x, float y, Color color, float width, float height, float spacing, float lineWidth) {
 		setText(text);
@@ -33,6 +40,12 @@ public class TextMeshGroup extends MeshGroup {
 
 	public void initText() {
 		float x = getX();
+		if (alignment == Alignment.RIGHT) {
+			x -= text.length() * (getWidth() + spacing);
+		} else if (alignment == Alignment.CENTER) {
+			x -= (text.length() * (getWidth() + spacing)) * 0.5f;
+		}
+
 		float y = getY();
 		for (int i = 0; i < text.length(); i++) {
 			if (Character.isLetterOrDigit(text.charAt(i))) {
@@ -61,6 +74,14 @@ public class TextMeshGroup extends MeshGroup {
 		this.lineWidth = lineWidth;
 	}
 
+	public Alignment getAlignment() {
+		return alignment;
+	}
+
+	public void setAlignment(Alignment alignment) {
+		this.alignment = alignment;
+	}
+
 	// Only add TextMeshActors.
 	public void addActor(Actor actor) {
 		if (actor instanceof TextMeshActor) {
@@ -87,11 +108,32 @@ public class TextMeshGroup extends MeshGroup {
 			}
 		}
 	}
+	
+	public TextMeshActor getActorAt(int index) {
+		return textActors.get(index);
+	}
 
 	public Actor hit(float x, float y, boolean touchable) {
 		if (super.hit(x, y, touchable) != null) {
-			return getFirstActor();
+			return this;
 		}
+
 		return null;
+	}
+	
+	@Override
+	public void setPosition(float x, float y) {
+		if (textActors.size == 0) {
+			super.setPosition(x, y);
+			return;
+		}
+			
+		if (alignment == Alignment.LEFT) {
+			textActors.get(0).setPosition(x, y);
+		} else if (alignment == Alignment.CENTER) {
+			textActors.get(0).setPosition(x - ((text.length() - 1) * (getWidth() + spacing)) * 0.5f, y);
+		} else if (alignment == Alignment.RIGHT) {
+			textActors.get(0).setPosition(x - (text.length() - 1) * (getWidth() + spacing), y);
+		}
 	}
 }

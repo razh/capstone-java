@@ -18,6 +18,8 @@ public class State {
 	public static boolean debug = true;
 	public static boolean debugRendering = false;
 	
+	private static boolean gl20 = true;
+	
 	public State() {
 		setWidth(Gdx.graphics.getWidth());
 		setHeight(Gdx.graphics.getHeight());
