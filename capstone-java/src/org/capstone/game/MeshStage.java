@@ -3,8 +3,10 @@ package org.capstone.game;
 import org.capstone.game.entities.Entity;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
@@ -14,6 +16,11 @@ public class MeshStage extends Stage {
 
 	private MeshGroup entities;
 	private MeshGroup projectiles;
+	private MeshGroup text;
+	private MeshGroup tests;
+	
+	// Allows us to set colors and stuff with actions.
+	private Actor colorActor;
 
 	public MeshStage() {
 		this(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
@@ -24,6 +31,18 @@ public class MeshStage extends Stage {
 
 		root = new MeshGroup();
 		root.setStage(this);
+
+		entities = new MeshGroup();
+		projectiles = new MeshGroup();
+		text = new MeshGroup();
+		tests = new MeshGroup();
+
+		addActor(entities);
+		addActor(projectiles);
+		addActor(text);
+		addActor(tests);
+		
+		colorActor = new Actor();
 	}
 
 	public void setShaderProgram(ShaderProgram shaderProgram) {
@@ -46,7 +65,13 @@ public class MeshStage extends Stage {
 
 		shaderProgram.begin();
 		shaderProgram.setUniformMatrix("projection", getCamera().combined);
-		root.draw(shaderProgram, 1.0f);
+		entities.draw(shaderProgram, 1.0f);
+		projectiles.draw(shaderProgram, 1.0f);
+		text.draw(shaderProgram, 1.0f);
+
+		if (State.debugRendering)
+			tests.draw(shaderProgram, 1.0f);
+
 		shaderProgram.end();
 	}
 
@@ -55,15 +80,51 @@ public class MeshStage extends Stage {
 		root.addActor(actor);
 	}
 
-	private void initEntities() {
-		entities = new MeshGroup();
-		root.addActor(entities);
+	public void act(float delta) {
+		entities.act(delta);
+		projectiles.act(delta);
+		text.act(delta);
+		
+		colorActor.act(delta);
+
+		if (State.debugRendering)
+			tests.act(delta);
 	}
 
-	public void addEntity(Actor actor) {
-		if (entities == null)
-			initEntities();
+	public MeshGroup getRoot() {
+		return root;
+	}
+	
+	public Color getColor() {
+		return colorActor.getColor();
+	}
+	
+	public void setColor(Color color) {
+		colorActor.setColor(color);
+	}
+	
+	public void addAction(Action action) {
+		colorActor.addAction(action);
+	}
 
+	@Override
+	public Actor hit(float stageX, float stageY, boolean touchable) {
+		Vector2 actorCoords = Vector2.tmp;
+		getRoot().parentToLocalCoordinates(actorCoords.set(stageX, stageY));
+		return getRoot().hit(actorCoords.x, actorCoords.y, touchable);
+	}
+	
+	public void clearActors() {
+		entities.clear();
+		projectiles.clear();
+		text.clear();
+		tests.clear();
+	}
+
+	//----------------------------------------------------------------------------
+	//  ENTITIES
+	//----------------------------------------------------------------------------
+	public void addEntity(Actor actor) {
 		entities.addActor(actor);
 	}
 
@@ -72,21 +133,13 @@ public class MeshStage extends Stage {
 	}
 
 	public MeshGroup getEntities() {
-		if (entities == null)
-			initEntities();
-
 		return entities;
 	}
 
-	private void initProjectiles() {
-		projectiles = new MeshGroup();
-		root.addActor(projectiles);
-	}
-
+	//----------------------------------------------------------------------------
+	//  PROJECTILES
+	//----------------------------------------------------------------------------
 	public void addProjectile(Actor actor) {
-		if (projectiles == null)
-			initProjectiles();
-
 		projectiles.addActor(actor);
 	}
 
@@ -95,24 +148,36 @@ public class MeshStage extends Stage {
 	}
 
 	public MeshGroup getProjectiles() {
-		if (projectiles == null)
-			initProjectiles();
-
 		return projectiles;
 	}
 
-	public void act(float delta) {
-		root.act(delta);
+	//----------------------------------------------------------------------------
+	//  TEXT
+	//----------------------------------------------------------------------------
+	public void addText(Actor actor) {
+		text.addActor(actor);
 	}
 
-	public MeshGroup getRoot() {
-		return root;
+	public void addText(Entity text) {
+		addText(text.getActor());
 	}
 
-	@Override
-	public Actor hit(float stageX, float stageY, boolean touchable) {
-		Vector2 actorCoords = Vector2.tmp;
-		getRoot().parentToLocalCoordinates(actorCoords.set(stageX, stageY));
-		return getRoot().hit(actorCoords.x, actorCoords.y, touchable);
+	public MeshGroup getText() {
+		return text;
+	}
+
+	//----------------------------------------------------------------------------
+	//  TESTING
+	//----------------------------------------------------------------------------
+	public void addTest(Actor actor) {
+		tests.addActor(actor);
+	}
+
+	public void addTest(Entity test) {
+		addTest(test.getActor());
+	}
+
+	public MeshGroup getTests() {
+		return tests;
 	}
 }
