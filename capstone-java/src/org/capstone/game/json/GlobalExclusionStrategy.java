@@ -4,7 +4,9 @@ import org.capstone.game.Level;
 import org.capstone.game.MeshActor;
 import org.capstone.game.MeshGroup;
 import org.capstone.game.MeshStage;
+import org.capstone.game.Player;
 import org.capstone.game.PolygonMeshActor;
+import org.capstone.game.State;
 import org.capstone.game.TextMeshActor;
 import org.capstone.game.TextMeshGroup;
 import org.capstone.game.entities.Entity;
@@ -53,7 +55,10 @@ public class GlobalExclusionStrategy implements ExclusionStrategy {
 			f.getDeclaringClass() == MeshStage.class ||
 			f.getDeclaringClass() == Group.class ||
 			f.getDeclaringClass() == Mesh.class ||
-
+			
+			(f.getDeclaringClass() == Player.class && (
+				f.getName().equals("selected")
+			)) ||
 			(f.getDeclaringClass() == Actor.class && (
 				f.getName().equals("stage")   ||
 				f.getName().equals("parent")  ||

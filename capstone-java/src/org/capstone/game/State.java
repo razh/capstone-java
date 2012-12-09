@@ -17,6 +17,14 @@ public class State {
 	public static float EPSILON = 1E-10f;
 	public static boolean debug = true;
 	public static boolean debugRendering = false;
+	
+	public State() {
+		setWidth(Gdx.graphics.getWidth());
+		setHeight(Gdx.graphics.getHeight());
+		setColor(Color.BLACK);
+		
+		stage = new MeshStage(width, height, true);
+	}
 
 	public State(float width, float height, Color color) {
 		stage = new MeshStage(width, height, true);

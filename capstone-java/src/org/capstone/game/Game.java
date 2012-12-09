@@ -52,6 +52,7 @@ public class Game implements ApplicationListener {
 	private boolean gl20 = false;
 
 	private Level level;
+	private Player player;
 
 	private String vertexShader =
 		"uniform mat4 projection;\n" +
@@ -276,9 +277,11 @@ public class Game implements ApplicationListener {
 //		redCircle.setRotation(25);
 
 		new State(width, height, new Color(0.572f, 0.686f, 0.624f, 1.0f));
+		player = new Player();
 		level = new Level();
 		level.addEntitySpawner(redCircle, 1.5f, 100, 1.5f);
 		State.setLevel(level);
+		State.setPlayer(player);
 
 		Entity blueCircle = new CircleEntity(200, 200, new Color(0.173f, 0.204f, 0.220f, 1.0f), 30);
 		blueCircle.setVelocity(100.0f, 100.0f);
@@ -427,6 +430,9 @@ public class Game implements ApplicationListener {
 		System.out.println("DESERLEVEL-----");
 		Level deserializedLevel = gson.fromJson(json, Level.class);
 		json = gson.toJson(deserializedLevel);
+		System.out.println(json);
+		System.out.println("PLAYER-----");
+		json = gson.toJson(State.getPlayer());
 		System.out.println(json);
 		
 		State.getStage().addAction(color(new Color(0.5f, 0.5f, 0.5f, 1.0f), 10.0f, Interpolation.pow3));
