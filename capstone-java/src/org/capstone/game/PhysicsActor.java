@@ -18,9 +18,9 @@ public class PhysicsActor extends Actor {
 	public void act(float delta) {
 		super.act(delta);
 
-//		float dampening = 0.97f;
-//		setVelocityX(getVelocityX() * dampening);
-//		setVelocityY((getVelocityY() - 800.0f * delta) * dampening);
+//		float damping = 0.97f;
+//		setVelocityX(getVelocityX() * damping);
+//		setVelocityY((getVelocityY() - 800.0f * delta) * damping);
 
 		if (Math.abs(getVelocityX()) < State.EPSILON)
 			setVelocityX(0.0f);

@@ -19,6 +19,8 @@ public class MeshStage extends Stage {
 	private MeshGroup text;
 	private MeshGroup tests;
 	
+	private static boolean gl20 = Gdx.graphics.isGL20Available();
+	
 	// Allows us to set colors and stuff with actions.
 	private Actor colorActor;
 

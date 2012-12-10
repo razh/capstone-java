@@ -6,7 +6,6 @@ import org.capstone.game.MeshGroup;
 import org.capstone.game.MeshStage;
 import org.capstone.game.Player;
 import org.capstone.game.PolygonMeshActor;
-import org.capstone.game.State;
 import org.capstone.game.TextMeshActor;
 import org.capstone.game.TextMeshGroup;
 import org.capstone.game.entities.Entity;
