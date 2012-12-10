@@ -310,9 +310,9 @@ public class Game implements ApplicationListener {
 		State.getStage().addEntity(group);
 		State.getStage().addEntity(group2);
 		State.getStage().addEntity(redRect);
-		float textWidth = 32;
-		float textHeight = 32;
-		float textLineWidth = 2.0f;
+		float textWidth = 30;
+		float textHeight = 30;
+		float textLineWidth = 3.5f;
 		Color textColor = new Color(0.941f, 0.941f, 0.827f, 0.75f);
 		State.getStage().addText(new TextMeshActor('0',  40, 100, textColor, textWidth, textHeight, textLineWidth));
 		State.getStage().addText(new TextMeshActor('1',  80, 100, textColor, textWidth, textHeight, textLineWidth));
@@ -397,7 +397,7 @@ public class Game implements ApplicationListener {
 
 		redCircle.addAction(
 			sequence(
-				sizeBy(20.0f, 20.0f, 2.0f, Interpolation.bounceOut),
+				sizeBy(50.0f, 50.0f, 2.0f, Interpolation.bounceOut),
 				delay(1.0f),
 				parallel(
 					color(new Color(0.5f, 0.2f, 0.3f, 1.0f), 2.0f, Interpolation.circle),
@@ -556,12 +556,20 @@ public class Game implements ApplicationListener {
 		if (Gdx.input.isTouched()) {
 			if (!Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) {
 				Actor hit = State.getStage().getEntities().hit(Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY(), true);
-				if (hit != null)
+				if (hit != null) {
 					hit.setPosition(Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY());
+					((PhysicsActor) hit).setVelocity(0.0f, 0.0f);
+				}
 				else {
 					hit = State.getStage().getText().hit(Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY(), true);
-					if (hit != null)
+					if (hit != null) {
 						hit.setPosition(Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY());
+						if (hit instanceof PhysicsActor)
+							((PhysicsActor) hit).setVelocity(0.0f, 0.0f);
+						else if (hit instanceof MeshGroup) {
+							((MeshGroup) hit).setVelocity(0.0f, 0.0f);
+						}
+					}
 				}
 			} else {
 				State.getStage().getEntities().getChildren().get(0).setPosition(Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY());
@@ -614,16 +622,11 @@ public class Game implements ApplicationListener {
 	}
 
 	@Override
-	public void resize(int width, int height) {
-//		State.setWidth(width);
-//		State.setHeight(height);
-	}
+	public void resize(int width, int height) {}
 
 	@Override
-	public void pause() {
-	}
+	public void pause() {}
 
 	@Override
-	public void resume() {
-	}
+	public void resume() {}
 }

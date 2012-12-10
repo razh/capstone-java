@@ -124,6 +124,48 @@ public class MeshGroup extends Group {
 
 		return getFirstActor().getY();
 	}
+	
+	public void setVelocityX(float velocityX) {
+		SnapshotArray<Actor> children = getChildren();
+		Actor[] actors = children.begin();
+
+		for (int i = 0, n = children.size; i < n; i++) {
+			Actor child = actors[i];
+			
+			if (child instanceof PhysicsActor) {
+				((PhysicsActor) child).setVelocityX(0.0f);
+			}
+		}
+
+	}
+
+	public void setVelocityY(float velocityY) {
+		SnapshotArray<Actor> children = getChildren();
+		Actor[] actors = children.begin();
+
+		for (int i = 0, n = children.size; i < n; i++) {
+			Actor child = actors[i];
+			
+			if (child instanceof PhysicsActor) {
+				((PhysicsActor) child).setVelocityY(0.0f);
+			}
+		}
+
+	}
+
+	public void setVelocity(float velocityX, float velocityY) {
+		SnapshotArray<Actor> children = getChildren();
+		Actor[] actors = children.begin();
+
+		for (int i = 0, n = children.size; i < n; i++) {
+			Actor child = actors[i];
+			
+			if (child instanceof PhysicsActor) {
+				((PhysicsActor) child).setVelocity(velocityX, velocityY);
+			}
+		}
+
+	}
 
 	public Vector2 getIntersection(float x, float y) {
 		return ((MeshActor) getChildren().get(0)).getIntersection(x, y);

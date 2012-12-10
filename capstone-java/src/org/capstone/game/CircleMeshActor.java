@@ -94,26 +94,6 @@ public class CircleMeshActor extends MeshActor {
 
 	public void act(float delta) {
 		super.act(delta);
-
-		float width = Gdx.graphics.getWidth();
-		float height = Gdx.graphics.getHeight();
-
-		if (getWidth() > getX()) {
-			setX(getWidth());
-			setVelocityX(-getVelocityX());
-		}
-		if (getX() + getWidth() > width) {
-			setX(width - getWidth());
-			setVelocityX(-getVelocityX());
-		}
-		if (getHeight() > getY()) {
-			setY(getHeight());
-			setVelocityY(-getVelocityY());
-		}
-		if (getY() + getHeight() > height) {
-			setY(height - getHeight());
-			setVelocityY(-getVelocityY());
-		}
 	}
 
 	@Override

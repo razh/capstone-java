@@ -98,7 +98,7 @@ public class MeshStage extends Stage {
 	public Color getColor() {
 		return colorActor.getColor();
 	}
-	
+
 	public void setColor(Color color) {
 		colorActor.setColor(color);
 	}
