@@ -162,20 +162,17 @@ public class ActionAdapter implements JsonSerializer<Action>, JsonDeserializer<A
 			action = Actions.action(RotateByAction.class);
 			action = addDeserializedRotateByAction(object, (RotateByAction) action, context);
 		}
+		
+		// DelayAction.
+		else if (object.get("delay") != null) {
+			action = Actions.action(DelayAction.class);
+			action = addDeserializedDelayAction(object, (DelayAction) action, context);
+		}
 
-		// Delegate
-		else if (object.get("delegate") != null) {
-			// DelayAction.
-			if (object.get("delay") != null) {
-				action = Actions.action(DelayAction.class);
-				action = addDeserializedDelayAction(object, (DelayAction) action, context);
-			}
-	
-			// RepeatAction.
-			else if (object.get("count") != null) {
-				action = Actions.action(RepeatAction.class);
-				action = addDeserializedRepeatAction(object, (RepeatAction) action, context);
-			}
+		// RepeatAction.
+		else if (object.get("count") != null) {
+			action = Actions.action(RepeatAction.class);
+			action = addDeserializedRepeatAction(object, (RepeatAction) action, context);
 		}
 
 		// VisibleAction.
@@ -408,10 +405,11 @@ public class ActionAdapter implements JsonSerializer<Action>, JsonDeserializer<A
 		Action tempAction;
 		for (int i = 0, n = jsonActions.size(); i < n; i++) {
 			tempAction = (Action) context.deserialize(jsonActions.get(i), Action.class);
-			if (tempAction != null)
+			if (tempAction != null) {
 				action.addAction(tempAction);
-			else
-				System.out.println(jsonActions.get(i));
+			} else {
+				System.out.println("Error: Action could not be added to ParallelAction: " + jsonActions.get(i));
+			}
 		}
 
 		return action;

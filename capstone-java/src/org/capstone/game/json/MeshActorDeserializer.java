@@ -90,6 +90,8 @@ public class MeshActorDeserializer implements JsonDeserializer<MeshActor> {
 				action = (Action) context.deserialize(jsonActions.get(i), Action.class);
 				if (action != null) {
 					actor.addAction(action);
+				} else {
+					System.out.println("Error: Action could not be added to MeshActor: " + jsonActions.get(i));
 				}
 			}
 		}
