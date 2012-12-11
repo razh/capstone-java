@@ -16,6 +16,7 @@ import org.capstone.game.json.GlobalExclusionStrategy;
 import org.capstone.game.json.MeshGroupSerializer;
 import org.capstone.game.json.SnapshotArraySerializer;
 import org.capstone.game.json.WeaponAdapter;
+import org.capstone.game.ui.ScoreCounter;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
@@ -232,6 +233,9 @@ public class Game implements ApplicationListener {
 		"}\n";
 
 	private ShaderProgram batchShader;
+	
+	private ScoreCounter scoreCounter;
+	private TextMeshGroup quickfox;
 
 	@Override
 	public void create() {
@@ -350,7 +354,12 @@ public class Game implements ApplicationListener {
 		State.getStage().addText(new TextMeshActor('X', 320, 300, textColor, textWidth, textHeight, textLineWidth));
 		State.getStage().addText(new TextMeshActor('Y', 360, 300, textColor, textWidth, textHeight, textLineWidth));
 		State.getStage().addText(new TextMeshActor('Z', 400, 300, textColor, textWidth, textHeight, textLineWidth));
-		State.getStage().addText(new TextMeshGroup("THE QUICK BROWN FOX", 200, 100, new Color(0.2f, 0.4f, 0.3f, 1.0f), 30, 50, 10, 4.0f));
+		quickfox = new TextMeshGroup("THE QUICK BROWN FOX", 200, 100, new Color(0.2f, 0.4f, 0.3f, 1.0f), 30, 50, 10, 4.0f);
+		quickfox.setName("FOX");
+		State.getStage().addText(quickfox);
+		
+		scoreCounter = new ScoreCounter(640, 750, textColor, textWidth, textHeight, 10, textLineWidth);
+		State.getStage().addText(scoreCounter);
 
 		float[] testVertices = new float[8 * 2];
 		float subdivAngle = (float) (Math.PI * 2 / 8);
@@ -541,6 +550,10 @@ public class Game implements ApplicationListener {
 	}
 
 	private void handleInput() {
+		State.getPlayer().addScore(1);
+		scoreCounter.setScore(State.getPlayer().getScore());
+//		quickfox.setPosition(Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY());
+		
 //		State.getStage().getCharacters().getChildren().get(0).rotate(1.0f);
 //		MeshGroup test = State.getStage().getProjectiles();
 //		if (test != null)

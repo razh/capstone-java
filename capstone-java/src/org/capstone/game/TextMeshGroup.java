@@ -35,7 +35,15 @@ public class TextMeshGroup extends MeshGroup {
 	}
 
 	public void setText(String text) {
-		this.text = text;
+		if (text != null && !text.equals(this.text)) {
+			this.text = text;
+
+			// Empty all references to the text.
+			textActors.clear();
+			clear();
+
+			initText();
+		}
 	}
 
 	public void initText() {
@@ -57,7 +65,7 @@ public class TextMeshGroup extends MeshGroup {
 			x += getWidth() + spacing;
 		}
 	}
-
+	
 	public float getSpacing() {
 		return spacing;
 	}
@@ -109,6 +117,10 @@ public class TextMeshGroup extends MeshGroup {
 		}
 	}
 	
+	public Array<TextMeshActor> getTextActorsArray() {
+		return textActors;
+	}
+	
 	public TextMeshActor getActorAt(int index) {
 		return textActors.get(index);
 	}
@@ -120,7 +132,7 @@ public class TextMeshGroup extends MeshGroup {
 
 		return null;
 	}
-	
+
 	@Override
 	public void setPosition(float x, float y) {
 		if (textActors.size == 0) {
