@@ -147,5 +147,7 @@ public class TextMeshGroup extends MeshGroup {
 		} else if (alignment == Alignment.RIGHT) {
 			textActors.get(0).setPosition(x - (text.length() - 1) * (getWidth() + spacing), y);
 		}
+		
+		super.setPosition(textActors.get(0).getX(), textActors.get(0).getY());
 	}
 }

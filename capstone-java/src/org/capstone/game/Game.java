@@ -629,6 +629,16 @@ public class Game implements ApplicationListener {
 
 			children.end();
 		}
+		
+		if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+			SnapshotArray<Actor> children = State.getStage().getTests().getChildren();
+			Actor[] actors = children.begin();
+			for (int i = 0, n = children.size; i < n; i++) {
+				actors[i].setY(actors[i].getY() - 2.0f);
+			}
+
+			children.end();			
+		}
 		if (Gdx.input.isKeyPressed(Input.Keys.X)) {
 			State.getStage().clearActors();
 		}
