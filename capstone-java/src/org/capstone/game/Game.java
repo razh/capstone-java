@@ -370,8 +370,18 @@ public class Game implements ApplicationListener {
 		}
 		// Clockwise order.
 		State.getStage().addEntity(new PolygonEntity(new float[] {-1.0f, -1.0f, 1.0f, -1.0f, 1.0f, 1.0f, -1.0f, 0.0f}, 800, 500, new Color(0.149f, 0.266f, 0.380f, 0.5f), 50, 60));
+		Entity diamond = new PolygonEntity(new float[] {0.0f, -1.0f, 1.0f, 0.0f, 0.0f, 1.0f, -1.0f, 0.0f}, 900, 600, new Color(0.149f, 0.266f, 0.380f, 0.5f), 50, 50);
+		diamond.addAction(
+			forever(
+				rotateBy(360, 1.0f)
+			)
+		);
+		
+		Entity triangle = new PolygonEntity(new float[] {-1.0f, -0.732f, 1.0f, -0.732f, 0.0f, 1.0f}, 1000, 700, new Color(0.149f, 0.266f, 0.380f, 0.5f), 50, 50);
+		
+		State.getStage().addEntity(diamond);
+		State.getStage().addEntity(triangle);
 
-		// State.getStage().addEntity(new PolygonEntity(new float[] {-1.0f, -1.0f, 1.0f, -1.0f, 1.0f, 1.0f, -1.0f, 0.0f}, 800, 500, new Color(0.0f, 0.5f, 0.0f, 0.5f), 50, 60));
 		// Counterclockwise order.
 		State.getStage().addEntity(new PolygonEntity(new float[] {-1.0f, 0.0f, 1.0f, 1.0f, 1.0f, -1.0f, -1.0f, -1.0f}, 300, 600, new Color(0.420f, 0.384f, 0.388f, 0.5f), 50, 60));
 		State.getStage().addEntity(new PolygonEntity(testVertices, 200, 500, new Color(0.0f, 0.25f, 0.0f, 1.0f), 20, 30));
