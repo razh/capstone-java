@@ -415,6 +415,19 @@ public class Game implements ApplicationListener {
 				)
 			)
 		);
+		
+		Entity movingThingy = new CircleEntity(200, 300, new Color(0.0f, 1.0f, 0.0f, 1.0f), 30.0f);
+		movingThingy.addAction(
+			forever(
+				sequence(
+						moveBy(200, 200, 1.0f, Interpolation.exp10Out),
+						moveBy(-200, 200, 1.0f, Interpolation.exp10Out),
+						moveBy(-200, -200, 1.0f, Interpolation.exp10),
+						moveBy(200, -200, 1.0f, Interpolation.exp5Out)
+				)
+			)
+		);
+		State.getStage().addEntity(movingThingy);
 
 		String json;
 		System.out.println("GROUP2-----");
@@ -442,6 +455,9 @@ public class Game implements ApplicationListener {
 		System.out.println(json);
 		System.out.println("PLAYER-----");
 		json = gson.toJson(State.getPlayer());
+		System.out.println(json);
+		System.out.println("MOVINGTHINGY-----");
+		json = gson.toJson(movingThingy.getActor());
 		System.out.println(json);
 		
 		State.getStage().addAction(color(new Color(0.5f, 0.5f, 0.5f, 1.0f), 10.0f, Interpolation.pow3));
