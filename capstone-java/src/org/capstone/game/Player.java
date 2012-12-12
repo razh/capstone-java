@@ -5,6 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 public class Player {
 	private int score;
 	private int level;
+	private int team;
 	private Actor selected;
 
 	public int getScore() {
@@ -39,8 +40,17 @@ public class Player {
 		this.selected = actor;
 	}
 	
+	public int getTeam() {
+		return team;
+	}
+
+	public void setTeam(int team) {
+		this.team = team;
+	}
+
 	public Player() {
 		setScore(0);
 		setLevel(0);
+		setTeam(0);
 	}
 }

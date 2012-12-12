@@ -406,11 +406,14 @@ public class Game implements ApplicationListener {
 
 		redCircle.addAction(
 			sequence(
-				sizeBy(50.0f, 50.0f, 2.0f, Interpolation.bounceOut),
+				delay(2.0f),
+				sizeBy(50.0f, 50.0f, 0.5f, Interpolation.elastic),
+				delay(0.2f),
+				sizeBy(50.0f, 50.0f, 1.0f, Interpolation.elastic),
 				delay(1.0f),
 				parallel(
 					color(new Color(0.5f, 0.2f, 0.3f, 1.0f), 2.0f, Interpolation.circle),
-					sizeBy(-20.0f, -20.0f, 2.0f, Interpolation.bounceOut),
+					sizeBy(-100.0f, -100.0f, 2.0f, Interpolation.bounceOut),
 					rotateTo(20.0f)
 				)
 			)
