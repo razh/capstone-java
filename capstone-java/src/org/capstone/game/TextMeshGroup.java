@@ -35,15 +35,20 @@ public class TextMeshGroup extends MeshGroup {
 	}
 
 	public void setText(String text) {
-		if (text != null && !text.equals(this.text)) {
+		if (this.text != null && !text.equals(this.text)) {
 			this.text = text;
 
 			// Empty all references to the text.
-			textActors.clear();
-			clear();
+//			textActors.clear();
+//			clear();
 
 			initText();
 		}
+		// Otherwise, initialize normally.
+		else {
+			this.text = text;
+		}
+
 	}
 
 	public void initText() {
@@ -55,11 +60,23 @@ public class TextMeshGroup extends MeshGroup {
 		}
 
 		float y = getY();
+		
+		int index = 0;
+		TextMeshActor textActor;
 		for (int i = 0; i < text.length(); i++) {
 			if (Character.isLetterOrDigit(text.charAt(i))) {
-				TextMeshActor textActor = new TextMeshActor(text.charAt(i), x, y, getColor(), getWidth(), getHeight(), getLineWidth());
-				textActors.add(textActor);
-				addActor(textActor);
+				if (index >= textActors.size) {
+					textActor = new TextMeshActor(text.charAt(i), x, y, getColor(), getWidth(), getHeight(), getLineWidth());
+					textActors.add(textActor);
+					addActor(textActor);
+				} else {
+					textActor = textActors.get(index);
+					textActor.setX(x);
+					textActor.setY(y);
+					textActor.changeChar(text.charAt(i));
+				}
+				
+				index++;
 			}
 
 			x += getWidth() + spacing;
@@ -132,11 +149,11 @@ public class TextMeshGroup extends MeshGroup {
 
 		return null;
 	}
-
+	
 	@Override
 	public void setPosition(float x, float y) {
+		super.setPosition(x, y);
 		if (textActors.size == 0) {
-			super.setPosition(x, y);
 			return;
 		}
 			
@@ -147,7 +164,5 @@ public class TextMeshGroup extends MeshGroup {
 		} else if (alignment == Alignment.RIGHT) {
 			textActors.get(0).setPosition(x - (text.length() - 1) * (getWidth() + spacing), y);
 		}
-		
-		super.setPosition(textActors.get(0).getX(), textActors.get(0).getY());
 	}
 }

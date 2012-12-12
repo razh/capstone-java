@@ -65,6 +65,10 @@ public class EntityGroup extends Entity {
 				segments.get(i + 1).setRotation((float) Math.atan2(dy, dx) * MathUtils.radiansToDegrees);
 			}
 		}
+
+		// Must also be updated so intersections and targeting works.
+		segmentGroup.setX(segments.get(0).getX());
+		segmentGroup.setY(segments.get(0).getY());
 	}
 
 	public int getNumSegments() {
@@ -95,5 +99,4 @@ public class EntityGroup extends Entity {
 	public Actor getFirstActor() {
 		return actor;
 	}
-
 }

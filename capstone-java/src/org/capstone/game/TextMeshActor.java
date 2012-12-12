@@ -203,6 +203,16 @@ public class TextMeshActor extends MeshActor {
 	public void setChar(char character) {
 		this.character = character;
 	}
+	
+	public void changeChar(char character) {
+		if (this.character != character) {
+			this.character = character;
+			if (mesh != null)
+				mesh.dispose();
+
+			createMesh();
+		}
+	}
 
 	public float getLineWidth() {
 		return lineWidth;

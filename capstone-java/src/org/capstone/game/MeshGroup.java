@@ -106,24 +106,6 @@ public class MeshGroup extends Group {
 	public Actor getFirstActor() {
 		return getChildren().get(0);
 	}
-
-	@Override
-	public float getX() {
-		// Get x-coordinate of first child.
-		// If first child does not exist, default to the MeshGroup's x-coord.
-		if (getChildren().size <= 0)
-			return super.getX();
-
-		return getFirstActor().getX();
-	}
-
-	@Override
-	public float getY() {
-		if (getChildren().size <= 0)
-			return super.getY();
-
-		return getFirstActor().getY();
-	}
 	
 	public void setVelocityX(float velocityX) {
 		SnapshotArray<Actor> children = getChildren();
