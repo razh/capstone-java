@@ -100,8 +100,9 @@ public class GlobalExclusionStrategy implements ExclusionStrategy {
 				f.getName().equals("segmentGroup")
 			)) ||
 			(f.getDeclaringClass() == Level.class && (
-					f.getName().equals("stage")
-				)) ||
+				f.getName().equals("stage") ||
+				f.getName().equals("complete")
+			)) ||
 			(f.getDeclaringClass() == Action.class && (
 				f.getName().equals("actor") ||
 				f.getName().equals("pool")
