@@ -16,7 +16,7 @@ import org.capstone.game.json.GlobalExclusionStrategy;
 import org.capstone.game.json.MeshGroupSerializer;
 import org.capstone.game.json.SnapshotArraySerializer;
 import org.capstone.game.json.WeaponAdapter;
-import org.capstone.game.ui.ScoreCounter;
+import org.capstone.game.ui.Counter;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
@@ -234,7 +234,7 @@ public class Game implements ApplicationListener {
 
 	private ShaderProgram batchShader;
 
-	private ScoreCounter scoreCounter;
+	private Counter scoreCounter;
 	private TextMeshGroup quickfox;
 
 	@Override
@@ -358,7 +358,7 @@ public class Game implements ApplicationListener {
 		quickfox.setName("FOX");
 		State.getStage().addText(quickfox);
 
-		scoreCounter = new ScoreCounter(640, 750, textColor, textWidth, textHeight, 10, textLineWidth);
+		scoreCounter = new Counter(640, 750, textColor, textWidth, textHeight, 10, textLineWidth);
 		State.getStage().addText(scoreCounter);
 
 		float[] testVertices = new float[8 * 2];
@@ -580,7 +580,7 @@ public class Game implements ApplicationListener {
 
 	private void handleInput() {
 		State.getPlayer().addScore(1);
-		scoreCounter.setScore(State.getPlayer().getScore());
+		scoreCounter.set(State.getPlayer().getScore());
 //		quickfox.setPosition(Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY());
 
 //		State.getStage().getCharacters().getChildren().get(0).rotate(1.0f);

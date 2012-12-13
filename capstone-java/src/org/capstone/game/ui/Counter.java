@@ -1,15 +1,13 @@
 package org.capstone.game.ui;
 
-import org.capstone.game.TextMeshActor;
 import org.capstone.game.TextMeshGroup;
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.utils.Array;
 
-public class ScoreCounter extends TextMeshGroup {
-	private int score = 0;
+public class Counter extends TextMeshGroup {
+	private int number = 0;
 
-	public ScoreCounter(float x, float y, Color color,
+	public Counter(float x, float y, Color color,
 	                    float width, float height, float spacing, float lineWidth) {
 		super("0", x, y, color, width, height, spacing, lineWidth);
 		setAlignment(Alignment.CENTER);
@@ -20,12 +18,12 @@ public class ScoreCounter extends TextMeshGroup {
 //		}
 	}
 
-	public void setScore(int score) {
-		setText(Integer.toString(score));
+	public void set(int number) {
+		setText(Integer.toString(number));
 	}
 	
-	public void addScore(int score) {
-		this.score += score;
-		setScore(this.score);
+	public void add(int difference) {
+		this.number += difference;
+		set(this.number);
 	}
 }
