@@ -233,7 +233,7 @@ public class Game implements ApplicationListener {
 		"}\n";
 
 	private ShaderProgram batchShader;
-	
+
 	private ScoreCounter scoreCounter;
 	private TextMeshGroup quickfox;
 
@@ -357,7 +357,7 @@ public class Game implements ApplicationListener {
 		quickfox = new TextMeshGroup("THE QUICK BROWN FOX", 200, 100, new Color(0.2f, 0.4f, 0.3f, 1.0f), 30, 50, 10, 4.0f);
 		quickfox.setName("FOX");
 		State.getStage().addText(quickfox);
-		
+
 		scoreCounter = new ScoreCounter(640, 750, textColor, textWidth, textHeight, 10, textLineWidth);
 		State.getStage().addText(scoreCounter);
 
@@ -376,9 +376,9 @@ public class Game implements ApplicationListener {
 				rotateBy(360, 1.0f)
 			)
 		);
-		
+
 		Entity triangle = new PolygonEntity(new float[] {-1.0f, -0.732f, 1.0f, -0.732f, 0.0f, 1.0f}, 1000, 700, new Color(0.149f, 0.266f, 0.380f, 0.5f), 50, 50);
-		
+
 		State.getStage().addEntity(diamond);
 		State.getStage().addEntity(triangle);
 
@@ -428,7 +428,7 @@ public class Game implements ApplicationListener {
 				)
 			)
 		);
-		
+
 		Entity movingThingy = new CircleEntity(200, 300, new Color(0.0f, 1.0f, 0.0f, 1.0f), 30.0f);
 		movingThingy.addAction(
 			forever(
@@ -472,7 +472,7 @@ public class Game implements ApplicationListener {
 		System.out.println("MOVINGTHINGY-----");
 		json = gson.toJson(movingThingy.getActor());
 		System.out.println(json);
-		
+
 		State.getStage().addAction(color(new Color(0.5f, 0.5f, 0.5f, 1.0f), 10.0f, Interpolation.pow3));
 
 		Gdx.gl.glEnable(GL20.GL_BLEND);
@@ -582,7 +582,7 @@ public class Game implements ApplicationListener {
 		State.getPlayer().addScore(1);
 		scoreCounter.setScore(State.getPlayer().getScore());
 //		quickfox.setPosition(Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY());
-		
+
 //		State.getStage().getCharacters().getChildren().get(0).rotate(1.0f);
 //		MeshGroup test = State.getStage().getProjectiles();
 //		if (test != null)
@@ -658,7 +658,7 @@ public class Game implements ApplicationListener {
 
 			children.end();
 		}
-		
+
 		if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
 			SnapshotArray<Actor> children = State.getStage().getTests().getChildren();
 			Actor[] actors = children.begin();
@@ -666,7 +666,7 @@ public class Game implements ApplicationListener {
 				actors[i].setY(actors[i].getY() - 2.0f);
 			}
 
-			children.end();			
+			children.end();
 		}
 		if (Gdx.input.isKeyPressed(Input.Keys.X)) {
 			State.getStage().clearActors();

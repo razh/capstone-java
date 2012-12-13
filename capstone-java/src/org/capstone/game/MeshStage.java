@@ -59,21 +59,33 @@ public class MeshStage extends Stage {
 
 	@Override
 	public void draw() {
+		if (!gl20) {
+			drawGL10();
+		} else {
+			drawGL20();
+		}
+	}
+	
+	private void drawGL10() {
+		
+	}
+	
+	private void drawGL20() {
 		if (shaderProgram == null) {
 			return;
 		}
-
+	
 		getCamera().update();
-
+	
 		shaderProgram.begin();
 		shaderProgram.setUniformMatrix("projection", getCamera().combined);
 		entities.draw(shaderProgram, 1.0f);
 		projectiles.draw(shaderProgram, 1.0f);
 		text.draw(shaderProgram, 1.0f);
-
+	
 		if (State.debugRendering)
 			tests.draw(shaderProgram, 1.0f);
-
+	
 		shaderProgram.end();
 	}
 

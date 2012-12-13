@@ -18,7 +18,7 @@ public class Level {
 	private ArrayList<Float> spawnIntervals;
 
 	private MeshStage stage;
-	
+
 	private boolean complete;
 
 	public Level() {
@@ -37,7 +37,7 @@ public class Level {
 	public void act(float delta) {
 		if (isComplete())
 			return;
-		
+
 		int numEnemyTypes = getNumEnemyTypes();
 		for (int i = 0; i < numEnemyTypes; i++) {
 			spawnTimes.set(i, spawnTimes.get(i) - delta);
@@ -63,7 +63,7 @@ public class Level {
 				}
 			}
 		}
-		
+
 		if (numComplete == numEnemyTypes) {
 			setComplete(true);
 		}
