@@ -374,12 +374,12 @@ public class Game implements ApplicationListener {
 		diamond.addAction(
 			forever(
 				parallel(
-					rotateBy(360, 1.0f),
+					rotateBy(360, 2.0f),
 					sequence(
-						moveBy(200, 200, 0.2f, Interpolation.exp10Out),
-						moveBy(-200, 200, 0.2f, Interpolation.exp10Out),
-						moveBy(-200, -200, 0.2f, Interpolation.exp10),
-						moveBy(200, -200, 0.3f, Interpolation.exp5Out)
+						moveBy(200, 200, 0.5f, Interpolation.exp10Out),
+						moveBy(-200, 200, 0.5f, Interpolation.exp10Out),
+						moveBy(-200, -200, 0.5f, Interpolation.exp10),
+						moveBy(200, -200, 0.5f, Interpolation.exp5Out)
 					)
 				)
 			)
