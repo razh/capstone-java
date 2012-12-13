@@ -373,7 +373,15 @@ public class Game implements ApplicationListener {
 		Entity diamond = new PolygonEntity(new float[] {0.0f, -1.0f, 1.0f, 0.0f, 0.0f, 1.0f, -1.0f, 0.0f}, 900, 600, new Color(0.149f, 0.266f, 0.380f, 0.5f), 50, 50);
 		diamond.addAction(
 			forever(
-				rotateBy(360, 1.0f)
+				parallel(
+					rotateBy(360, 1.0f),
+					sequence(
+						moveBy(200, 200, 0.2f, Interpolation.exp10Out),
+						moveBy(-200, 200, 0.2f, Interpolation.exp10Out),
+						moveBy(-200, -200, 0.2f, Interpolation.exp10),
+						moveBy(200, -200, 0.3f, Interpolation.exp5Out)
+					)
+				)
 			)
 		);
 
