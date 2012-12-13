@@ -106,16 +106,16 @@ public class MeshGroup extends Group {
 	public Actor getFirstActor() {
 		return getChildren().get(0);
 	}
-	
+
 	public void setVelocityX(float velocityX) {
 		SnapshotArray<Actor> children = getChildren();
 		Actor[] actors = children.begin();
 
 		for (int i = 0, n = children.size; i < n; i++) {
 			Actor child = actors[i];
-			
+
 			if (child instanceof PhysicsActor) {
-				((PhysicsActor) child).setVelocityX(0.0f);
+				((PhysicsActor) child).setVelocityX(velocityX);
 			}
 		}
 
@@ -127,9 +127,9 @@ public class MeshGroup extends Group {
 
 		for (int i = 0, n = children.size; i < n; i++) {
 			Actor child = actors[i];
-			
+
 			if (child instanceof PhysicsActor) {
-				((PhysicsActor) child).setVelocityY(0.0f);
+				((PhysicsActor) child).setVelocityY(velocityY);
 			}
 		}
 
@@ -141,7 +141,7 @@ public class MeshGroup extends Group {
 
 		for (int i = 0, n = children.size; i < n; i++) {
 			Actor child = actors[i];
-			
+
 			if (child instanceof PhysicsActor) {
 				((PhysicsActor) child).setVelocity(velocityX, velocityY);
 			}
