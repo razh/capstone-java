@@ -2,6 +2,7 @@ package org.capstone.game.entities;
 
 import org.capstone.game.MeshGroup;
 import org.capstone.game.MeshType;
+import org.capstone.game.PhysicsActor;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.MathUtils;
@@ -67,8 +68,10 @@ public class EntityGroup extends Entity {
 		}
 
 		// Must also be updated so intersections and targeting works.
-		segmentGroup.setX(segments.get(0).getX());
-		segmentGroup.setY(segments.get(0).getY());
+		if (numSegments > 0) {
+			segmentGroup.setX(segments.get(0).getX());
+			segmentGroup.setY(segments.get(0).getY());
+		}
 	}
 
 	public int getNumSegments() {
@@ -98,5 +101,21 @@ public class EntityGroup extends Entity {
 
 	public Actor getFirstActor() {
 		return actor;
+	}
+
+	@Override
+	public void die() {
+		float velocityX = getVelocityX();
+		float velocityY = getVelocityY();
+
+		super.die();
+		segments.removeIndex(0);
+		numSegments--;
+		if (numSegments > 0) {
+			actor = segments.get(0).getActor();
+			((PhysicsActor) actor).setVelocity(velocityX, velocityY);
+			setHealth(getInitialHealth());
+			setAlive(true);
+		}
 	}
 }

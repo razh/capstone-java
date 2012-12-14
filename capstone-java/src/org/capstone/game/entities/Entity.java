@@ -29,6 +29,7 @@ public class Entity {
 	protected int team = 0;
 	protected boolean takingFire = false;
 	protected ArrayList<Weapon> weapons = new ArrayList<Weapon>();
+	protected int initialHealth = 100; 
 	protected int health = 100;
 	private boolean immortal = false;
 	private boolean alive = true;
@@ -111,19 +112,20 @@ public class Entity {
 	}
 
 	public void die() {
-		if (isAlive()) {
-			setAlive(false);
-			setVelocity(0.0f, 0.0f);
-			addAction(
-				sequence(
-					parallel(
-						color(new Color(getColor().r, getColor().g, getColor().b, 0.0f), 0.5f, Interpolation.pow2),
-						sizeBy(5, 5, 0.5f, Interpolation.pow2)
-					),
-					removeActor()
-				)
-			);
-		}
+		if (!isAlive())
+			return;
+
+		setAlive(false);
+		setVelocity(0.0f, 0.0f);
+		addAction(
+			sequence(
+				parallel(
+					color(new Color(getColor().r, getColor().g, getColor().b, 0.0f), 0.5f, Interpolation.pow2),
+					sizeBy(5, 5, 0.5f, Interpolation.pow2)
+				),
+				removeActor()
+			)
+		);
 	}
 
 	public Actor getNearestActor(Actor[] actors) {
@@ -171,7 +173,7 @@ public class Entity {
 	public void takeFire() {
 		if (!takingFire) {
 			if (!isImmortal())
-				changeHealth(-25);
+				changeHealth(-5);
 
 			takingFire = true;
 
@@ -347,6 +349,14 @@ public class Entity {
 
 	public void changeHealth(int difference) {
 		health += difference;
+	}
+
+	public int getInitialHealth() {
+		return initialHealth;
+	}
+
+	public void setInitialHealth(int initialHealth) {
+		this.initialHealth = initialHealth;
 	}
 
 	public boolean isAlive() {
