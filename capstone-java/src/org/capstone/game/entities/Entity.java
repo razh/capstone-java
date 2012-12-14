@@ -98,7 +98,10 @@ public class Entity {
 		team = entity.team;
 		takingFire = entity.takingFire;
 		health = entity.health;
+		initialHealth = entity.initialHealth;
 		oriented = entity.oriented;
+		immortal = entity.immortal;
+		alive = entity.alive;
 		lifeTime = entity.lifeTime;
 
 		for (int i = 0; i < entity.getWeapons().size(); i++) {
