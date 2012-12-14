@@ -9,7 +9,7 @@ public class Main {
 		cfg.title = "capstone-java";
 		cfg.useGL20 = true;
 		cfg.width = 1280;
-		cfg.height = 800;
+		cfg.height = 720;
 		cfg.samples = 4;
 		cfg.useCPUSynch = false;
 		

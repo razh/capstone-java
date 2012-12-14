@@ -55,7 +55,7 @@ public class State {
 
 	public static float getHeight() {
 		// return height;
-		return 800.0f;
+		return 720.0f;
 	}
 
 	public static void setHeight(float h) {
