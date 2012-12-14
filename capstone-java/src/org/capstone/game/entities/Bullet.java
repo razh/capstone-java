@@ -37,6 +37,7 @@ public class Bullet extends Entity {
 		super(type, x, y, color, width, height);
 
 		setRange(range);
+		setImmortal(true);
 
 		originX = x;
 		originY = y;
@@ -70,16 +71,17 @@ public class Bullet extends Entity {
 				Actor child = actors[i];
 
 				if (child instanceof CircleMeshActor || child instanceof RectMeshActor || child instanceof PolygonMeshActor) {
-					if (((MeshActor) child).getEntity().getTeam() != getTeam()) {
+					Entity entity = ((MeshActor) child).getEntity();
+					if (entity.isAlive() && entity.getTeam() != getTeam()) {
 						if (intersects(child)) {
-							((MeshActor) child).getEntity().takeFire();
+							entity.takeFire();
 							removeBullet = true;
 							break;
 						}
 					}
 				} else if (child instanceof MeshGroup) {
 					EntityGroup entityGroup = (EntityGroup) ((MeshGroup) child).getEntity();
-					if (entityGroup.getTeam() != getTeam()) {
+					if (entityGroup.isAlive() && entityGroup.getTeam() != getTeam()) {
 						if (intersects(entityGroup.getFirstActor())) {
 							entityGroup.takeFire();
 							removeBullet = true;
