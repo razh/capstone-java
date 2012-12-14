@@ -79,7 +79,7 @@ public class Entity {
 		setHeight(entity.getHeight());
 		setRotation(entity.getRotation());
 		setColor(entity.getColor());
-		
+
 		Array<Action> actions = entity.actor.getActions();
 		for (int i = 0; i < actions.size; i++) {
 			actor.addAction(ActionFactory.createAction(actions.get(i)));
