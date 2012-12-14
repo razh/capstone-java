@@ -2,6 +2,7 @@ package org.capstone.game.entities;
 
 import java.util.ArrayList;
 
+import org.capstone.game.ActionFactory;
 import org.capstone.game.CircleMeshActor;
 import org.capstone.game.MeshActor;
 import org.capstone.game.MeshGroup;
@@ -18,6 +19,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.SnapshotArray;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
@@ -77,6 +79,11 @@ public class Entity {
 		setHeight(entity.getHeight());
 		setRotation(entity.getRotation());
 		setColor(entity.getColor());
+		
+		Array<Action> actions = entity.actor.getActions();
+		for (int i = 0; i < actions.size; i++) {
+			actor.addAction(ActionFactory.createAction(actions.get(i)));
+		}
 
 		meshType = entity.meshType;
 		team = entity.team;

@@ -144,7 +144,7 @@ public class ActionAdapter implements JsonSerializer<Action>, JsonDeserializer<A
 			action = Actions.action(ColorAction.class);
 			action = addDeserializedColorAction(object, (ColorAction) action, context);
 		}
-		
+
 		// AlphaAction.
 		else if (object.get("alpha") != null) {
 			action = Actions.action(AlphaAction.class);
@@ -162,7 +162,7 @@ public class ActionAdapter implements JsonSerializer<Action>, JsonDeserializer<A
 			action = Actions.action(RotateByAction.class);
 			action = addDeserializedRotateByAction(object, (RotateByAction) action, context);
 		}
-		
+
 		// DelayAction.
 		else if (object.get("delay") != null) {
 			action = Actions.action(DelayAction.class);
@@ -303,7 +303,7 @@ public class ActionAdapter implements JsonSerializer<Action>, JsonDeserializer<A
 		float b = colorObject.get("b").getAsFloat();
 		float a = colorObject.get("a").getAsFloat();
 
-		action.setColor(new Color(r, g, b, a));
+		action.setEndColor(new Color(r, g, b, a));
 
 		action = (ColorAction) addDeserializedTemporalAction(object, action, context);
 
@@ -328,10 +328,10 @@ public class ActionAdapter implements JsonSerializer<Action>, JsonDeserializer<A
 		object.addProperty("visible", action.isVisible());
 		return object;
 	}
-	
+
 	private VisibleAction addDeserializedVisibleAction(JsonObject object, VisibleAction action, JsonDeserializationContext context) {
 		boolean visible = object.get("visible").getAsBoolean();
-		
+
 		action.setVisible(visible);
 
 		return action;
@@ -341,10 +341,10 @@ public class ActionAdapter implements JsonSerializer<Action>, JsonDeserializer<A
 		object.add("touchable", context.serialize(action.getTouchable()));
 		return object;
 	}
-	
+
 	private TouchableAction addDeserializedTouchableAction(JsonObject object, TouchableAction action, JsonDeserializationContext context) {
 		Touchable touchable = context.deserialize(object.get("touchable"), Touchable.class);
-		
+
 		action.setTouchable(touchable);
 
 		return action;
@@ -357,12 +357,12 @@ public class ActionAdapter implements JsonSerializer<Action>, JsonDeserializer<A
 
 		return object;
 	}
-	
+
 	private DelegateAction addDeserializedDelegateAction(JsonObject object, DelegateAction action, JsonDeserializationContext context) {
 		Action delegatedAction = context.deserialize(object.get("action"), Action.class);
 
 		action.setAction(delegatedAction);
-		
+
 		return action;
 	}
 

@@ -282,6 +282,8 @@ public class Game implements ApplicationListener {
 
 		Entity redCircle = new CircleEntity(100, 200, new Color(0.941f, 0.247f, 0.208f, 1.0f), 30);
 		redCircle.addWeapon(new BulletGun(redCircle, 1.0f, 0.15f, -1.0f, 600.0f, new Color(0.106f, 0.126f, 0.146f, 1.0f), 4.0f));
+		redCircle.getWeapons().get(0).setRange(200.0f);
+		((BulletGun) redCircle.getWeapons().get(0)).setBulletRange(200.0f);
 		redCircle.addWeapon(new LaserGun(redCircle, 1.0f, 0.2f, 200.0f, new Color(0.941f, 0.404f, 0.365f, 0.75f), 1.5f));
 		redCircle.setVelocity(200.0f, 100.0f);
 		redCircle.setTeam(1);
@@ -391,6 +393,7 @@ public class Game implements ApplicationListener {
 				)
 			)
 		);
+		level.addEntitySpawner(diamond, 3.0f, 100, 1.5f);
 
 		Entity triangle = new PolygonEntity(new float[] {-1.0f, -0.732f, 1.0f, -0.732f, 0.0f, 1.0f}, 1000, 700, new Color(0.149f, 0.266f, 0.380f, 0.5f), 50, 50);
 
@@ -605,7 +608,7 @@ public class Game implements ApplicationListener {
 	}
 
 	private void handleInput() {
-		State.getPlayer().addScore(1);
+//		State.getPlayer().addScore(1);
 		scoreCounter.set(State.getPlayer().getScore());
 //		quickfox.setPosition(Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY());
 
