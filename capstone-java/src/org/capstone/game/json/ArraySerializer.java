@@ -23,7 +23,7 @@ public class ArraySerializer implements JsonSerializer<Array<?>> {
 				array.add(object);
 		}
 	
-		return context.serialize(array);	
+		return context.serialize(array);
 	}
 
 }

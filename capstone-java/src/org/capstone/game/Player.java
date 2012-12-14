@@ -65,6 +65,6 @@ public class Player {
 		setScore(0);
 		setLevel(0);
 		setTeam(0);
-		setHealth(100);
+		setHealth(10);
 	}
 }

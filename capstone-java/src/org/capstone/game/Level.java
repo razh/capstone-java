@@ -90,10 +90,25 @@ public class Level {
 		this.stage = stage;
 	}
 
+	public ArrayList<Entity> getEntities() {
+		return entities;
+	}
+
+	public ArrayList<Float> getSpawnTimes() {
+		return spawnTimes;
+	}
+
+	public ArrayList<Integer> getSpawnCounts() {
+		return spawnCounts;
+	}
+	public ArrayList<Float> getSpawnIntervals() {
+		return spawnIntervals;
+	}
+
 	public void addEntitySpawner(Entity entity, float spawnTime, int spawnCount, float spawnInterval) {
-		this.entities.add(new Entity(entity));
-		this.spawnTimes.add(spawnTime);
-		this.spawnCounts.add(spawnCount);
-		this.spawnIntervals.add(spawnInterval);
+		entities.add(new Entity(entity));
+		spawnTimes.add(spawnTime);
+		spawnCounts.add(spawnCount);
+		spawnIntervals.add(spawnInterval);
 	}
 }
