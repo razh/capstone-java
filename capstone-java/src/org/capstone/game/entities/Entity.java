@@ -80,6 +80,11 @@ public class Entity {
 		setRotation(entity.getRotation());
 		setColor(entity.getColor());
 
+		// Miscellaneous fields we should probably have.
+		actor.setVisible(entity.actor.isVisible());
+		actor.setTouchable(entity.actor.getTouchable());
+		actor.setName(entity.actor.getName());
+
 		Array<Action> actions = entity.actor.getActions();
 		for (int i = 0; i < actions.size; i++) {
 			actor.addAction(ActionFactory.createAction(actions.get(i)));

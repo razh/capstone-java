@@ -8,6 +8,7 @@ import org.capstone.game.entities.RectEntity;
 import org.capstone.game.entities.weapons.BulletGun;
 import org.capstone.game.entities.weapons.LaserGun;
 import org.capstone.game.entities.weapons.Weapon;
+import org.capstone.game.io.LevelLoader;
 import org.capstone.game.json.ActionAdapter;
 import org.capstone.game.json.ArraySerializer;
 import org.capstone.game.json.InterpolationAdapter;
@@ -290,11 +291,12 @@ public class Game implements ApplicationListener {
 //		redCircle.setRotation(25);
 
 		new State(width, height, new Color(0.572f, 0.686f, 0.624f, 1.0f));
+		LevelLoader loader = new LevelLoader();
 		player = new Player();
-		level = new Level();
+		level = loader.getLevel();
 		level.addEntitySpawner(redCircle, 1.5f, 100, 1.5f);
-		State.setLevel(level);
 		State.setPlayer(player);
+
 
 		Entity blueCircle = new CircleEntity(200, 200, new Color(0.173f, 0.204f, 0.220f, 1.0f), 30);
 		blueCircle.setVelocity(100.0f, 100.0f);
@@ -393,6 +395,7 @@ public class Game implements ApplicationListener {
 				)
 			)
 		);
+		diamond.getActor().setTouchable(Touchable.disabled);
 		level.addEntitySpawner(diamond, 3.0f, 100, 1.5f);
 
 		Entity triangle = new PolygonEntity(new float[] {-1.0f, -0.732f, 1.0f, -0.732f, 0.0f, 1.0f}, 1000, 700, new Color(0.149f, 0.266f, 0.380f, 0.5f), 50, 50);
@@ -625,16 +628,29 @@ public class Game implements ApplicationListener {
 		}
 
 		if (Gdx.input.isTouched()) {
+			float x, y;
+			if (Gdx.graphics.getWidth() != 1280.0f) {
+				x = Gdx.input.getX() * (1280.0f / Gdx.graphics.getWidth());
+			} else {
+				x = Gdx.input.getX();
+			}
+			
+			if (Gdx.graphics.getHeight() != 800.0f) {
+				y = (Gdx.graphics.getHeight() - Gdx.input.getY()) * (800.0f / Gdx.graphics.getHeight());
+			} else {
+				y = Gdx.graphics.getHeight() - Gdx.input.getY();
+			}
+
 			if (!Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) {
-				Actor hit = State.getStage().getEntities().hit(Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY(), true);
+				Actor hit = State.getStage().getEntities().hit(x, y, true);
 				if (hit != null) {
-					hit.setPosition(Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY());
+					hit.setPosition(x, y);
 					((PhysicsActor) hit).setVelocity(0.0f, 0.0f);
 				}
 				else {
-					hit = State.getStage().getText().hit(Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY(), true);
+					hit = State.getStage().getText().hit(x, y, true);
 					if (hit != null) {
-						hit.setPosition(Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY());
+						hit.setPosition(x, y);
 						if (hit instanceof PhysicsActor)
 							((PhysicsActor) hit).setVelocity(0.0f, 0.0f);
 						else if (hit instanceof MeshGroup) {
@@ -643,7 +659,7 @@ public class Game implements ApplicationListener {
 					}
 				}
 			} else {
-				State.getStage().getEntities().getChildren().get(0).setPosition(Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY());
+				State.getStage().getEntities().getChildren().get(0).setPosition(x, y);
 			}
 		}
 

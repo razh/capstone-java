@@ -4,6 +4,7 @@ import org.capstone.game.entities.Entity;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Action;
@@ -30,6 +31,10 @@ public class MeshStage extends Stage {
 
 	public MeshStage(float width, float height, boolean stretch) {
 		super(width, height, stretch);
+		if (width != 1280.0f && height != 800.0f) {
+			setCamera(new OrthographicCamera());
+			setViewport(1280.0f, 800.0f, stretch);
+		}
 
 		root = new MeshGroup();
 		root.setStage(this);

@@ -45,7 +45,8 @@ public class State {
 
 	// Do not use these. Use Gdx.graphics.getWidth() and Gdx.graphics.getHeight() instead!
 	public static float getWidth() {
-		return width;
+		// return width;
+		return 1280.0f;
 	}
 
 	public static void setWidth(float w) {
@@ -53,7 +54,8 @@ public class State {
 	}
 
 	public static float getHeight() {
-		return height;
+		// return height;
+		return 800.0f;
 	}
 
 	public static void setHeight(float h) {

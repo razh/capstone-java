@@ -1,0 +1,67 @@
+{
+  "entities": [
+    {
+      "meshType": "CircleMeshActor",
+      "team": 1,
+      "takingFire": false,
+      "weapons": [
+        {
+          "damage": 1,
+          "rate": 0.15,
+          "range": 200,
+          "speed": 600,
+          "color": {
+            "r": 0.106,
+            "g": 0.126,
+            "b": 0.146,
+            "a": 1
+          },
+          "radius": 4,
+          "bulletRange": 200
+        },
+        {
+          "damage": 1,
+          "rate": 0.2,
+          "range": 200,
+          "color": {
+            "r": 0.941,
+            "g": 0.404,
+            "b": 0.365,
+            "a": 0.75
+          },
+          "laserWidth": 1.5
+        }
+      ],
+      "initialHealth": 100,
+      "health": 100,
+      "immortal": false,
+      "alive": true,
+      "oriented": false
+    },
+    {
+      "meshType": "PolygonMeshActor",
+      "team": 0,
+      "takingFire": false,
+      "weapons": [
+        
+      ],
+      "initialHealth": 100,
+      "health": 100,
+      "immortal": false,
+      "alive": true,
+      "oriented": false
+    }
+  ],
+  "spawnTimes": [
+    1.5,
+    3
+  ],
+  "spawnCounts": [
+    100,
+    100
+  ],
+  "spawnIntervals": [
+    1.5,
+    1.5
+  ]
+}

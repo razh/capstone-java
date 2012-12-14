@@ -30,8 +30,8 @@ public class PhysicsActor extends Actor {
 		setY(getY() + getVelocityY() * delta);
 
 		if (isBounded()) {
-			float width = Gdx.graphics.getWidth();
-			float height = Gdx.graphics.getHeight();
+			float width = State.getWidth();
+			float height = State.getHeight();
 	
 			if (getWidth() > getX()) {
 				setX(getWidth());
