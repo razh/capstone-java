@@ -17,7 +17,8 @@ public class TextMeshGroup extends MeshGroup {
 	private float lineWidth = 1.0f;
 	private Alignment alignment = Alignment.LEFT;
 
-	public TextMeshGroup(String text, float x, float y, Color color, float width, float height, float spacing, float lineWidth) {
+	public TextMeshGroup(String text, float x, float y, Color color,
+	                     float width, float height, float spacing, float lineWidth, Alignment alignment) {
 		setText(text);
 		setPosition(x, y);
 		setColor(color);
@@ -25,9 +26,14 @@ public class TextMeshGroup extends MeshGroup {
 		setHeight(height);
 		setSpacing(spacing);
 		setLineWidth(lineWidth);
+		setAlignment(alignment);
 
 		// Create all instances of TextMeshActors first, since setPosition() is overwritten.
 		initText();
+	}
+	
+	public TextMeshGroup(String text, float x, float y, Color color, float width, float height, float spacing, float lineWidth) {
+		this(text, x, y, color, width, height, spacing, lineWidth, Alignment.LEFT);
 	}
 
 	public String getText() {

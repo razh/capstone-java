@@ -1,5 +1,6 @@
 package org.capstone.game;
 
+import org.capstone.game.TextMeshGroup.Alignment;
 import org.capstone.game.entities.CircleEntity;
 import org.capstone.game.entities.Entity;
 import org.capstone.game.entities.EntityGroup;
@@ -618,6 +619,12 @@ public class Game implements ApplicationListener {
 //		State.getPlayer().addScore(1);
 		scoreCounter.set(State.getPlayer().getScore());
 		healthCounter.set(State.getPlayer().getHealth());
+		if (State.getPlayer().getHealth() <= 0) {
+			TextMeshGroup lose = new TextMeshGroup("YOU LOSE", State.getWidth() * 0.5f, State.getHeight() * 0.5f, new Color(0.2f, 0.3f, 0.3f, 1.0f), 50, 80, 20, 10.0f, Alignment.CENTER);
+			lose.setAlignment(Alignment.CENTER);
+			State.getStage().getText().addActor(lose);
+			running = false;			
+		}
 //		quickfox.setPosition(Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY());
 
 //		State.getStage().getCharacters().getChildren().get(0).rotate(1.0f);
