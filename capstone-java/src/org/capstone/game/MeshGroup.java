@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
@@ -106,6 +107,18 @@ public class MeshGroup extends Group {
 
 	@Override
 	public void act(float delta) {
+		// Actor.act().
+		for (int i = 0, n = getActions().size; i < n; i++) {
+			Action action = getActions().get(i);
+			if (action.act(delta)) {
+				getActions().removeIndex(i);
+				action.setActor(null);
+				i--;
+				n--;
+			}
+		}
+
+		// Group.act().
 		Actor[] actors = getChildren().begin();
 		for (int i = 0; i < getChildren().size; i++)
 			actors[i].act(delta);
