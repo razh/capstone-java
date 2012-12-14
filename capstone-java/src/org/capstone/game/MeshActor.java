@@ -2,6 +2,7 @@ package org.capstone.game;
 
 import org.capstone.game.entities.Entity;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.Vector2;
@@ -22,11 +23,16 @@ public class MeshActor extends PhysicsActor {
 			entity.act(delta);
 	}
 
-	@Override
-	public void draw(SpriteBatch batch, float parentAlpha) {
-		if (shaderProgram != null) {
-			draw(parentAlpha);
-		}
+	public void drawGL10(float parentAlpha) {
+		Gdx.gl10.glPushMatrix();
+		Gdx.gl10.glColor4f(getColor().r, getColor().g, getColor().b, getColor().a);
+
+		float width = State.getWidth();
+		float height = State.getHeight();
+
+		Gdx.gl10.glTranslatef(2.0f * getX() / width  - 1.0f, 2.0f * getY() / height - 1.0f, 0.0f);
+		Gdx.gl10.glScalef(2.0f * getWidth() / width, 2.0f * getHeight() / height, 0.0f);
+		Gdx.gl10.glRotatef(getRotation(), 0.0f, 0.0f, 1.0f);
 	}
 
 	public void draw(ShaderProgram shaderProgram, float parentAlpha) {

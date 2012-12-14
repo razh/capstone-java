@@ -4,6 +4,7 @@ import org.capstone.game.entities.Entity;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Action;
@@ -67,7 +68,14 @@ public class MeshStage extends Stage {
 	}
 	
 	private void drawGL10() {
+		getCamera().update();
 		
+		entities.drawGL10(1.0f);
+		projectiles.drawGL10(1.0f);
+		text.drawGL10(1.0f);
+		
+		if (State.debugRendering)
+			tests.drawGL10(1.0f);		
 	}
 	
 	private void drawGL20() {

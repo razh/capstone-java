@@ -38,6 +38,10 @@ public class MeshGroup extends Group {
 
 		draw(parentAlpha);
 	}
+	
+	public void drawGL10(float parentAlpha) {
+		drawChildrenGL10(parentAlpha);
+	}
 
 	public void draw(float parentAlpha) {
 		if (shaderProgram == null) {
@@ -80,6 +84,24 @@ public class MeshGroup extends Group {
 		}
 
 		children.end();
+	}
+	
+	protected void drawChildrenGL10(float parentAlpha) {
+		parentAlpha *= getColor().a;
+		SnapshotArray<Actor> children = getChildren();
+		Actor[] actors = children.begin();
+		
+		for (int i = 0, n = children.size; i < n; i++) {
+			Actor child = actors[i];
+
+			if (!child.isVisible())
+				continue;
+			
+			if (child instanceof MeshActor)
+				((MeshActor) child).drawGL10(parentAlpha);
+			if (child instanceof MeshGroup)
+				((MeshGroup) child).drawGL10(parentAlpha);
+		}
 	}
 
 	@Override

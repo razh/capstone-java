@@ -1,9 +1,12 @@
 package org.capstone.game;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Mesh;
 import com.badlogic.gdx.graphics.VertexAttribute;
 import com.badlogic.gdx.graphics.VertexAttributes.Usage;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
@@ -276,6 +279,14 @@ public class PolygonMeshActor extends MeshActor {
 		localCoords.y += getY();
 
 		return localCoords;
+	}
+	
+	@Override
+	public void drawGL10(float parentAlpha) {
+		super.drawGL10(parentAlpha);
+		if (hasMesh())
+			getMesh().render(GL10.GL_TRIANGLE_FAN);
+		Gdx.gl10.glPopMatrix();
 	}
 
 	@Override

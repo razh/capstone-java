@@ -23,6 +23,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.FPSLogger;
+import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
@@ -253,25 +254,31 @@ public class Game implements ApplicationListener {
 		System.out.println("---------");
 		System.out.println(batchVertexShader);
 		System.out.println(batchFragmentShader);
-		shaderProgram = new ShaderProgram(vertexShader, fragmentShader);
-		verticalBlurShader = new ShaderProgram(vertBlurVertexShader, vertBlurFragmentShader);
-		batchShader = new ShaderProgram(batchVertexShader, batchFragmentShader);
+		if (gl20) {
+			shaderProgram = new ShaderProgram(vertexShader, fragmentShader);
+			verticalBlurShader = new ShaderProgram(vertBlurVertexShader, vertBlurFragmentShader);
+			batchShader = new ShaderProgram(batchVertexShader, batchFragmentShader);
+		}
 		spriteBatch = new SpriteBatch();
 
-		frameBuffer = new FrameBuffer(Format.RGBA4444, frameBufferSize, frameBufferSize, true);
-		fboRegion = new TextureRegion(frameBuffer.getColorBufferTexture());
-		// fboRegion.getTexture().setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
-		fboRegion.getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
-		fboRegion.flip(false, true);
+		if (gl20) {
+			frameBuffer = new FrameBuffer(Format.RGBA4444, frameBufferSize, frameBufferSize, true);
+			fboRegion = new TextureRegion(frameBuffer.getColorBufferTexture());
+			// fboRegion.getTexture().setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
+			fboRegion.getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
+			fboRegion.flip(false, true);
+	
+			frameBuffer2 = new FrameBuffer(Format.RGBA4444, frameBufferSize, frameBufferSize, true);
+			fboRegion2 = new TextureRegion(frameBuffer2.getColorBufferTexture());
+			fboRegion2.getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
+			fboRegion2.flip(false, true);
+		}
 
-		frameBuffer2 = new FrameBuffer(Format.RGBA4444, frameBufferSize, frameBufferSize, true);
-		fboRegion2 = new TextureRegion(frameBuffer2.getColorBufferTexture());
-		fboRegion2.getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
-		fboRegion2.flip(false, true);
-
-		System.out.println("Compiled: " + shaderProgram.isCompiled() + "---------");
-		System.out.println("Compiled (vB): " + verticalBlurShader.isCompiled() + "---------");
-		System.out.println("Compiled (b): " + batchShader.isCompiled() + "---------");
+		if (gl20) {
+			System.out.println("Compiled: " + shaderProgram.isCompiled() + "---------");
+			System.out.println("Compiled (vB): " + verticalBlurShader.isCompiled() + "---------");
+			System.out.println("Compiled (b): " + batchShader.isCompiled() + "---------");
+		}
 
 		Entity redCircle = new CircleEntity(100, 200, new Color(0.941f, 0.247f, 0.208f, 1.0f), 30);
 		redCircle.addWeapon(new BulletGun(redCircle, 1.0f, 0.15f, -1.0f, 600.0f, new Color(0.106f, 0.126f, 0.146f, 1.0f), 4.0f));
@@ -483,14 +490,21 @@ public class Game implements ApplicationListener {
 
 		State.getStage().addAction(color(new Color(0.5f, 0.5f, 0.5f, 1.0f), 10.0f, Interpolation.pow3));
 
-		Gdx.gl.glEnable(GL20.GL_BLEND);
-		Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+		if (gl20) {
+			Gdx.gl.glEnable(GL20.GL_BLEND);
+			Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+		} else {
+			Gdx.gl.glEnable(GL10.GL_BLEND);
+			Gdx.gl.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
+		}
 	}
 
 	@Override
 	public void dispose() {
-		shaderProgram.dispose();
-		frameBuffer.dispose();
+		if (gl20) {
+			shaderProgram.dispose();
+			frameBuffer.dispose();
+		}
 	}
 
 	@Override
@@ -523,16 +537,20 @@ public class Game implements ApplicationListener {
 
 		Color backgroundColor = State.getColor();
 
-		if (State.debugRendering)
+		if (State.debugRendering && gl20)
 			Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 
-		if (!State.debugRendering) {
+		if (!State.debugRendering && gl20) {
 			Gdx.gl.glClearColor(backgroundColor.r, backgroundColor.g, backgroundColor.b, backgroundColor.a);
 			Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 			State.getStage().setShaderProgram(shaderProgram);
 			State.getStage().draw();
-		} else {
+		} else if (!State.debugRendering) {
+			Gdx.gl.glClearColor(backgroundColor.r, backgroundColor.g, backgroundColor.b, backgroundColor.a);
+			Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
+			State.getStage().draw();
+		} else if (gl20) {
 			// FrameBuffer1
 			frameBuffer.begin();
 
@@ -639,7 +657,7 @@ public class Game implements ApplicationListener {
 			}
 		}
 		if (Gdx.input.isKeyPressed(Input.Keys.S)) {
-			if (State.debugRendering) {
+			if (State.debugRendering && gl20) {
 				State.debugRendering = false;
 				System.out.println("Debug rendering off.");
 				Gdx.gl.glEnable(GL20.GL_BLEND);
