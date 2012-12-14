@@ -70,10 +70,10 @@ public class Game implements ApplicationListener {
 		"    float r_cos = cos(radians(rotation));\n" +
 		"    float r_sin = sin(radians(rotation));\n" +
 		"    mat2 rotationMatrix = mat2(r_cos, r_sin, -r_sin, r_cos);\n" +
-		"    position = rotationMatrix * (a_position * scale) + translate;\n" +
+		"    position = rotationMatrix * (scale * a_position) + translate;\n" +
 		"  }\n" +
 		"  else {\n" +
-		"    position = a_position * scale + translate;\n" +
+		"    position = scale * a_position + translate;\n" +
 		"  }\n" +
 		"  gl_Position = projection * vec4(position, 0.0, 1.0);\n" +
 		"}";

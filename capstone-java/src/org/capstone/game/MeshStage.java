@@ -70,6 +70,9 @@ public class MeshStage extends Stage {
 	private void drawGL10() {
 		getCamera().update();
 		
+		
+		Gdx.gl10.glLoadMatrixf(getCamera().combined.getValues(), 0);
+		
 		entities.drawGL10(1.0f);
 		projectiles.drawGL10(1.0f);
 		text.drawGL10(1.0f);
