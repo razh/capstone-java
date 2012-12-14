@@ -237,6 +237,7 @@ public class Game implements ApplicationListener {
 	private ShaderProgram batchShader;
 
 	private Counter scoreCounter;
+	private Counter healthCounter;
 	private TextMeshGroup quickfox;
 
 	@Override
@@ -369,8 +370,10 @@ public class Game implements ApplicationListener {
 		quickfox.setName("FOX");
 		State.getStage().addText(quickfox);
 
-		scoreCounter = new Counter(640, 750, textColor, textWidth, textHeight, 10, textLineWidth);
+		scoreCounter = new Counter(State.getWidth() * 0.5f, State.getHeight() * 0.95f, textColor, textWidth, textHeight, 10, textLineWidth);
+		healthCounter = new Counter(State.getWidth() * 0.5f, State.getHeight() * 0.05f, textColor, textWidth, textHeight, 10, textLineWidth);
 		State.getStage().addText(scoreCounter);
+		State.getStage().addText(healthCounter);
 
 		float[] testVertices = new float[8 * 2];
 		float subdivAngle = (float) (Math.PI * 2 / 8);
@@ -395,6 +398,7 @@ public class Game implements ApplicationListener {
 				)
 			)
 		);
+		diamond.setLifeTime(2.0f);
 		diamond.getActor().setTouchable(Touchable.disabled);
 		level.addEntitySpawner(diamond, 3.0f, 100, 1.5f);
 
@@ -613,6 +617,7 @@ public class Game implements ApplicationListener {
 	private void handleInput() {
 //		State.getPlayer().addScore(1);
 		scoreCounter.set(State.getPlayer().getScore());
+		healthCounter.set(State.getPlayer().getHealth());
 //		quickfox.setPosition(Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY());
 
 //		State.getStage().getCharacters().getChildren().get(0).rotate(1.0f);

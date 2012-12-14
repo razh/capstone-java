@@ -6,6 +6,7 @@ public class Player {
 	private int score;
 	private int level;
 	private int team;
+	private int health;
 	private Actor selected;
 
 	public int getScore() {
@@ -48,9 +49,22 @@ public class Player {
 		this.team = team;
 	}
 
+	public int getHealth() {
+		return health;
+	}
+
+	public void setHealth(int health) {
+		this.health = health;
+	}
+
+	public void changeHealth(int difference) {
+		this.health += difference;
+	}
+
 	public Player() {
 		setScore(0);
 		setLevel(0);
 		setTeam(0);
+		setHealth(100);
 	}
 }

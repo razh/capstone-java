@@ -81,6 +81,12 @@ public class TextMeshGroup extends MeshGroup {
 
 			x += getWidth() + spacing;
 		}
+
+		// Clear leftover values. 
+		while (index < textActors.size) {
+			TextMeshActor removedActor = textActors.removeIndex(textActors.size - 1);
+			removeActor(removedActor);
+		}
 	}
 	
 	public float getSpacing() {

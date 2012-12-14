@@ -3,6 +3,7 @@ package org.capstone.game.ui;
 import org.capstone.game.TextMeshGroup;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 
 public class Counter extends TextMeshGroup {
 	private int number = 0;
@@ -11,6 +12,7 @@ public class Counter extends TextMeshGroup {
 	                    float width, float height, float spacing, float lineWidth) {
 		super("0", x, y, color, width, height, spacing, lineWidth);
 		setAlignment(Alignment.CENTER);
+		setTouchable(Touchable.disabled);
 
 //		Array<TextMeshActor> textActorsArray = getTextActorsArray();
 //		for (int i = 0, n = textActorsArray.size; i < n; i++) {

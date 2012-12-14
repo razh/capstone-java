@@ -31,10 +31,14 @@ public class Entity {
 	protected int team = 0;
 	protected boolean takingFire = false;
 	protected ArrayList<Weapon> weapons = new ArrayList<Weapon>();
+	
 	protected int initialHealth = 100; 
 	protected int health = 100;
 	private boolean immortal = false;
 	private boolean alive = true;
+	
+	private float lifeTime = -1.0f;
+	private float time = 0.0f;
 
 	private boolean oriented = false;
 
@@ -95,6 +99,7 @@ public class Entity {
 		takingFire = entity.takingFire;
 		health = entity.health;
 		oriented = entity.oriented;
+		lifeTime = entity.lifeTime;
 
 		for (int i = 0; i < entity.getWeapons().size(); i++) {
 			weapons.add(WeaponFactory.createWeapon(entity.getWeapons().get(i)));
@@ -106,6 +111,18 @@ public class Entity {
 		if (!isAlive()) {
 			return;
 		}
+
+		if (getHealth() <= 0) {
+			die();
+		}
+		
+		time += delta;
+		if (lifeTime != -1.0f) {
+			if (time > lifeTime) {
+				explode();
+				return;				
+			}
+		}
 		
 		if (isOriented()) {
 			actor.setRotation((float) Math.atan2(((MeshActor) actor).getVelocityY(),
@@ -116,10 +133,6 @@ public class Entity {
 		for (int i = 0; i < weapons.size(); i++) {
 			weapons.get(i).setActorAsTarget(enemy);
 			weapons.get(i).act(delta);
-		}
-
-		if (getHealth() <= 0) {
-			die();
 		}
 	}
 
@@ -136,6 +149,44 @@ public class Entity {
 					sizeBy(5, 5, 0.5f, Interpolation.pow2)
 				),
 				removeActor()
+			)
+		);
+	}
+	
+	public void explode() {
+		lifeTime = -1.0f;
+
+		setAlive(false);
+		setVelocity(0.0f, 0.0f);
+
+		actor.clearActions();
+		addAction(
+			sequence(
+				parallel(
+					color(new Color(getColor().r + 1.0f, getColor().g, getColor().b, 1.0f), 1.0f, Interpolation.pow2),
+					sizeBy(5, 5, 1.0f, Interpolation.pow2),
+					sequence(
+						moveBy(5.6f, 2.3f, 0.125f, Interpolation.pow2),
+						moveBy(-4.3f, 4.3f, 0.125f, Interpolation.pow2),
+						moveBy(3.6f, -4.8f, 0.125f, Interpolation.pow2),
+						moveBy(-4.9f, -1.8f, 0.125f, Interpolation.pow2),
+						moveBy(10.5f, 8.9f, 0.125f, Interpolation.pow2),
+						moveBy(-15.4f, 10.8f, 0.125f, Interpolation.pow2),
+						moveBy(12.3f, -9.4f, 0.125f, Interpolation.pow2),
+						moveBy(-7.4f, -10.3f, 0.125f, Interpolation.pow2)
+					)
+				),
+				parallel(
+					color(new Color(getColor().r, getColor().g, getColor().b, 0.0f), 0.2f, Interpolation.exp10Out),
+					sizeBy(25, 25, 0.2f, Interpolation.exp10Out)
+				),
+				new Action() {
+					public boolean act(float delta) {
+						State.getPlayer().changeHealth(-1);
+						return true;
+					}
+				},
+				removeActor()		
 			)
 		);
 	}
@@ -385,5 +436,21 @@ public class Entity {
 
 	public void setImmortal(boolean immortal) {
 		this.immortal = immortal;
+	}
+
+	public float getLifeTime() {
+		return lifeTime;
+	}
+
+	public void setLifeTime(float lifeTime) {
+		this.lifeTime = lifeTime;
+	}
+
+	public float getTime() {
+		return time;
+	}
+
+	public void setTime(float time) {
+		this.time = time;
 	}
 }
