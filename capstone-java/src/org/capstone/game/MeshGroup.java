@@ -106,7 +106,11 @@ public class MeshGroup extends Group {
 
 	@Override
 	public void act(float delta) {
-		super.act(delta);
+		Actor[] actors = getChildren().begin();
+		for (int i = 0; i < getChildren().size; i++)
+			actors[i].act(delta);
+		getChildren().end();
+
 		if (entity != null)
 			entity.act(delta);
 	}

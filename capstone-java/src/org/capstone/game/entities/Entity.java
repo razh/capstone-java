@@ -94,27 +94,26 @@ public class Entity {
 			return;
 		}
 		
-		if (getHealth() <= 0) {
-			die();
-			return;
-		}
-		
 		if (isOriented()) {
 			actor.setRotation((float) Math.atan2(((MeshActor) actor).getVelocityY(),
 			                                     ((MeshActor) actor).getVelocityX()) * MathUtils.radiansToDegrees);
 		}
 
-		Actor enemy = this.getNearestActor(State.getStage().getEntities().getChildren());
+		Actor enemy = getNearestActor(State.getStage().getEntities().getChildren());
 		for (int i = 0; i < weapons.size(); i++) {
 			weapons.get(i).setActorAsTarget(enemy);
 			weapons.get(i).act(delta);
+		}
+
+		if (getHealth() <= 0) {
+			die();
 		}
 	}
 
 	public void die() {
 		if (isAlive()) {
 			setAlive(false);
-			actor.clearActions();
+			setVelocity(0.0f, 0.0f);
 			addAction(
 				sequence(
 					parallel(
