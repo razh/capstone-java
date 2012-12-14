@@ -629,14 +629,14 @@ public class Game implements ApplicationListener {
 
 		if (Gdx.input.isTouched()) {
 			float x, y;
-			if (Gdx.graphics.getWidth() != 1280.0f) {
-				x = Gdx.input.getX() * (1280.0f / Gdx.graphics.getWidth());
+			if (Gdx.graphics.getWidth() != State.getWidth()) {
+				x = Gdx.input.getX() * (State.getWidth() / Gdx.graphics.getWidth());
 			} else {
 				x = Gdx.input.getX();
 			}
 			
-			if (Gdx.graphics.getHeight() != 800.0f) {
-				y = (Gdx.graphics.getHeight() - Gdx.input.getY()) * (800.0f / Gdx.graphics.getHeight());
+			if (Gdx.graphics.getHeight() != State.getHeight()) {
+				y = (Gdx.graphics.getHeight() - Gdx.input.getY()) * (State.getHeight() / Gdx.graphics.getHeight());
 			} else {
 				y = Gdx.graphics.getHeight() - Gdx.input.getY();
 			}

@@ -31,9 +31,9 @@ public class MeshStage extends Stage {
 
 	public MeshStage(float width, float height, boolean stretch) {
 		super(width, height, stretch);
-		if (width != 1280.0f && height != 800.0f) {
+		if (width != State.getWidth() && height != State.getHeight()) {
 			setCamera(new OrthographicCamera());
-			setViewport(1280.0f, 800.0f, stretch);
+			setViewport(State.getWidth(), State.getHeight(), stretch);
 		}
 
 		root = new MeshGroup();
