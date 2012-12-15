@@ -61,12 +61,21 @@ public class MeshActorDeserializer implements JsonDeserializer<MeshActor> {
 			}
 
 			int team = jsonEntity.get("team").getAsInt();
+			int initialHealth = jsonEntity.get("initialHealth").getAsInt();
 			int health = jsonEntity.get("health").getAsInt();
+			boolean immortal = jsonEntity.get("immortal").getAsBoolean();
+			boolean alive = jsonEntity.get("alive").getAsBoolean();
+			float lifeTime = jsonEntity.get("lifeTime").getAsFloat();
+
 			boolean oriented = jsonEntity.get("oriented").getAsBoolean();
 
 			Entity entity = new Entity(type, x, y, new Color(r, g, b, a), width, height);
 			entity.setTeam(team);
+			entity.setInitialHealth(initialHealth);
 			entity.setHealth(health);
+			entity.setImmortal(immortal);
+			entity.setAlive(alive);
+			entity.setLifeTime(lifeTime);
 			entity.setOriented(oriented);
 			
 			// Add weapons.
