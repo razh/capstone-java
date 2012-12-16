@@ -3,10 +3,8 @@ package org.capstone.game.json;
 import java.lang.reflect.Type;
 
 import org.capstone.game.MeshActor;
-import org.capstone.game.MeshType;
 import org.capstone.game.TextMeshActor;
 import org.capstone.game.entities.Entity;
-import org.capstone.game.entities.weapons.Weapon;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Action;
@@ -25,74 +23,31 @@ public class MeshActorDeserializer implements JsonDeserializer<MeshActor> {
 
 		JsonObject object = json.getAsJsonObject();
 
-		float x = object.get("x").getAsFloat();
-		float y = object.get("y").getAsFloat();
-
-		float r = object.get("color").getAsJsonObject().get("r").getAsFloat();
-		float g = object.get("color").getAsJsonObject().get("g").getAsFloat();
-		float b = object.get("color").getAsJsonObject().get("b").getAsFloat();
-		float a = object.get("color").getAsJsonObject().get("a").getAsFloat();
-
-		float width  = object.get("width").getAsFloat();
-		float height = object.get("height").getAsFloat();
-		float rotation = object.get("rotation").getAsFloat();
-
-		float velocityX = object.get("velocityX").getAsFloat();
-		float velocityY = object.get("velocityY").getAsFloat();
-
-		JsonArray jsonActions = object.get("actions").getAsJsonArray();
-
 		MeshActor actor = null;
 		// Handle TextMeshActors.
 		if (object.get("character") != null) {
+			float x = object.get("x").getAsFloat();
+			float y = object.get("y").getAsFloat();
+
+			float r = object.get("color").getAsJsonObject().get("r").getAsFloat();
+			float g = object.get("color").getAsJsonObject().get("g").getAsFloat();
+			float b = object.get("color").getAsJsonObject().get("b").getAsFloat();
+			float a = object.get("color").getAsJsonObject().get("a").getAsFloat();
+
+			float width  = object.get("width").getAsFloat();
+			float height = object.get("height").getAsFloat();
+			float rotation = object.get("rotation").getAsFloat();
+
+			float velocityX = object.get("velocityX").getAsFloat();
+			float velocityY = object.get("velocityY").getAsFloat();
+
 			char c = object.get("character").getAsCharacter();
 			actor = new TextMeshActor(c, x, y, new Color(r, g, b, a), width, height);
-		} else if (object.get("entity") != null) {
-			// Handle other MeshActors.
-			JsonObject jsonEntity = object.get("entity").getAsJsonObject();
-			String meshType = jsonEntity.get("meshType").getAsString();
-			MeshType type = null;
-			if (meshType.equals("CircleMeshActor")) {
-				type = MeshType.CircleMeshActor;
-			} else if (meshType.equals("RectMeshActor")) {
-				type = MeshType.RectMeshActor;
-			} else if (meshType.equals("PolygonMeshActor")) {
-				type = MeshType.PolygonMeshActor;
-			}
 
-			int team = jsonEntity.get("team").getAsInt();
-			int initialHealth = jsonEntity.get("initialHealth").getAsInt();
-			int health = jsonEntity.get("health").getAsInt();
-			boolean immortal = jsonEntity.get("immortal").getAsBoolean();
-			boolean alive = jsonEntity.get("alive").getAsBoolean();
-			float lifeTime = jsonEntity.get("lifeTime").getAsFloat();
-			boolean oriented = jsonEntity.get("oriented").getAsBoolean();
-
-			Entity entity = new Entity(type, x, y, new Color(r, g, b, a), width, height);
-			entity.setTeam(team);
-			entity.setInitialHealth(initialHealth);
-			entity.setHealth(health);
-			entity.setImmortal(immortal);
-			entity.setAlive(alive);
-			entity.setLifeTime(lifeTime);
-			entity.setOriented(oriented);
-
-			// Add weapons.
-			JsonArray jsonWeapons = jsonEntity.get("weapons").getAsJsonArray();
-			Weapon weapon;
-			for (int i = 0, n = jsonWeapons.size(); i < n; i++) {
-				weapon = context.deserialize(jsonWeapons.get(i), Weapon.class);
-				if (weapon != null)
-					entity.addWeapon(weapon);
-			}
-
-			actor = entity.getMeshActor();
-		}
-
-		if (actor != null) {
 			actor.setRotation(rotation);
 			actor.setVelocity(velocityX, velocityY);
 
+			JsonArray jsonActions = object.get("actions").getAsJsonArray();
 			Action action;
 			for (int i = 0, n = jsonActions.size(); i < n; i++) {
 				action = (Action) context.deserialize(jsonActions.get(i), Action.class);
@@ -102,6 +57,10 @@ public class MeshActorDeserializer implements JsonDeserializer<MeshActor> {
 					System.out.println("Error: Action could not be added to MeshActor: " + jsonActions.get(i));
 				}
 			}
+		} else if (object.get("entity") != null) {
+			JsonObject jsonEntity = object.get("entity").getAsJsonObject();
+			Entity entity = EntityDeserializer.deserializeEntityAndActor(jsonEntity, object, context);
+			actor = entity.getMeshActor();
 		}
 
 		return actor;

@@ -28,27 +28,13 @@ public class EntityDeserializer implements JsonDeserializer<Entity> {
 		if (object.get("actor") == null)
 			return null;
 
-		String meshType = object.get("meshType").getAsString();
-		MeshType type = null;
-		if (meshType.equals("CircleMeshActor")) {
-			type = MeshType.CircleMeshActor;
-		} else if (meshType.equals("RectMeshActor")) {
-			type = MeshType.RectMeshActor;
-		} else if (meshType.equals("PolygonMeshActor")) {
-			type = MeshType.PolygonMeshActor;
-		}
-
-		int team = object.get("team").getAsInt();
-		int initialHealth = object.get("initialHealth").getAsInt();
-		int health = object.get("health").getAsInt();
-		boolean immortal = object.get("immortal").getAsBoolean();
-		boolean alive = object.get("alive").getAsBoolean();
-		float lifeTime = object.get("lifeTime").getAsFloat();
-		boolean oriented = object.get("oriented").getAsBoolean();
-
-		// Get MeshActor fields.
 		JsonObject jsonActor = object.get("actor").getAsJsonObject();
 
+		return deserializeEntityAndActor(object, jsonActor, context);
+	}
+
+	public static Entity deserializeEntityAndActor(JsonObject jsonEntity, JsonObject jsonActor, JsonDeserializationContext context) {
+		// Get MeshActor fields.
 		float x = jsonActor.get("x").getAsFloat();
 		float y = jsonActor.get("y").getAsFloat();
 
@@ -66,7 +52,25 @@ public class EntityDeserializer implements JsonDeserializer<Entity> {
 
 		JsonArray jsonActions = jsonActor.get("actions").getAsJsonArray();
 
-		// Create the Entity.
+		// Get Entity fields.
+		String meshType = jsonEntity.get("meshType").getAsString();
+		MeshType type = null;
+		if (meshType.equals("CircleMeshActor")) {
+			type = MeshType.CircleMeshActor;
+		} else if (meshType.equals("RectMeshActor")) {
+			type = MeshType.RectMeshActor;
+		} else if (meshType.equals("PolygonMeshActor")) {
+			type = MeshType.PolygonMeshActor;
+		}
+
+		int team = jsonEntity.get("team").getAsInt();
+		int initialHealth = jsonEntity.get("initialHealth").getAsInt();
+		int health = jsonEntity.get("health").getAsInt();
+		boolean immortal = jsonEntity.get("immortal").getAsBoolean();
+		boolean alive = jsonEntity.get("alive").getAsBoolean();
+		float lifeTime = jsonEntity.get("lifeTime").getAsFloat();
+		boolean oriented = jsonEntity.get("oriented").getAsBoolean();
+
 		Entity entity = new Entity(type, x, y, new Color(r, g, b, a), width, height);
 		entity.setTeam(team);
 		entity.setInitialHealth(initialHealth);
@@ -76,7 +80,8 @@ public class EntityDeserializer implements JsonDeserializer<Entity> {
 		entity.setLifeTime(lifeTime);
 		entity.setOriented(oriented);
 
-		JsonArray jsonWeapons = object.get("weapons").getAsJsonArray();
+		// Add weapons.
+		JsonArray jsonWeapons = jsonEntity.get("weapons").getAsJsonArray();
 		Weapon weapon;
 		for (int i = 0, n = jsonWeapons.size(); i < n; i++) {
 			weapon = context.deserialize(jsonWeapons.get(i), Weapon.class);
@@ -98,11 +103,7 @@ public class EntityDeserializer implements JsonDeserializer<Entity> {
 				System.out.println("Error: Action could not be added to MeshActor: " + jsonActions.get(i));
 			}
 		}
-
+		
 		return entity;
-	}
-
-	public static Entity deserializeEntity(JsonElement json, JsonDeserializationContext context) {
-		return null;
 	}
 }
