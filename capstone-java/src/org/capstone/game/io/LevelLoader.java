@@ -4,10 +4,12 @@ import org.capstone.game.Level;
 import org.capstone.game.MeshActor;
 import org.capstone.game.MeshGroup;
 import org.capstone.game.State;
+import org.capstone.game.entities.Entity;
 import org.capstone.game.entities.weapons.Weapon;
 import org.capstone.game.json.ActionAdapter;
 import org.capstone.game.json.ActorExclusionStrategy;
 import org.capstone.game.json.ArraySerializer;
+import org.capstone.game.json.EntityDeserializer;
 import org.capstone.game.json.EntityExclusionStrategy;
 import org.capstone.game.json.GlobalExclusionStrategy;
 import org.capstone.game.json.InterpolationAdapter;
@@ -50,6 +52,7 @@ public class LevelLoader {
 				.registerTypeHierarchyAdapter(Array.class, new ArraySerializer())
 				.registerTypeAdapter(SnapshotArray.class, new SnapshotArraySerializer())
 				.registerTypeHierarchyAdapter(MeshActor.class, new MeshActorDeserializer())
+				.registerTypeHierarchyAdapter(Entity.class, new EntityDeserializer())
 				.registerTypeAdapter(MeshGroup.class, new MeshGroupSerializer())
 				.serializeNulls()
 				.create()

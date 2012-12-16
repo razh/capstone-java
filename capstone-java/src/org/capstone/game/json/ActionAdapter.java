@@ -215,8 +215,8 @@ public class ActionAdapter implements JsonSerializer<Action>, JsonDeserializer<A
 	}
 
 	private MoveByAction addDeserializedMoveByAction(JsonObject object, MoveByAction action, JsonDeserializationContext context) {
-		float amountX = object.get("x").getAsFloat();
-		float amountY = object.get("y").getAsFloat();
+		float amountX = object.get("amountX").getAsFloat();
+		float amountY = object.get("amountY").getAsFloat();
 
 		action.setAmountX(amountX);
 		action.setAmountY(amountY);

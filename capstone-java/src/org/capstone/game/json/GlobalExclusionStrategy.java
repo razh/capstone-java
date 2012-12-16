@@ -91,11 +91,11 @@ public class GlobalExclusionStrategy implements ExclusionStrategy {
 			(f.getDeclaringClass() == LaserGun.class && (
 				f.getName().equals("laserBeam")
 			)) ||
-//			(f.getDeclaringClass() == Entity.class && (
-//				f.getName().equals("actor")
-//			)) ||
+			(f.getDeclaringClass() == Entity.class && (
+				f.getName().equals("actor")
+			)) ||
 			(f.getDeclaringClass() == EntityGroup.class && (
-//				f.getName().equals("actor") ||
+				f.getName().equals("actor") ||
 				f.getName().equals("segments") ||
 				f.getName().equals("segmentGroup")
 			)) ||

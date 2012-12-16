@@ -63,6 +63,10 @@ public class Entity {
 		setHeight(height);
 	}
 
+	public Entity(MeshType type) {
+		this(type, 0.0f, 0.0f, Color.CLEAR, 0.0f, 0.0f);
+	}
+
 	public Entity(Entity entity) {
 		if (entity.actor instanceof CircleMeshActor) {
 			actor = new CircleMeshActor();

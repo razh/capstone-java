@@ -42,12 +42,12 @@ public class MeshActorDeserializer implements JsonDeserializer<MeshActor> {
 
 		JsonArray jsonActions = object.get("actions").getAsJsonArray();
 
-		MeshActor actor;
+		MeshActor actor = null;
 		// Handle TextMeshActors.
 		if (object.get("character") != null) {
 			char c = object.get("character").getAsCharacter();
 			actor = new TextMeshActor(c, x, y, new Color(r, g, b, a), width, height);
-		} else {
+		} else if (object.get("entity") != null) {
 			// Handle other MeshActors.
 			JsonObject jsonEntity = object.get("entity").getAsJsonObject();
 			String meshType = jsonEntity.get("meshType").getAsString();
@@ -66,7 +66,6 @@ public class MeshActorDeserializer implements JsonDeserializer<MeshActor> {
 			boolean immortal = jsonEntity.get("immortal").getAsBoolean();
 			boolean alive = jsonEntity.get("alive").getAsBoolean();
 			float lifeTime = jsonEntity.get("lifeTime").getAsFloat();
-
 			boolean oriented = jsonEntity.get("oriented").getAsBoolean();
 
 			Entity entity = new Entity(type, x, y, new Color(r, g, b, a), width, height);
@@ -77,7 +76,7 @@ public class MeshActorDeserializer implements JsonDeserializer<MeshActor> {
 			entity.setAlive(alive);
 			entity.setLifeTime(lifeTime);
 			entity.setOriented(oriented);
-			
+
 			// Add weapons.
 			JsonArray jsonWeapons = jsonEntity.get("weapons").getAsJsonArray();
 			Weapon weapon;
