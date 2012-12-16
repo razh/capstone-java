@@ -529,8 +529,6 @@ public class Game implements ApplicationListener {
 			Gdx.gl.glEnable(GL10.GL_BLEND);
 			Gdx.gl.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
 		}
-		
-		System.out.println(State.getLevel().getNumEnemyTypes());
 	}
 
 	@Override
