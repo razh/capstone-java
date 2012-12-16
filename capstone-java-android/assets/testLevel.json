@@ -70,7 +70,7 @@
     },
     {
       "actor": {
-        "boundingVertices": [
+        "vertices": [
           0,
           -1,
           1,
@@ -140,13 +140,13 @@
         "name": null,
         "touchable": "disabled",
         "visible": true,
-        "x": 900,
+        "x": 400,
         "y": 600,
-        "width": 50,
-        "height": 50,
+        "width": 70,
+        "height": 70,
         "rotation": 0,
         "color": {
-          "r": 0.149,
+          "r": 1.0,
           "g": 0.266,
           "b": 0.38,
           "a": 0.5
@@ -168,8 +168,8 @@
     }
   ],
   "spawnTimes": [
-    6.2,
-    5
+    2,
+    1
   ],
   "spawnCounts": [
     100,

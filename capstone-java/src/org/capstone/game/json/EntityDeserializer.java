@@ -4,6 +4,7 @@ import java.lang.reflect.Type;
 
 import org.capstone.game.MeshActor;
 import org.capstone.game.MeshType;
+import org.capstone.game.PolygonMeshActor;
 import org.capstone.game.entities.Entity;
 import org.capstone.game.entities.weapons.Weapon;
 
@@ -72,6 +73,19 @@ public class EntityDeserializer implements JsonDeserializer<Entity> {
 		boolean oriented = jsonEntity.get("oriented").getAsBoolean();
 
 		Entity entity = new Entity(type, x, y, new Color(r, g, b, a), width, height);
+		if (type == MeshType.PolygonMeshActor) {
+			JsonArray jsonVertexArray = jsonActor.get("vertices").getAsJsonArray();
+
+			int numVertices = jsonVertexArray.size();
+			float[] vertices = new float[numVertices];
+
+			for (int i = 0; i < numVertices; i++) {
+				vertices[i] = jsonVertexArray.get(i).getAsFloat();
+			}
+
+			((PolygonMeshActor) entity.getActor()).setVertices(vertices);
+		}
+
 		entity.setTeam(team);
 		entity.setInitialHealth(initialHealth);
 		entity.setHealth(health);
@@ -103,7 +117,7 @@ public class EntityDeserializer implements JsonDeserializer<Entity> {
 				System.out.println("Error: Action could not be added to MeshActor: " + jsonActions.get(i));
 			}
 		}
-		
+
 		return entity;
 	}
 }

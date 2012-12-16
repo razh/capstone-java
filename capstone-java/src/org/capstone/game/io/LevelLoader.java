@@ -80,11 +80,10 @@ public class LevelLoader {
 				if (tempLevel != null) {
 					int numEnemyTypes = tempLevel.getNumEnemyTypes();
 					for (int j = 0; j < numEnemyTypes; j++) {
-						level.addEntitySpawner(tempLevel.getEntities().get(i),
-						                       tempLevel.getSpawnTimes().get(i),
-						                       tempLevel.getSpawnCounts().get(i),
-						                       tempLevel.getSpawnIntervals().get(i));
-						System.out.println("ADDING");
+						level.addEntitySpawner(tempLevel.getEntities().get(j),
+						                       tempLevel.getSpawnTimes().get(j),
+						                       tempLevel.getSpawnCounts().get(j),
+						                       tempLevel.getSpawnIntervals().get(j));
 					}
 				}
 			}

@@ -11,10 +11,14 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
+import com.google.gson.annotations.SerializedName;
 
 public class PolygonMeshActor extends MeshActor {
 	private Mesh mesh;
+
+	@SerializedName("vertices")
 	private float[] boundingVertices;
+
 	private float xmin = Float.MAX_VALUE;
 	private float ymin = Float.MAX_VALUE;
 	private float xmax = Float.MIN_VALUE;

@@ -86,4 +86,8 @@ public class State {
 		State.level = level;
 		level.setStage(getStage());
 	}
+
+	public static Level getLevel() {
+		return level;
+	}
 }
