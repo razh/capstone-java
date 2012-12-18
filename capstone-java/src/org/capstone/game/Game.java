@@ -1,13 +1,7 @@
 package org.capstone.game;
 
 import org.capstone.game.TextMeshGroup.Alignment;
-import org.capstone.game.entities.CircleEntity;
 import org.capstone.game.entities.Entity;
-import org.capstone.game.entities.EntityGroup;
-import org.capstone.game.entities.PolygonEntity;
-import org.capstone.game.entities.RectEntity;
-import org.capstone.game.entities.weapons.BulletGun;
-import org.capstone.game.entities.weapons.LaserGun;
 import org.capstone.game.entities.weapons.Weapon;
 import org.capstone.game.files.LevelLoader;
 import org.capstone.game.input.GameInputProcessor;
@@ -22,6 +16,9 @@ import org.capstone.game.json.GlobalExclusionStrategy;
 import org.capstone.game.json.MeshGroupSerializer;
 import org.capstone.game.json.SnapshotArraySerializer;
 import org.capstone.game.json.WeaponAdapter;
+import org.capstone.game.tests.ShapesStageTest;
+import org.capstone.game.tests.StageTest;
+import org.capstone.game.tests.TextStageTest;
 import org.capstone.game.ui.Counter;
 
 import com.badlogic.gdx.ApplicationListener;
@@ -40,7 +37,6 @@ import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.SnapshotArray;
 import com.google.gson.Gson;
@@ -244,7 +240,6 @@ public class Game implements ApplicationListener {
 
 	private Counter scoreCounter;
 	private Counter healthCounter;
-	private TextMeshGroup quickfox;
 
 	@Override
 	public void create() {
@@ -253,15 +248,15 @@ public class Game implements ApplicationListener {
 		Gdx.graphics.setVSync(true);
 
 		gl20 = Gdx.graphics.isGL20Available();
-		System.out.println("GL20: " + gl20);
-		System.out.println(vertexShader);
-		System.out.println(fragmentShader);
-		System.out.println("---------");
-		System.out.println(vertBlurVertexShader);
-		System.out.println(vertBlurFragmentShader);
-		System.out.println("---------");
-		System.out.println(batchVertexShader);
-		System.out.println(batchFragmentShader);
+//		System.out.println("GL20: " + gl20);
+//		System.out.println(vertexShader);
+//		System.out.println(fragmentShader);
+//		System.out.println("---------");
+//		System.out.println(vertBlurVertexShader);
+//		System.out.println(vertBlurFragmentShader);
+//		System.out.println("---------");
+//		System.out.println(batchVertexShader);
+//		System.out.println(batchFragmentShader);
 		if (gl20) {
 			shaderProgram = new ShaderProgram(vertexShader, fragmentShader);
 			verticalBlurShader = new ShaderProgram(vertBlurVertexShader, vertBlurFragmentShader);
@@ -283,19 +278,10 @@ public class Game implements ApplicationListener {
 		}
 
 		if (gl20) {
-			System.out.println("Compiled: " + shaderProgram.isCompiled() + "---------");
-			System.out.println("Compiled (vB): " + verticalBlurShader.isCompiled() + "---------");
-			System.out.println("Compiled (b): " + batchShader.isCompiled() + "---------");
+//			System.out.println("Compiled: " + shaderProgram.isCompiled() + "---------");
+//			System.out.println("Compiled (vB): " + verticalBlurShader.isCompiled() + "---------");
+//			System.out.println("Compiled (b): " + batchShader.isCompiled() + "---------");
 		}
-
-		Entity redCircle = new CircleEntity(100, 200, new Color(0.941f, 0.247f, 0.208f, 1.0f), 30);
-		redCircle.addWeapon(new BulletGun(redCircle, 1.0f, 0.15f, -1.0f, 600.0f, new Color(0.106f, 0.126f, 0.146f, 1.0f), 4.0f));
-		redCircle.getWeapons().get(0).setRange(200.0f);
-		((BulletGun) redCircle.getWeapons().get(0)).setBulletRange(200.0f);
-		redCircle.addWeapon(new LaserGun(redCircle, 1.0f, 0.2f, 200.0f, new Color(0.941f, 0.404f, 0.365f, 0.75f), 1.5f));
-		redCircle.setVelocity(200.0f, 100.0f);
-		redCircle.setTeam(1);
-//		redCircle.setRotation(25);
 
 		new State(width, height, new Color(0.572f, 0.686f, 0.624f, 1.0f));
 
@@ -337,193 +323,22 @@ public class Game implements ApplicationListener {
 		State.setLevel(level);
 //		level.addAction(color(new Color(0.5f, 0.5f, 0.5f, 1.0f), 1.0f, Interpolation.pow3));
 
-
-
-		Entity blueCircle = new CircleEntity(200, 200, new Color(0.173f, 0.204f, 0.220f, 1.0f), 30);
-		blueCircle.setVelocity(100.0f, 100.0f);
-
-		Entity whiteRect = new RectEntity(300, 400, new Color(0.941f, 0.941f, 0.827f, 0.5f), 30, 70);
-
-		Entity redRect = new RectEntity(200, 40, new Color(0.941f, 0.247f, 0.208f, 1.0f), 100.0f, 20.0f);
-		redRect.setTeam(1);
-		redRect.setRotation(35.0f);
-		redRect.setOriented(true);
-		redRect.getActor().setTouchable(Touchable.disabled);
-		redRect.setVelocity(-50.0f, 100.0f);
-
-		Entity group = new EntityGroup(MeshType.RectMeshActor, 400, 400, new Color(0.941f, 0.247f, 0.208f, 1.0f), 20, 10, 10, 60);
-		group.setVelocity(200.0f, 100.0f);
-		((EntityGroup) group).setOriented(true);
-
-		Entity group2 = new EntityGroup(MeshType.CircleMeshActor, 600, 400, new Color(0.173f, 0.204f, 0.220f, 1.0f), 20, 20, 10, 80);
-		group2.setVelocity(-200.0f, 100.0f);
-
 		State.getStage().setShaderProgram(shaderProgram);
+		StageTest shapesTest = new ShapesStageTest();
+		StageTest textTest = new TextStageTest();
 
-		State.getStage().addEntity(redCircle);
-		State.getStage().addEntity(blueCircle);
-		State.getStage().addEntity(whiteRect);
-		State.getStage().addEntity(group);
-		State.getStage().addEntity(group2);
-		State.getStage().addEntity(redRect);
+		shapesTest.load(State.getStage());
+		textTest.load(State.getStage());
+
 		float textWidth = 30;
 		float textHeight = 30;
 		float textLineWidth = 3.5f;
 		Color textColor = new Color(0.941f, 0.941f, 0.827f, 0.75f);
-		State.getStage().addText(new TextMeshActor('0',  40, 100, textColor, textWidth, textHeight, textLineWidth));
-		State.getStage().addText(new TextMeshActor('1',  80, 100, textColor, textWidth, textHeight, textLineWidth));
-		State.getStage().addText(new TextMeshActor('2',  40, 200, textColor, textWidth, textHeight, textLineWidth));
-		State.getStage().addText(new TextMeshActor('3',  80, 200, textColor, textWidth, textHeight, textLineWidth));
-		State.getStage().addText(new TextMeshActor('4', 120, 200, textColor, textWidth, textHeight, textLineWidth));
-		State.getStage().addText(new TextMeshActor('5', 160, 200, textColor, textWidth, textHeight, textLineWidth));
-		State.getStage().addText(new TextMeshActor('6', 200, 200, textColor, textWidth, textHeight, textLineWidth));
-		State.getStage().addText(new TextMeshActor('7', 240, 200, textColor, textWidth, textHeight, textLineWidth));
-		State.getStage().addText(new TextMeshActor('8', 280, 200, textColor, textWidth, textHeight, textLineWidth));
-		State.getStage().addText(new TextMeshActor('9', 320, 200, textColor, textWidth, textHeight, textLineWidth));
-		State.getStage().addText(new TextMeshActor('A', 360, 200, textColor, textWidth, textHeight, textLineWidth));
-		State.getStage().addText(new TextMeshActor('B', 400, 200, textColor, textWidth, textHeight, textLineWidth));
-		State.getStage().addText(new TextMeshActor('C', 440, 200, textColor, textWidth, textHeight, textLineWidth));
-		State.getStage().addText(new TextMeshActor('D', 480, 200, textColor, textWidth, textHeight, textLineWidth));
-		State.getStage().addText(new TextMeshActor('E', 520, 200, textColor, textWidth, textHeight, textLineWidth));
-		State.getStage().addText(new TextMeshActor('F', 560, 200, textColor, textWidth, textHeight, textLineWidth));
-		State.getStage().addText(new TextMeshActor('G', 600, 200, textColor, textWidth, textHeight, textLineWidth));
-		State.getStage().addText(new TextMeshActor('H', 640, 200, textColor, textWidth, textHeight, textLineWidth));
-		State.getStage().addText(new TextMeshActor('I', 680, 200, textColor, textWidth, textHeight, textLineWidth));
-		State.getStage().addText(new TextMeshActor('J', 720, 200, textColor, textWidth, textHeight, textLineWidth));
-		State.getStage().addText(new TextMeshActor('K', 760, 200, textColor, textWidth, textHeight, textLineWidth));
-		State.getStage().addText(new TextMeshActor('L', 800, 200, textColor, textWidth, textHeight, textLineWidth));
-		State.getStage().addText(new TextMeshActor('M', 840, 200, textColor, textWidth, textHeight, textLineWidth));
-		State.getStage().addText(new TextMeshActor('N', 880, 200, textColor, textWidth, textHeight, textLineWidth));
-		State.getStage().addText(new TextMeshActor('O', 920, 200, textColor, textWidth, textHeight, textLineWidth));
-		State.getStage().addText(new TextMeshActor('P', 960, 200, textColor, textWidth, textHeight, textLineWidth));
-		State.getStage().addText(new TextMeshActor('Q',  40, 300, textColor, textWidth, textHeight, textLineWidth));
-		State.getStage().addText(new TextMeshActor('R',  80, 300, textColor, textWidth, textHeight, textLineWidth));
-		State.getStage().addText(new TextMeshActor('S', 120, 300, textColor, textWidth, textHeight, textLineWidth));
-		State.getStage().addText(new TextMeshActor('T', 160, 300, textColor, textWidth, textHeight, textLineWidth));
-		State.getStage().addText(new TextMeshActor('U', 200, 300, textColor, textWidth, textHeight, textLineWidth));
-		State.getStage().addText(new TextMeshActor('V', 240, 300, textColor, textWidth, textHeight, textLineWidth));
-		State.getStage().addText(new TextMeshActor('W', 280, 300, textColor, textWidth, textHeight, textLineWidth));
-		State.getStage().addText(new TextMeshActor('X', 320, 300, textColor, textWidth, textHeight, textLineWidth));
-		State.getStage().addText(new TextMeshActor('Y', 360, 300, textColor, textWidth, textHeight, textLineWidth));
-		State.getStage().addText(new TextMeshActor('Z', 400, 300, textColor, textWidth, textHeight, textLineWidth));
-		quickfox = new TextMeshGroup("THE QUICK BROWN FOX", 200, 100, new Color(0.2f, 0.4f, 0.3f, 1.0f), 30, 50, 10, 4.0f);
-		quickfox.setName("FOX");
-		State.getStage().addText(quickfox);
 
 		scoreCounter = new Counter(State.getWidth() * 0.5f, State.getHeight() * 0.95f, textColor, textWidth, textHeight, 10, textLineWidth);
 		healthCounter = new Counter(State.getWidth() * 0.5f, State.getHeight() * 0.05f, textColor, textWidth, textHeight, 10, textLineWidth);
 		State.getStage().addText(scoreCounter);
 		State.getStage().addText(healthCounter);
-
-		float[] testVertices = new float[8 * 2];
-		float subdivAngle = (float) (Math.PI * 2 / 8);
-		int vtxIndex = 0;
-		for (int i = 0; i < 8; i++) {
-			testVertices[vtxIndex++] = (float) Math.sin(i * subdivAngle);
-			testVertices[vtxIndex++] = (float) Math.cos(i * subdivAngle);
-		}
-		// Clockwise order.
-		State.getStage().addEntity(new PolygonEntity(new float[] {-1.0f, -1.0f, 1.0f, -1.0f, 1.0f, 1.0f, -1.0f, 0.0f}, 800, 500, new Color(0.149f, 0.266f, 0.380f, 0.5f), 50, 60));
-		Entity diamond = new PolygonEntity(new float[] {0.0f, -1.0f, 1.0f, 0.0f, 0.0f, 1.0f, -1.0f, 0.0f}, 900, 600, new Color(0.149f, 0.266f, 0.380f, 0.5f), 50, 50);
-		diamond.addAction(
-			forever(
-				parallel(
-					rotateBy(360, 2.0f),
-					sequence(
-						moveBy(200, 200, 0.5f, Interpolation.exp10Out),
-						moveBy(-200, 200, 0.5f, Interpolation.exp10Out),
-						moveBy(-200, -200, 0.5f, Interpolation.exp10),
-						moveBy(200, -200, 0.5f, Interpolation.exp5Out)
-					)
-				)
-			)
-		);
-		diamond.setLifeTime(2.0f);
-		diamond.getActor().setTouchable(Touchable.disabled);
-//		level.addEntitySpawner(diamond, 3.0f, 100, 1.5f);
-
-		Entity triangle = new PolygonEntity(new float[] {-1.0f, -0.732f, 1.0f, -0.732f, 0.0f, 1.0f}, 1000, 700, new Color(0.149f, 0.266f, 0.380f, 0.5f), 50, 50);
-
-		State.getStage().addEntity(diamond);
-		State.getStage().addEntity(triangle);
-
-		// Counterclockwise order.
-		State.getStage().addEntity(new PolygonEntity(new float[] {-1.0f, 0.0f, 1.0f, 1.0f, 1.0f, -1.0f, -1.0f, -1.0f}, 300, 600, new Color(0.420f, 0.384f, 0.388f, 0.5f), 50, 60));
-		State.getStage().addEntity(new PolygonEntity(testVertices, 200, 500, new Color(0.0f, 0.25f, 0.0f, 1.0f), 20, 30));
-
-		// Test intersection grid.
-		RectEntity rectEnt;
-		for (int i = 0; i < 50; i++) {
-			for (int j = 0; j < 50; j++) {
-				rectEnt = new RectEntity(350 + i * 4, 430 + j * 4, new Color(Color.BLACK), 1, 1);
-				State.getStage().addTest(rectEnt);
-			}
-		}
-
-//		for (int i = 0; i < 500; i++) {
-//			Character ctest = new Character(i, i, new Color(i / 500.0f, i / 10000.0f, 0.24f, 1.0f), 10);
-//			ctest.setVelocity((float) Math.random() * 200.0f, (float) Math.random() * 200.0f);
-//			State.getStage().addCharacter(ctest);
-//		}
-
-		redCircle.addAction(
-			sequence(
-				delay(2.0f),
-				sizeBy(50.0f, 50.0f, 0.5f, Interpolation.elastic),
-				delay(0.2f),
-				sizeBy(50.0f, 50.0f, 1.0f, Interpolation.elastic),
-				delay(1.0f),
-				parallel(
-					color(new Color(0.5f, 0.2f, 0.3f, 1.0f), 2.0f, Interpolation.circle),
-					sizeBy(-100.0f, -100.0f, 2.0f, Interpolation.bounceOut),
-					rotateTo(20.0f)
-				)
-			)
-		);
-
-		Entity movingThingy = new CircleEntity(200, 300, new Color(0.0f, 1.0f, 0.0f, 1.0f), 30.0f);
-		movingThingy.addAction(
-			forever(
-				sequence(
-						moveBy(200, 200, 1.0f, Interpolation.exp10Out),
-						moveBy(-200, 200, 1.0f, Interpolation.exp10Out),
-						moveBy(-200, -200, 1.0f, Interpolation.exp10),
-						moveBy(200, -200, 1.0f, Interpolation.exp5Out)
-				)
-			)
-		);
-		State.getStage().addEntity(movingThingy);
-
-		String json;
-		System.out.println("GROUP2-----");
-		json = gson.toJson(group2.getActor());
-		System.out.println(json);
-		System.out.println("REDCIRCLE-----");
-		json = gson.toJson(redCircle.getActor());
-		MeshActor testActor = gson.fromJson(json, MeshActor.class);
-		System.out.println(json);
-		System.out.println("ENTITIES-----");
-		json = gson.toJson(State.getStage().getEntities());
-		System.out.println(json);
-		System.out.println("STAGE-----");
-		json = gson.toJson(State.getStage());
-		System.out.println(json);
-		System.out.println("REJSON-----");
-		json = gson.toJson(testActor);
-		System.out.println(json);
-		System.out.println("LEVEL-----");
-		json = levelGson.toJson(level);
-		System.out.println(json);
-		System.out.println("DESERLEVEL-----");
-		Level deserializedLevel = gson.fromJson(json, Level.class);
-		json = levelGson.toJson(deserializedLevel);
-		System.out.println(json);
-		System.out.println("PLAYER-----");
-		json = gson.toJson(State.getPlayer());
-		System.out.println(json);
-		System.out.println("MOVINGTHINGY-----");
-		json = gson.toJson(movingThingy.getActor());
-		System.out.println(json);
 
 		if (gl20) {
 			Gdx.gl.glEnable(GL20.GL_BLEND);
@@ -645,8 +460,9 @@ public class Game implements ApplicationListener {
 		scoreCounter.set(State.getPlayer().getScore());
 		healthCounter.set(State.getPlayer().getHealth());
 
+		// Lose screen.
 		if (State.getPlayer().getHealth() <= 0) {
-			TextMeshGroup lose = new TextMeshGroup("YOU LOSE", State.getWidth() * 0.5f, State.getHeight() * 0.5f, new Color(0.2f, 0.3f, 0.3f, 1.0f), 60, 90, 30, 10.0f, Alignment.CENTER);
+			TextMeshGroup lose = new TextMeshGroup("YOU LOSE", State.getWidth() * 0.5f, State.getHeight() * 0.5f, Color.WHITE, 60, 90, 30, 10.0f, Alignment.CENTER);
 			lose.setAlignment(Alignment.CENTER);
 			State.getStage().getText().addActor(lose);
 			SnapshotArray<Actor> entityArray = State.getStage().getEntities().getChildren();
@@ -667,7 +483,7 @@ public class Game implements ApplicationListener {
 			
 			State.getStage().addAction(
 				sequence(
-					fadeOut(1.0f, Interpolation.pow2Out),
+					color(Color.BLACK, 1.0f, Interpolation.pow2Out),
 					new Action() {
 						public boolean act(float delta) {
 							State.running = false;
