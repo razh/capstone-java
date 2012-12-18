@@ -6,13 +6,13 @@
         "velocityY": 100,
         "bounded": true,
         "listeners": [
-          
+
         ],
         "captureListeners": [
-          
+
         ],
         "actions": [
-          
+
         ],
         "name": null,
         "touchable": "enabled",
@@ -88,10 +88,10 @@
         "velocityY": 0,
         "bounded": true,
         "listeners": [
-          
+
         ],
         "captureListeners": [
-          
+
         ],
         "actions": [
           {
@@ -156,7 +156,7 @@
       "team": 0,
       "takingFire": false,
       "weapons": [
-        
+
       ],
       "initialHealth": 100,
       "health": 100,
@@ -179,8 +179,17 @@
     1.5,
     1.5
   ],
-  "startTime": 5,
+  "startTime": 2,
   "actions": [
-    
+    {
+      "color": {
+        "r": 0.5,
+        "g": 0.5,
+        "b": 0.5,
+        "a": 1
+      },
+      "duration": 1,
+      "interpolation": "pow3"
+    }
   ]
 }

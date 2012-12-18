@@ -10,7 +10,6 @@ import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
-import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.SnapshotArray;
 
 public class MeshGroup extends Group {
@@ -142,6 +141,18 @@ public class MeshGroup extends Group {
 		super.addActor(actor);
 	}
 
+	@Override
+	public void addAction(Action action) {
+		SnapshotArray<Actor> children = getChildren();
+		Actor[] actors = children.begin();
+
+		for (int i = 0, n = children.size; i < n; i++) {
+			actors[i].addAction(ActionFactory.createAction(action));
+		}
+
+		children.end();
+	}
+
 	public Actor getFirstActor() {
 		return getChildren().get(0);
 	}
@@ -158,6 +169,7 @@ public class MeshGroup extends Group {
 			}
 		}
 
+		children.end();
 	}
 
 	public void setVelocityY(float velocityY) {
@@ -172,6 +184,7 @@ public class MeshGroup extends Group {
 			}
 		}
 
+		children.end();
 	}
 
 	public void setVelocity(float velocityX, float velocityY) {
@@ -185,7 +198,8 @@ public class MeshGroup extends Group {
 				((PhysicsActor) child).setVelocity(velocityX, velocityY);
 			}
 		}
-
+		
+		children.end();
 	}
 
 	public Vector2 getIntersection(float x, float y) {
@@ -198,17 +212,22 @@ public class MeshGroup extends Group {
 		if (touchable && getTouchable() == Touchable.disabled)
 			return null;
 
-		Array<Actor> children = getChildren();
-		for (int i = children.size - 1; i >= 0; i--) {
-			Actor child = children.get(i);
+		SnapshotArray<Actor> children = getChildren();
+		Actor[] actors = children.begin();
+		for (int i = 0, n = children.size; i < n; i++) {
+			Actor child = actors[i];
 			if (!child.isVisible())
 				continue;
 
 			Actor hit = child.hit(x, y, touchable);
 
-			if (hit != null)
+			if (hit != null) {
+				children.end();
 				return hit;
+			}
 		}
+		children.end();
+
 		return null;
 	}
 }

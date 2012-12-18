@@ -117,11 +117,6 @@ public class Level {
 
 	public void setStage(MeshStage stage) {
 		this.stage = stage;
-
-		// Add ColorActions.
-		for (int i = 0; i < actions.size(); i++) {
-			stage.addAction(actions.get(i));
-		}
 	}
 
 	public ArrayList<Entity> getEntities() {

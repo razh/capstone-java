@@ -9,7 +9,8 @@ import org.capstone.game.entities.RectEntity;
 import org.capstone.game.entities.weapons.BulletGun;
 import org.capstone.game.entities.weapons.LaserGun;
 import org.capstone.game.entities.weapons.Weapon;
-import org.capstone.game.io.LevelLoader;
+import org.capstone.game.files.LevelLoader;
+import org.capstone.game.input.GameInputProcessor;
 import org.capstone.game.json.ActionAdapter;
 import org.capstone.game.json.ActorExclusionStrategy;
 import org.capstone.game.json.ArraySerializer;
@@ -55,7 +56,7 @@ public class Game implements ApplicationListener {
 	private TextureRegion fboRegion2;
 	private int frameBufferSize = 512;
 	private FPSLogger fpsLogger = new FPSLogger();
-	private boolean running = true;
+//	private boolean running = true;
 	private boolean gl20 = false;
 
 	private LevelLoader loader;
@@ -334,6 +335,8 @@ public class Game implements ApplicationListener {
 		State.setPlayer(player);
 		State.setLoader(loader);
 		State.setLevel(level);
+//		level.addAction(color(new Color(0.5f, 0.5f, 0.5f, 1.0f), 1.0f, Interpolation.pow3));
+
 
 
 		Entity blueCircle = new CircleEntity(200, 200, new Color(0.173f, 0.204f, 0.220f, 1.0f), 30);
@@ -522,8 +525,6 @@ public class Game implements ApplicationListener {
 		json = gson.toJson(movingThingy.getActor());
 		System.out.println(json);
 
-		State.getStage().addAction(color(new Color(0.5f, 0.5f, 0.5f, 1.0f), 10.0f, Interpolation.pow3));
-
 		if (gl20) {
 			Gdx.gl.glEnable(GL20.GL_BLEND);
 			Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
@@ -531,6 +532,8 @@ public class Game implements ApplicationListener {
 			Gdx.gl.glEnable(GL10.GL_BLEND);
 			Gdx.gl.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
 		}
+		
+		Gdx.input.setInputProcessor(new GameInputProcessor());
 	}
 
 	@Override
@@ -543,7 +546,7 @@ public class Game implements ApplicationListener {
 
 	@Override
 	public void render() {
-		if (!running)
+		if (!State.running)
 			return;
 
 		// Intersection testing code.
@@ -566,7 +569,7 @@ public class Game implements ApplicationListener {
 			children.end();
 		}
 
-		handleInput();
+		update();
 		State.update();
 
 		Color backgroundColor = State.getColor();
@@ -638,64 +641,48 @@ public class Game implements ApplicationListener {
 		fpsLogger.log();
 	}
 
-	private void handleInput() {
-//		State.getPlayer().addScore(1);
+	private void update() {
 		scoreCounter.set(State.getPlayer().getScore());
 		healthCounter.set(State.getPlayer().getHealth());
+
 		if (State.getPlayer().getHealth() <= 0) {
-			TextMeshGroup lose = new TextMeshGroup("YOU LOSE", State.getWidth() * 0.5f, State.getHeight() * 0.5f, new Color(0.2f, 0.3f, 0.3f, 1.0f), 50, 80, 20, 10.0f, Alignment.CENTER);
+			TextMeshGroup lose = new TextMeshGroup("YOU LOSE", State.getWidth() * 0.5f, State.getHeight() * 0.5f, new Color(0.2f, 0.3f, 0.3f, 1.0f), 60, 90, 30, 10.0f, Alignment.CENTER);
 			lose.setAlignment(Alignment.CENTER);
 			State.getStage().getText().addActor(lose);
-			running = false;			
-		}
-//		quickfox.setPosition(Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY());
+			SnapshotArray<Actor> entityArray = State.getStage().getEntities().getChildren();
+			Actor[] entityActors = entityArray.begin();
+			for (int i = 0, n = entityArray.size; i < n; i++) {
+				entityActors[i].clearActions();
+				entityActors[i].addAction(fadeOut(0.8f, Interpolation.pow2Out));
+			}
+			entityArray.end();
 
-//		State.getStage().getCharacters().getChildren().get(0).rotate(1.0f);
-//		MeshGroup test = State.getStage().getProjectiles();
-//		if (test != null)
-//			System.out.println("size" + test.getChildren().size);
-//
+			SnapshotArray<Actor> projectileArray = State.getStage().getProjectiles().getChildren();
+			Actor[] projectileActors = projectileArray.begin();			
+			for (int i = 0, n = projectileArray.size; i < n; i++) {
+				projectileActors[i].clearActions();
+				projectileActors[i].addAction(fadeOut(0.8f, Interpolation.pow2Out));
+			}
+			projectileArray.end();
+			
+			State.getStage().addAction(
+				sequence(
+					fadeOut(1.0f, Interpolation.pow2Out),
+					new Action() {
+						public boolean act(float delta) {
+							State.running = false;
+							return true;
+						}
+					}
+				)				
+			);		
+		}
+
 		if (State.getStage().getRoot()!= null) {
 			// State.getStage().getRoot().getChildren().get(0).setPosition(Gdx.input.getX(), -Gdx.input.getY() + State.getHeight());
 			// if (((CircleMeshActor) State.getStage().getEntities().getChildren().get(0)).intersectsLine(0, 40, 1280, 40)) {
 			// 	System.out.println("HELLO!");
 			// }
-		}
-
-		if (Gdx.input.isTouched()) {
-			float x, y;
-			if (Gdx.graphics.getWidth() != State.getWidth()) {
-				x = Gdx.input.getX() * (State.getWidth() / Gdx.graphics.getWidth());
-			} else {
-				x = Gdx.input.getX();
-			}
-			
-			if (Gdx.graphics.getHeight() != State.getHeight()) {
-				y = (Gdx.graphics.getHeight() - Gdx.input.getY()) * (State.getHeight() / Gdx.graphics.getHeight());
-			} else {
-				y = Gdx.graphics.getHeight() - Gdx.input.getY();
-			}
-
-			if (!Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) {
-				Actor hit = State.getStage().getEntities().hit(x, y, true);
-				if (hit != null) {
-					hit.setPosition(x, y);
-					((PhysicsActor) hit).setVelocity(0.0f, 0.0f);
-				}
-				else {
-					hit = State.getStage().getText().hit(x, y, true);
-					if (hit != null) {
-						hit.setPosition(x, y);
-						if (hit instanceof PhysicsActor)
-							((PhysicsActor) hit).setVelocity(0.0f, 0.0f);
-						else if (hit instanceof MeshGroup) {
-							((MeshGroup) hit).setVelocity(0.0f, 0.0f);
-						}
-					}
-				}
-			} else {
-				State.getStage().getEntities().getChildren().get(0).setPosition(x, y);
-			}
 		}
 
 		if (Gdx.input.isKeyPressed(Input.Keys.W)) {
@@ -726,7 +713,7 @@ public class Game implements ApplicationListener {
 		if (Gdx.input.isKeyPressed(Input.Keys.M)) {}
 		if (Gdx.input.isKeyPressed(Input.Keys.N)) {}
 		if (Gdx.input.isKeyPressed(Input.Keys.Q)) {
-			running = false;
+			State.running = false;
 		}
 
 		if (Gdx.input.isKeyPressed(Input.Keys.UP)) {

@@ -1,6 +1,6 @@
 package org.capstone.game;
 
-import org.capstone.game.io.LevelLoader;
+import org.capstone.game.files.LevelLoader;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -20,6 +20,8 @@ public class State {
 	public static float EPSILON = 1E-10f;
 	public static boolean debug = true;
 	public static boolean debugRendering = false;
+
+	public static boolean running = true;
 	
 	public State() {
 		setWidth(Gdx.graphics.getWidth());

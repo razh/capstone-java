@@ -1,4 +1,4 @@
-package org.capstone.game.io;
+package org.capstone.game.files;
 
 import java.util.ArrayList;
 
@@ -38,6 +38,13 @@ public class LevelLoader {
 	private ArrayList<Float> startTimes;
 
 	public LevelLoader(Gson gson) {
+		this(gson, null);
+	}
+	
+	public LevelLoader(Gson gson, String[] levelNames) {
+		if (levelNames != null)
+			this.levelNames = levelNames;
+		
 		setGson(gson);
 
 		levels = new ArrayList<Level>();
@@ -112,7 +119,6 @@ public class LevelLoader {
 	public void act(float delta) {
 		for (int i = 0; i < levels.size(); i++) {
 			startTimes.set(i, startTimes.get(i) - delta);
-			System.out.println(startTimes.get(i));
 			if (startTimes.get(i) <= 0.0f) {
 				int numEnemyTypes = levels.get(i).getNumEnemyTypes();
 				for (int j = 0; j < numEnemyTypes; j++) {
@@ -120,6 +126,12 @@ public class LevelLoader {
 					                       levels.get(i).getSpawnTimes().get(j),
 					                       levels.get(i).getSpawnCounts().get(j),
 					                       levels.get(i).getSpawnIntervals().get(j));
+				}
+				
+				ArrayList<Action> actions = levels.get(i).getActions();
+				int numActions = actions.size();
+				for (int j = 0; j < numActions; j++) {
+					level.addAction(actions.get(j));
 				}
 			}
 		}
