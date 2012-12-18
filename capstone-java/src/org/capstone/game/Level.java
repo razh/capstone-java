@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import org.capstone.game.entities.Entity;
 
+import com.badlogic.gdx.scenes.scene2d.Action;
+
 public class Level {
 	// All the prototypical entities to be spawned.
 	private ArrayList<Entity> entities;
@@ -19,14 +21,19 @@ public class Level {
 
 	private MeshStage stage;
 
+	private float startTime;
 	private boolean complete;
+	private ArrayList<Action> actions;
 
 	public Level() {
 		entities = new ArrayList<Entity>();
 		spawnTimes = new ArrayList<Float>();
 		spawnCounts = new ArrayList<Integer>();
 		spawnIntervals = new ArrayList<Float>();
+
+		setStartTime(0.0f);
 		setComplete(false);
+		actions = new ArrayList<Action>();
 	}
 
 	public Level(MeshStage stage) {
@@ -74,6 +81,14 @@ public class Level {
 		return entities.size();
 	}
 
+	public float getStartTime() {
+		return startTime;
+	}
+
+	public void setStartTime(float startTime) {
+		this.startTime = startTime;
+	}
+
 	public boolean isComplete() {
 		return complete;
 	}
@@ -82,12 +97,31 @@ public class Level {
 		this.complete = complete;
 	}
 
+	public ArrayList<Action> getActions() {
+		return actions;
+	}
+
+	public void setActions(ArrayList<Action> actions) {
+		this.actions = actions;
+	}
+
+	public void addAction(Action action) {
+		actions.add(action);
+
+		stage.addAction(action);
+	}
+
 	public MeshStage getStage() {
 		return stage;
 	}
 
 	public void setStage(MeshStage stage) {
 		this.stage = stage;
+
+		// Add ColorActions.
+		for (int i = 0; i < actions.size(); i++) {
+			stage.addAction(actions.get(i));
+		}
 	}
 
 	public ArrayList<Entity> getEntities() {
@@ -110,5 +144,7 @@ public class Level {
 		spawnTimes.add(spawnTime);
 		spawnCounts.add(spawnCount);
 		spawnIntervals.add(spawnInterval);
+		
+		setComplete(false);
 	}
 }

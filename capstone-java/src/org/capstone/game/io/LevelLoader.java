@@ -1,5 +1,7 @@
 package org.capstone.game.io;
 
+import java.util.ArrayList;
+
 import org.capstone.game.Level;
 import org.capstone.game.MeshActor;
 import org.capstone.game.MeshGroup;
@@ -30,16 +32,23 @@ public class LevelLoader {
 	private String[] levelNames = {
 		"testLevel.json"
 	};
+	private ArrayList<Level> levels;
 	private Level level;
+
+	private ArrayList<Float> startTimes;
 
 	public LevelLoader(Gson gson) {
 		setGson(gson);
+
+		levels = new ArrayList<Level>();
 		level = new Level();
 		State.setLevel(level);
 		
+		startTimes = new ArrayList<Float>();
+
 		loadLevels();
 	}
-	
+
 	public LevelLoader() {
 		this(
 			new GsonBuilder()
@@ -73,15 +82,10 @@ public class LevelLoader {
 				} else {
 					tempLevel = null;
 				}
-				
+
 				if (tempLevel != null) {
-					int numEnemyTypes = tempLevel.getNumEnemyTypes();
-					for (int j = 0; j < numEnemyTypes; j++) {
-						level.addEntitySpawner(tempLevel.getEntities().get(j),
-						                       tempLevel.getSpawnTimes().get(j),
-						                       tempLevel.getSpawnCounts().get(j),
-						                       tempLevel.getSpawnIntervals().get(j));
-					}
+					levels.add(tempLevel);
+					startTimes.add(tempLevel.getStartTime());
 				}
 			}
 		} catch (GdxRuntimeException e) {
@@ -106,7 +110,26 @@ public class LevelLoader {
 	}
 
 	public void act(float delta) {
+		for (int i = 0; i < levels.size(); i++) {
+			startTimes.set(i, startTimes.get(i) - delta);
+			System.out.println(startTimes.get(i));
+			if (startTimes.get(i) <= 0.0f) {
+				int numEnemyTypes = levels.get(i).getNumEnemyTypes();
+				for (int j = 0; j < numEnemyTypes; j++) {
+					level.addEntitySpawner(levels.get(i).getEntities().get(j),
+					                       levels.get(i).getSpawnTimes().get(j),
+					                       levels.get(i).getSpawnCounts().get(j),
+					                       levels.get(i).getSpawnIntervals().get(j));
+				}
+			}
+		}
 
+		// Remove levels which have been added.
+		for (int i = 0; i < levels.size(); i++) {
+			if (startTimes.get(i) <= 0.0f) {
+				levels.remove(i);
+				startTimes.remove(i);
+			}
+		}
 	}
-
 }

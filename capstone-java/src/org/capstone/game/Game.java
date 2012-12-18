@@ -58,6 +58,7 @@ public class Game implements ApplicationListener {
 	private boolean running = true;
 	private boolean gl20 = false;
 
+	private LevelLoader loader;
 	private Level level;
 	private Player player;
 
@@ -298,7 +299,7 @@ public class Game implements ApplicationListener {
 		new State(width, height, new Color(0.572f, 0.686f, 0.624f, 1.0f));
 
 		Gson gson = new GsonBuilder()
-//			.setExclusionStrategies(new ActorExclusionStrategy())
+			.setExclusionStrategies(new ActorExclusionStrategy())
 			.setExclusionStrategies(new GlobalExclusionStrategy())
 			.registerTypeHierarchyAdapter(Action.class, new ActionAdapter())
 			.registerTypeHierarchyAdapter(Weapon.class, new WeaponAdapter())
@@ -311,26 +312,27 @@ public class Game implements ApplicationListener {
 			.serializeNulls()
 			.create();
 		
-//		Gson levelGson = new GsonBuilder()
-////			.setExclusionStrategies(new EntityExclusionStrategy())
-//			.setExclusionStrategies(new GlobalExclusionStrategy())
-//			.registerTypeHierarchyAdapter(Action.class, new ActionAdapter())
-//			.registerTypeHierarchyAdapter(Weapon.class, new WeaponAdapter())
-//			.registerTypeHierarchyAdapter(Interpolation.class, new InterpolationAdapter())
-//			.registerTypeHierarchyAdapter(Array.class, new ArraySerializer())
-//			.registerTypeAdapter(SnapshotArray.class, new SnapshotArraySerializer())
-//			.registerTypeHierarchyAdapter(MeshActor.class, new MeshActorDeserializer())
-//			.registerTypeHierarchyAdapter(Entity.class, new EntityDeserializer())
-//			.registerTypeAdapter(MeshGroup.class, new MeshGroupSerializer())
-//			.serializeNulls()
-//			.create();
+		Gson levelGson = new GsonBuilder()
+			.setExclusionStrategies(new EntityExclusionStrategy())
+			.setExclusionStrategies(new GlobalExclusionStrategy())
+			.registerTypeHierarchyAdapter(Action.class, new ActionAdapter())
+			.registerTypeHierarchyAdapter(Weapon.class, new WeaponAdapter())
+			.registerTypeHierarchyAdapter(Interpolation.class, new InterpolationAdapter())
+			.registerTypeHierarchyAdapter(Array.class, new ArraySerializer())
+			.registerTypeAdapter(SnapshotArray.class, new SnapshotArraySerializer())
+			.registerTypeHierarchyAdapter(MeshActor.class, new MeshActorDeserializer())
+			.registerTypeHierarchyAdapter(Entity.class, new EntityDeserializer())
+			.registerTypeAdapter(MeshGroup.class, new MeshGroupSerializer())
+			.serializeNulls()
+			.create();
 
-		level = new Level();
-		LevelLoader loader = new LevelLoader();
+//		level = new Level();
+		loader = new LevelLoader();
 		player = new Player();
 		level = loader.getLevel();
 //		level.addEntitySpawner(redCircle, 1.5f, 100, 1.5f);
 		State.setPlayer(player);
+		State.setLoader(loader);
 		State.setLevel(level);
 
 
@@ -507,11 +509,11 @@ public class Game implements ApplicationListener {
 		json = gson.toJson(testActor);
 		System.out.println(json);
 		System.out.println("LEVEL-----");
-		json = gson.toJson(level);
+		json = levelGson.toJson(level);
 		System.out.println(json);
 		System.out.println("DESERLEVEL-----");
 		Level deserializedLevel = gson.fromJson(json, Level.class);
-		json = gson.toJson(deserializedLevel);
+		json = levelGson.toJson(deserializedLevel);
 		System.out.println(json);
 		System.out.println("PLAYER-----");
 		json = gson.toJson(State.getPlayer());

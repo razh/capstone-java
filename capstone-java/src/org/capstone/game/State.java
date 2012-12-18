@@ -1,5 +1,7 @@
 package org.capstone.game;
 
+import org.capstone.game.io.LevelLoader;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 
@@ -11,6 +13,7 @@ public class State {
 	private static float height;
 
 	private static Player player;
+	private static LevelLoader loader;
 	private static Level level;
 	private static MeshStage stage;
 
@@ -36,6 +39,9 @@ public class State {
 
 	public static void update() {
 		float delta = Math.min(Gdx.graphics.getDeltaTime(), 1 / 30.0f);
+		if (loader != null)
+			loader.act(delta);
+
 		if (level != null)
 			level.act(delta);
 
@@ -80,6 +86,14 @@ public class State {
 
 	public static MeshStage getStage() {
 		return stage;
+	}
+
+	public static LevelLoader getLoader() {
+		return loader;
+	}
+
+	public static void setLoader(LevelLoader loader) {
+		State.loader = loader;
 	}
 
 	public static void setLevel(Level level) {
