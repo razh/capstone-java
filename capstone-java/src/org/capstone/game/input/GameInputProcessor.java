@@ -1,5 +1,6 @@
 package org.capstone.game.input;
 
+import org.capstone.game.MeshActor;
 import org.capstone.game.MeshGroup;
 import org.capstone.game.PhysicsActor;
 import org.capstone.game.State;
@@ -56,21 +57,24 @@ public class GameInputProcessor implements InputProcessor {
 
 		if (!Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) {
 			Actor hit = State.getStage().getEntities().hit(x, y, true);
-			if (hit != null) {
-				hit.setPosition(x, y);
-				((PhysicsActor) hit).setVelocity(0.0f, 0.0f);
-			}
-			else {
-				hit = State.getStage().getText().hit(x, y, true);
-				if (hit != null) {
+			if (hit != null && hit instanceof MeshActor) {
+				System.out.println(((MeshActor) hit).getEntity().getTeam());
+				if (((MeshActor) hit).getEntity().getTeam() == State.getPlayer().getTeam()) {
 					hit.setPosition(x, y);
-					if (hit instanceof PhysicsActor)
-						((PhysicsActor) hit).setVelocity(0.0f, 0.0f);
-					else if (hit instanceof MeshGroup) {
-						((MeshGroup) hit).setVelocity(0.0f, 0.0f);
-					}
+					((PhysicsActor) hit).setVelocity(0.0f, 0.0f);
 				}
 			}
+//			else {
+//				hit = State.getStage().getText().hit(x, y, true);
+//				if (hit != null) {
+//					hit.setPosition(x, y);
+//					if (hit instanceof PhysicsActor)
+//						((PhysicsActor) hit).setVelocity(0.0f, 0.0f);
+//					else if (hit instanceof MeshGroup) {
+//						((MeshGroup) hit).setVelocity(0.0f, 0.0f);
+//					}
+//				}
+//			}
 		} else {
 			State.getStage().getEntities().getChildren().get(0).setPosition(x, y);
 		}		

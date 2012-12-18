@@ -129,12 +129,6 @@ public class ShapesStageTest extends StageTest {
 			}
 		}
 
-//		for (int i = 0; i < 500; i++) {
-//			Character ctest = new Character(i, i, new Color(i / 500.0f, i / 10000.0f, 0.24f, 1.0f), 10);
-//			ctest.setVelocity((float) Math.random() * 200.0f, (float) Math.random() * 200.0f);
-//			stage.addCharacter(ctest);
-//		}
-
 		redCircle.addAction(
 			sequence(
 				delay(2.0f),

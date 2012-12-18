@@ -1,21 +1,8 @@
 package org.capstone.game;
 
 import org.capstone.game.TextMeshGroup.Alignment;
-import org.capstone.game.entities.Entity;
-import org.capstone.game.entities.weapons.Weapon;
 import org.capstone.game.files.LevelLoader;
 import org.capstone.game.input.GameInputProcessor;
-import org.capstone.game.json.ActionAdapter;
-import org.capstone.game.json.ActorExclusionStrategy;
-import org.capstone.game.json.ArraySerializer;
-import org.capstone.game.json.EntityDeserializer;
-import org.capstone.game.json.EntityExclusionStrategy;
-import org.capstone.game.json.InterpolationAdapter;
-import org.capstone.game.json.MeshActorDeserializer;
-import org.capstone.game.json.GlobalExclusionStrategy;
-import org.capstone.game.json.MeshGroupSerializer;
-import org.capstone.game.json.SnapshotArraySerializer;
-import org.capstone.game.json.WeaponAdapter;
 import org.capstone.game.tests.ShapesStageTest;
 import org.capstone.game.tests.StageTest;
 import org.capstone.game.tests.TextStageTest;
@@ -37,10 +24,7 @@ import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.SnapshotArray;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 
@@ -285,50 +269,20 @@ public class Game implements ApplicationListener {
 
 		new State(width, height, new Color(0.572f, 0.686f, 0.624f, 1.0f));
 
-		Gson gson = new GsonBuilder()
-			.setExclusionStrategies(new ActorExclusionStrategy())
-			.setExclusionStrategies(new GlobalExclusionStrategy())
-			.registerTypeHierarchyAdapter(Action.class, new ActionAdapter())
-			.registerTypeHierarchyAdapter(Weapon.class, new WeaponAdapter())
-			.registerTypeHierarchyAdapter(Interpolation.class, new InterpolationAdapter())
-			.registerTypeHierarchyAdapter(Array.class, new ArraySerializer())
-			.registerTypeAdapter(SnapshotArray.class, new SnapshotArraySerializer())
-			.registerTypeHierarchyAdapter(MeshActor.class, new MeshActorDeserializer())
-			.registerTypeHierarchyAdapter(Entity.class, new EntityDeserializer())
-			.registerTypeAdapter(MeshGroup.class, new MeshGroupSerializer())
-			.serializeNulls()
-			.create();
-		
-		Gson levelGson = new GsonBuilder()
-			.setExclusionStrategies(new EntityExclusionStrategy())
-			.setExclusionStrategies(new GlobalExclusionStrategy())
-			.registerTypeHierarchyAdapter(Action.class, new ActionAdapter())
-			.registerTypeHierarchyAdapter(Weapon.class, new WeaponAdapter())
-			.registerTypeHierarchyAdapter(Interpolation.class, new InterpolationAdapter())
-			.registerTypeHierarchyAdapter(Array.class, new ArraySerializer())
-			.registerTypeAdapter(SnapshotArray.class, new SnapshotArraySerializer())
-			.registerTypeHierarchyAdapter(MeshActor.class, new MeshActorDeserializer())
-			.registerTypeHierarchyAdapter(Entity.class, new EntityDeserializer())
-			.registerTypeAdapter(MeshGroup.class, new MeshGroupSerializer())
-			.serializeNulls()
-			.create();
-
-//		level = new Level();
 		loader = new LevelLoader();
 		player = new Player();
 		level = loader.getLevel();
-//		level.addEntitySpawner(redCircle, 1.5f, 100, 1.5f);
+
 		State.setPlayer(player);
 		State.setLoader(loader);
 		State.setLevel(level);
-//		level.addAction(color(new Color(0.5f, 0.5f, 0.5f, 1.0f), 1.0f, Interpolation.pow3));
 
 		State.getStage().setShaderProgram(shaderProgram);
 		StageTest shapesTest = new ShapesStageTest();
 		StageTest textTest = new TextStageTest();
 
-		shapesTest.load(State.getStage());
-		textTest.load(State.getStage());
+//		shapesTest.load(State.getStage());
+//		textTest.load(State.getStage());
 
 		float textWidth = 30;
 		float textHeight = 30;
