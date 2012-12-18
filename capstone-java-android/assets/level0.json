@@ -2,8 +2,8 @@
   "entities": [
     {
       "actor": {
-        "velocityX": 200,
-        "velocityY": 100,
+        "velocityX": 400,
+        "velocityY": 200,
         "bounded": true,
         "listeners": [
 

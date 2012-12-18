@@ -47,7 +47,9 @@ public class GameInputProcessor implements InputProcessor {
 
 	@Override
 	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-		State.getPlayer().setSelected(null);
+		if (State.getPlayer().getSelected() != null)
+			State.getPlayer().setSelected(null);
+
 		return true;
 	}
 
