@@ -4,6 +4,7 @@ import org.capstone.game.TextMeshGroup.Alignment;
 import org.capstone.game.files.LevelLoader;
 import org.capstone.game.input.GameInputProcessor;
 import org.capstone.game.tests.ShapesStageTest;
+import org.capstone.game.tests.SimpleGameStageTest;
 import org.capstone.game.tests.StageTest;
 import org.capstone.game.tests.TextStageTest;
 import org.capstone.game.ui.Counter;
@@ -269,7 +270,11 @@ public class Game implements ApplicationListener {
 
 		new State(width, height, new Color(0.572f, 0.686f, 0.624f, 1.0f));
 
-		loader = new LevelLoader();
+		String[] levelNames = {
+			"level0.json"
+		};
+
+		loader = new LevelLoader(levelNames);
 		player = new Player();
 		level = loader.getLevel();
 
@@ -278,8 +283,11 @@ public class Game implements ApplicationListener {
 		State.setLevel(level);
 
 		State.getStage().setShaderProgram(shaderProgram);
+		StageTest simpleTest = new SimpleGameStageTest();
 		StageTest shapesTest = new ShapesStageTest();
 		StageTest textTest = new TextStageTest();
+
+		simpleTest.load(State.getStage());
 
 //		shapesTest.load(State.getStage());
 //		textTest.load(State.getStage());

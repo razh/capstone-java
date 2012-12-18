@@ -103,7 +103,6 @@ public class Bullet extends Entity {
 		}
 
 		if (removeBullet) {
-			State.getPlayer().addScore(1);
 			setVelocity(0.0f, 0.0f);
 			setCollides(false);
 			addAction(

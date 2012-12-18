@@ -1,0 +1,155 @@
+{
+  "entities": [
+    {
+      "actor": {
+        "velocityX": 200,
+        "velocityY": 100,
+        "bounded": true,
+        "listeners": [
+
+        ],
+        "captureListeners": [
+
+        ],
+        "actions": [
+
+        ],
+        "name": null,
+        "touchable": "enabled",
+        "visible": true,
+        "x": 0,
+        "y": 200,
+        "width": 30,
+        "height": 30,
+        "rotation": 0,
+        "color": {
+          "r": 0.941,
+          "g": 0.247,
+          "b": 0.208,
+          "a": 1
+        }
+      },
+      "meshType": "RectMeshActor",
+      "team": 1,
+      "takingFire": false,
+      "weapons": [
+
+      ],
+      "initialHealth": 20,
+      "health": 20,
+      "immortal": false,
+      "alive": true,
+      "lifeTime": 10,
+      "time": 0,
+      "oriented": true
+    },
+    {
+      "actor": {
+        "vertices": [
+          -1.0,
+          -0.732,
+          1.0,
+          -0.732,
+          0.0,
+          1.0
+        ],
+        "velocityX": 0,
+        "velocityY": 0,
+        "bounded": true,
+        "listeners": [
+
+        ],
+        "captureListeners": [
+
+        ],
+        "actions": [
+          {
+            "count": -1,
+            "action": {
+              "type": "parallel",
+              "actions": [
+                {
+                  "rotation": 360,
+                  "duration": 2,
+                  "interpolation": null
+                },
+                {
+                  "type": "sequence",
+                  "actions": [
+                    {
+                      "amountX": 200,
+                      "amountY": 200,
+                      "duration": 0.5,
+                      "interpolation": "exp10Out"
+                    },
+                    {
+                      "amountX": 200,
+                      "amountY": -200,
+                      "duration": 0.5,
+                      "interpolation": "exp10Out"
+                    },
+                    {
+                      "amountX": 200,
+                      "amountY": 200,
+                      "duration": 0.5,
+                      "interpolation": "exp10"
+                    },
+                    {
+                      "amountX": 200,
+                      "amountY": -200,
+                      "duration": 0.5,
+                      "interpolation": "exp5Out"
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        ],
+        "name": null,
+        "touchable": "enabled",
+        "visible": true,
+        "x": 0,
+        "y": 400,
+        "width": 70,
+        "height": 70,
+        "rotation": 0,
+        "color": {
+          "r": 0.24,
+          "g": 0.266,
+          "b": 0.5,
+          "a": 1
+        }
+      },
+      "meshType": "PolygonMeshActor",
+      "team": 1,
+      "takingFire": false,
+      "weapons": [
+
+      ],
+      "initialHealth": 20,
+      "health": 20,
+      "immortal": false,
+      "alive": true,
+      "lifeTime": 10,
+      "time": 0,
+      "oriented": false
+    }
+  ],
+  "spawnTimes": [
+    2,
+    1
+  ],
+  "spawnCounts": [
+    10,
+    10
+  ],
+  "spawnIntervals": [
+    1.5,
+    1.5
+  ],
+  "startTime": 1,
+  "actions": [
+
+  ]
+}

@@ -242,8 +242,13 @@ public class Entity {
 
 	public void takeFire() {
 		if (!takingFire) {
-			if (!isImmortal())
+			if (!isImmortal()) {
 				changeHealth(-5);
+			}
+			
+			if (State.getPlayer().getTeam() != getTeam()) {
+				State.getPlayer().addScore(1);	
+			}
 
 			takingFire = true;
 

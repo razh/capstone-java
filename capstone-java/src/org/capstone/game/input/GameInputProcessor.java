@@ -58,7 +58,6 @@ public class GameInputProcessor implements InputProcessor {
 		if (!Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) {
 			Actor hit = State.getStage().getEntities().hit(x, y, true);
 			if (hit != null && hit instanceof MeshActor) {
-				System.out.println(((MeshActor) hit).getEntity().getTeam());
 				if (((MeshActor) hit).getEntity().getTeam() == State.getPlayer().getTeam()) {
 					hit.setPosition(x, y);
 					((PhysicsActor) hit).setVelocity(0.0f, 0.0f);

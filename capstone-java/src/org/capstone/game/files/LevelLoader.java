@@ -56,7 +56,7 @@ public class LevelLoader {
 		loadLevels();
 	}
 
-	public LevelLoader() {
+	public LevelLoader(String[] levelNames) {
 		this(
 			new GsonBuilder()
 				.registerTypeHierarchyAdapter(Action.class, new ActionAdapter())
@@ -68,8 +68,13 @@ public class LevelLoader {
 				.registerTypeHierarchyAdapter(Entity.class, new EntityDeserializer())
 				.registerTypeAdapter(MeshGroup.class, new MeshGroupSerializer())
 				.serializeNulls()
-				.create()
+				.create(),
+			levelNames
 		);
+	}
+
+	public LevelLoader() {
+		this((String[]) null);
 	}
 
 	private void loadLevels() {
