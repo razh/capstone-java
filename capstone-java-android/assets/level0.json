@@ -39,7 +39,7 @@
       "health": 20,
       "immortal": false,
       "alive": true,
-      "lifeTime": 10,
+      "lifeTime": 1,
       "time": 0,
       "oriented": true
     },

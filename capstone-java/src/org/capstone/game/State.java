@@ -100,7 +100,8 @@ public class State {
 
 	public static void setLevel(Level level) {
 		State.level = level;
-		level.setStage(getStage());
+		if (level != null)
+			level.setStage(getStage());
 	}
 
 	public static Level getLevel() {

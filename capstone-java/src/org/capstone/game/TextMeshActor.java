@@ -204,7 +204,7 @@ public class TextMeshActor extends MeshActor {
 	public void setChar(char character) {
 		this.character = character;
 	}
-	
+
 	public void changeChar(char character) {
 		if (this.character != character) {
 			this.character = character;
@@ -269,106 +269,132 @@ public class TextMeshActor extends MeshActor {
 				setIndices(generateIndices(NUM_9));
 				break;
 
+			case 'a':
 			case 'A':
 				setIndices(generateIndices(A));
 				break;
 
+			case 'b':
 			case 'B':
 				setIndices(generateIndices(B));
 				break;
 
+			case 'c':
 			case 'C':
 				setIndices(generateIndices(C));
 				break;
 
+			case 'd':
 			case 'D':
 				setIndices(generateIndices(D));
 				break;
 
+			case 'e':
 			case 'E':
 				setIndices(generateIndices(E));
 				break;
 
+			case 'f':
 			case 'F':
 				setIndices(generateIndices(F));
 				break;
 
+			case 'g':
 			case 'G':
 				setIndices(generateIndices(G));
 				break;
 
+			case 'h':
 			case 'H':
 				setIndices(generateIndices(H));
 				break;
 
+			case 'i':
 			case 'I':
 				setIndices(generateIndices(I));
 				break;
 
+			case 'j':
 			case 'J':
 				setIndices(generateIndices(J));
 				break;
 
+			case 'k':
 			case 'K':
 				setIndices(generateIndices(K));
 				break;
 
+			case 'l':
 			case 'L':
 				setIndices(generateIndices(L));
 				break;
 
+			case 'm':
 			case 'M':
 				setIndices(generateIndices(M));
 				break;
 
+			case 'n':
 			case 'N':
 				setIndices(generateIndices(N));
 				break;
 
+			case 'o':
 			case 'O':
 				setIndices(generateIndices(O));
 				break;
 
+			case 'p':
 			case 'P':
 				setIndices(generateIndices(P));
 				break;
 
+			case 'q':
 			case 'Q':
 				setIndices(generateIndices(Q));
 				break;
 
+			case 'r':
 			case 'R':
 				setIndices(generateIndices(R));
 				break;
 
+			case 's':
 			case 'S':
 				setIndices(generateIndices(S));
 				break;
 
+			case 't':
 			case 'T':
 				setIndices(generateIndices(T));
 				break;
 
+			case 'u':
 			case 'U':
 				setIndices(generateIndices(U));
 				break;
 
+			case 'v':
 			case 'V':
 				setIndices(generateIndices(V));
 				break;
 
+			case 'w':
 			case 'W':
 				setIndices(generateIndices(W));
 				break;
 
+			case 'x':
 			case 'X':
 				setIndices(generateIndices(X));
 				break;
 
+			case 'y':
 			case 'Y':
 				setIndices(generateIndices(Y));
 				break;
 
+			case 'z':
 			case 'Z':
 				setIndices(generateIndices(Z));
 				break;

@@ -1,13 +1,17 @@
 package org.capstone.game;
 
+import java.sql.*;
+
 import org.capstone.game.TextMeshGroup.Alignment;
 import org.capstone.game.files.LevelLoader;
 import org.capstone.game.input.GameInputProcessor;
+import org.capstone.game.network.Database;
 import org.capstone.game.tests.ShapesStageTest;
 import org.capstone.game.tests.SimpleGameStageTest;
 import org.capstone.game.tests.StageTest;
 import org.capstone.game.tests.TextStageTest;
 import org.capstone.game.ui.Counter;
+import org.capstone.game.ui.Scoreboard;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
@@ -39,6 +43,7 @@ public class Game implements ApplicationListener {
 	private FPSLogger fpsLogger = new FPSLogger();
 //	private boolean running = true;
 	private boolean gl20 = false;
+	private boolean lost = false;
 
 	private LevelLoader loader;
 	private Level level;
@@ -271,7 +276,8 @@ public class Game implements ApplicationListener {
 		new State(width, height, new Color(0.572f, 0.686f, 0.624f, 1.0f));
 
 		String[] levelNames = {
-			"level0.json"
+			"level0.json",
+			"level1.json"
 		};
 
 		loader = new LevelLoader(levelNames);
@@ -423,10 +429,13 @@ public class Game implements ApplicationListener {
 		healthCounter.set(State.getPlayer().getHealth());
 
 		// Lose screen.
-		if (State.getPlayer().getHealth() <= 0) {
-			TextMeshGroup lose = new TextMeshGroup("YOU LOSE", State.getWidth() * 0.5f, State.getHeight() * 0.5f, Color.WHITE, 60, 90, 30, 10.0f, Alignment.CENTER);
+		if (State.getPlayer().getHealth() <= 0 && !lost) {
+			lost = true;
+
+			TextMeshGroup lose = new TextMeshGroup("YOU LOSE", State.getWidth() * 0.5f, State.getHeight() * 0.8f, Color.WHITE, 60, 90, 30, 10.0f, Alignment.CENTER);
 			lose.setAlignment(Alignment.CENTER);
 			State.getStage().getText().addActor(lose);
+
 			SnapshotArray<Actor> entityArray = State.getStage().getEntities().getChildren();
 			Actor[] entityActors = entityArray.begin();
 			for (int i = 0, n = entityArray.size; i < n; i++) {
@@ -442,6 +451,7 @@ public class Game implements ApplicationListener {
 				projectileActors[i].addAction(fadeOut(0.8f, Interpolation.pow2Out));
 			}
 			projectileArray.end();
+			State.setLevel(null);
 			
 			State.getStage().addAction(
 				sequence(
@@ -449,11 +459,13 @@ public class Game implements ApplicationListener {
 					new Action() {
 						public boolean act(float delta) {
 							State.running = false;
+							sendScore(State.getPlayer().getScore());
+							State.getStage().addText(new Scoreboard());
 							return true;
 						}
 					}
 				)				
-			);		
+			);
 		}
 
 		if (State.getStage().getRoot()!= null) {
@@ -515,6 +527,24 @@ public class Game implements ApplicationListener {
 		}
 		if (Gdx.input.isKeyPressed(Input.Keys.X)) {
 			State.getStage().clearActors();
+		}
+	}
+	
+	public void sendScore(int score) {
+		String scoreString = "UPDATE PLAYER SET player_score = " + score + " WHERE PLAYER_ID = 1";
+		try {
+			Connection connection = Database.getConnection();
+			//String query = "UPDATE TD_SCORE SET player_score = 4 WHERE PLAYER_ID = 1";
+			
+			Statement stmt = connection.createStatement();
+			stmt.executeUpdate(scoreString);
+
+//	        ResultSet rs = stmt.executeQuery("SELECT * FROM PLAYER_SCORE");
+//	        while (rs.next()) {
+//	            System.out.println(rs.getString(2) + ": " + rs.getString(3));
+//	        }
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 
