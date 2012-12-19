@@ -26,7 +26,6 @@ public class Scoreboard extends MeshGroup {
 		float y = State.getHeight() * 0.6f;
 		for (int i = 0; i < numScores; i++) {
 			if (scoreStrings.size() <= 2 * i + 1) {
-				System.out.println(i + ", " + scoreStrings.size());
 				break;
 			}
 

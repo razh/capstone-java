@@ -35,11 +35,11 @@
       "weapons": [
 
       ],
-      "initialHealth": 20,
-      "health": 20,
+      "initialHealth": 30,
+      "health": 30,
       "immortal": false,
       "alive": true,
-      "lifeTime": 1,
+      "lifeTime": 5,
       "time": 0,
       "oriented": true
     },
@@ -77,27 +77,27 @@
                   "type": "sequence",
                   "actions": [
                     {
-                      "amountX": 200,
+                      "amountX": 400,
                       "amountY": 200,
-                      "duration": 0.5,
+                      "duration": 1,
                       "interpolation": "exp10Out"
                     },
                     {
-                      "amountX": 200,
+                      "amountX": 400,
                       "amountY": -200,
-                      "duration": 0.5,
+                      "duration": 1,
                       "interpolation": "exp10Out"
                     },
                     {
-                      "amountX": 200,
+                      "amountX": -400,
                       "amountY": 200,
                       "duration": 0.5,
                       "interpolation": "exp10"
                     },
                     {
-                      "amountX": 200,
+                      "amountX": -400,
                       "amountY": -200,
-                      "duration": 0.5,
+                      "duration": 1,
                       "interpolation": "exp5Out"
                     }
                   ]
@@ -127,11 +127,11 @@
       "weapons": [
 
       ],
-      "initialHealth": 20,
-      "health": 20,
+      "initialHealth": 30,
+      "health": 30,
       "immortal": false,
       "alive": true,
-      "lifeTime": 10,
+      "lifeTime": 5,
       "time": 0,
       "oriented": false
     }
@@ -141,11 +141,11 @@
     1
   ],
   "spawnCounts": [
-    10,
-    10
+    100,
+    100
   ],
   "spawnIntervals": [
-    1.5,
+    0.75,
     1.5
   ],
   "startTime": 1,

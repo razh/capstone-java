@@ -431,6 +431,7 @@ public class Game implements ApplicationListener {
 		// Lose screen.
 		if (State.getPlayer().getHealth() <= 0 && !lost) {
 			lost = true;
+			State.setLevel(null);
 
 			TextMeshGroup lose = new TextMeshGroup("YOU LOSE", State.getWidth() * 0.5f, State.getHeight() * 0.8f, Color.WHITE, 60, 90, 30, 10.0f, Alignment.CENTER);
 			lose.setAlignment(Alignment.CENTER);
@@ -451,11 +452,17 @@ public class Game implements ApplicationListener {
 				projectileActors[i].addAction(fadeOut(0.8f, Interpolation.pow2Out));
 			}
 			projectileArray.end();
-			State.setLevel(null);
 			
 			State.getStage().addAction(
 				sequence(
 					color(Color.BLACK, 1.0f, Interpolation.pow2Out),
+					new Action() {
+						public boolean act(float delta) {
+							State.getStage().getEntities().clear();
+							State.getStage().getProjectiles().clear();
+							return true;
+						}
+					},
 					new Action() {
 						public boolean act(float delta) {
 							State.running = false;
